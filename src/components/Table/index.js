@@ -138,19 +138,19 @@ export default {
     loadData (pagination, filters, sorter) {
       this.localLoading = true
       const parameter = Object.assign({
-        pageNo: (pagination && pagination.current) ||
-          this.showPagination && this.localPagination.current || this.pageNum,
-        pageSize: (pagination && pagination.pageSize) ||
-          this.showPagination && this.localPagination.pageSize || this.pageSize
-      },
-      (sorter && sorter.field && {
-        sortField: sorter.field
-      }) || {},
-      (sorter && sorter.order && {
-        sortOrder: sorter.order
-      }) || {}, {
-        ...filters
-      }
+          pageNo: (pagination && pagination.current) ||
+            this.showPagination && this.localPagination.current || this.pageNum,
+          pageSize: (pagination && pagination.pageSize) ||
+            this.showPagination && this.localPagination.pageSize || this.pageSize
+        },
+        (sorter && sorter.field && {
+          sortField: sorter.field
+        }) || {},
+        (sorter && sorter.order && {
+          sortOrder: sorter.order
+        }) || {}, {
+          ...filters
+        }
       )
       const result = this.data(parameter)
       // 对接自己的通用数据接口需要修改下方代码中的 r.pageNo, r.totalCount, r.data
@@ -159,13 +159,17 @@ export default {
         result.then(r => {
           this.localPagination = this.showPagination && Object.assign({}, this.localPagination, {
             current: r.pageNo, // 返回结果中的当前分页数
-            total: r.totalCount, // 返回结果中的总记录数
+            total: r.totalRows, // 返回结果中的总记录数
             showSizeChanger: this.showSizeChanger,
             pageSize: (pagination && pagination.pageSize) ||
               this.localPagination.pageSize
           }) || false
+          // 后端数据rows为null保存修复
+          if (r.rows == null) {
+            r.rows = []
+          }
           // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-          if (r.data.length === 0 && this.showPagination && this.localPagination.current > 1) {
+          if (r.rows.length === 0 && this.showPagination && this.localPagination.current > 1) {
             this.localPagination.current--
             this.loadData()
             return
@@ -174,13 +178,13 @@ export default {
           // 这里用于判断接口是否有返回 r.totalCount 且 this.showPagination = true 且 pageNo 和 pageSize 存在 且 totalCount 小于等于 pageNo * pageSize 的大小
           // 当情况满足时，表示数据不满足分页大小，关闭 table 分页功能
           try {
-            if ((['auto', true].includes(this.showPagination) && r.totalCount <= (r.pageNo * this.localPagination.pageSize))) {
+            if ((['auto', true].includes(this.showPagination) && r.totalCount <= (r.totalPage * this.localPagination.pageSize))) {
               this.localPagination.hideOnSinglePage = true
             }
           } catch (e) {
             this.localPagination = false
           }
-          this.localDataSource = r.data // 返回结果中的数组数据
+          this.localDataSource = r.rows // 返回结果中的数组数据
           this.localLoading = false
         })
       }
@@ -233,7 +237,7 @@ export default {
     renderClear (callback) {
       if (this.selectedRowKeys.length <= 0) return null
       return (
-        <a style="margin-left: 24px" onClick={() => {
+        <a style='margin-left: 24px' onClick={() => {
           callback()
           this.clearSelected()
         }}>清空</a>
@@ -242,8 +246,9 @@ export default {
     renderAlert () {
       // 绘制统计列数据
       const needTotalItems = this.needTotalList.map((item) => {
-        return (<span style="margin-right: 12px">
-          {item.title}总计 <a style="font-weight: 600">{!item.customRender ? item.total : item.customRender(item.total)}</a>
+        return (<span style='margin-right: 12px'>
+          {item.title}总计 <a
+          style='font-weight: 600'>{!item.customRender ? item.total : item.customRender(item.total)}</a>
         </span>)
       })
 
@@ -256,9 +261,9 @@ export default {
 
       // 绘制 alert 组件
       return (
-        <a-alert showIcon={true} style="margin-bottom: 16px">
-          <template slot="message">
-            <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{this.selectedRows.length}</a></span>
+        <a-alert showIcon={true} style='margin-bottom: 16px'>
+          <template slot='message'>
+            <span style='margin-right: 12px'>已选择: <a style='font-weight: 600'>{this.selectedRows.length}</a></span>
             {needTotalItems}
             {clearItem}
           </template>
@@ -301,15 +306,18 @@ export default {
       return props[k]
     })
     const table = (
-      <a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData} onExpand={ (expanded, record) => { this.$emit('expand', expanded, record) } }>
-        { Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>)) }
+      <a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.loadData}
+               onExpand={(expanded, record) => {
+                 this.$emit('expand', expanded, record)
+               }}>
+        {Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>))}
       </a-table>
     )
 
     return (
-      <div class="table-wrapper">
-        { showAlert ? this.renderAlert() : null }
-        { table }
+      <div class='table-wrapper'>
+        {showAlert ? this.renderAlert() : null}
+        {table}
       </div>
     )
   }
