@@ -68,34 +68,58 @@ export default {
         {
           title: 'id',
           dataIndex: 'id',
-          scopedSlots: { customRender: 'id' }
+          scopedSlots: { customRender: 'id' },
+          align: 'center'
         },
         {
           title: '数据库名',
           dataIndex: 'dbName',
-          scopedSlots: { customRender: 'dbName' }
+          scopedSlots: { customRender: 'dbName' },
+          align: 'center'
+        },
+        {
+          title: '数据库类型',
+          dataIndex: 'dbType',
+          scopedSlots: { customRender: 'dbType' },
+          align: 'center'
         },
         {
           title: '连接类型',
           dataIndex: 'driverClassName',
-          scopedSlots: { customRender: 'dbName' }
+          scopedSlots: { customRender: 'dbName' },
+          align: 'center'
+        },
+        {
+          title: '数据库地址',
+          dataIndex: 'dbAddress',
+          scopedSlots: { customRender: 'dbAddress' },
+          align: 'center'
+        },
+        {
+          title: '端口',
+          dataIndex: 'dbPort',
+          scopedSlots: { customRender: 'dbPort' },
+          align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createDate',
           scopedSlots: { customRender: 'dbName' },
-          sorter: true
+          sorter: true,
+          align: 'center'
         },
         {
           title: '更新时间',
           dataIndex: 'updateDate',
           scopedSlots: { customRender: 'dbName' },
-          sorter: true
+          sorter: true,
+          align: 'center'
         },
         {
           title: '操作',
           width: '240px',
           dataIndex: 'action',
+          align: 'center',
           scopedSlots: { customRender: 'action' }
         }
       ],
