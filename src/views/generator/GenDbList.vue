@@ -18,6 +18,15 @@
       </a-form>
     </div>
 
+    <a-space align="center" style="margin-bottom: 16px">
+      <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
+          <a-button type="primary" icon="close">删除</a-button>
+        </a-popconfirm>
+      </a-dropdown>
+    </a-space>
+
     <s-table
       size="default"
       ref="table"
@@ -27,27 +36,26 @@
       :data="loadData"
       :rangPicker="range"
     >
-
-      <template slot="operator">
-        <a-button type="primary" icon="plus" @click="handleEdit()">新建</a-button>
-      </template>
       <span slot="action" slot-scope="text, record">
-        <a @click="handleEdit(record.id)">编辑</a>
+        <a @click="this.handleEdit(record.id)">编辑</a>
         <a-divider type="vertical" />
-        <a @click="delByIds([record.id])">删除</a>
+        <a @click="this.delByIds([record.id])">删除</a>
       </span>
     </s-table>
+    <gen-db-modal ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
 import { getGenDbPageList, delGenDb } from '@/api/generator/genDbList'
+import GenDbModal from '@/views/generator/modules/GenDbModal'
 
 export default {
   name: 'GenDbList',
   components: {
-    STable
+    STable,
+    GenDbModal
   },
   data () {
     return {
@@ -59,7 +67,7 @@ export default {
         xs: { span: 24 },
         sm: { span: 16 }
       },
-      form: this.$form.createForm(this),
+      // form: this.$form.createForm(this),
       mdl: {},
       // 查询参数
       queryParam: {},
@@ -146,8 +154,11 @@ export default {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
-    handleEdit (id) {
-      this.$router.push({ name: 'genEdit', query: { id: id } })
+    handleAdd () {
+      this.$refs.modal.add()
+    },
+    handleEdit (record) {
+      this.$refs.modal.edit(record)
     },
     handleOk () {
       this.$refs.table.refresh(true)
