@@ -49,6 +49,7 @@
 <script>
 import { STable } from '@/components'
 import { getGenDbPageList, delGenDb } from '@/api/generator/genDbList'
+import { sysDictTypeDropDown } from '@/api/dict/sysDictType'
 import GenDbModal from '@/views/generator/modules/GenDbModal'
 
 export default {
@@ -140,19 +141,24 @@ export default {
       },
       commonStatus: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      dbTypeDictDropDown: []
     }
   },
   filters: {},
-  beforeCreate () {
-
-  },
   created () {
+    this.sysDictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    // 加载字典
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'db_type' }).then((res) => {
+        this.dbTypeDictDropDown = res.data
+      })
     },
     handleAdd () {
       this.$refs.modal.add()

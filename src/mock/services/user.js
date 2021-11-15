@@ -471,7 +471,7 @@ const userNav = options => {
     {
       name: 'dashboard',
       parentId: 0,
-      id: 1,
+      id: 10,
       meta: {
         icon: 'dashboard',
         title: '仪表盘',
@@ -482,8 +482,8 @@ const userNav = options => {
     },
     {
       name: 'workplace',
-      parentId: 1,
-      id: 7,
+      parentId: 10,
+      id: 11,
       meta: {
         title: '工作台',
         show: true
@@ -492,8 +492,8 @@ const userNav = options => {
     },
     {
       name: 'Analysis',
-      parentId: 1,
-      id: 2,
+      parentId: 10,
+      id: 12,
       meta: {
         title: '分析页',
         show: true
@@ -506,7 +506,7 @@ const userNav = options => {
     {
       name: 'generator',
       parentId: 0,
-      id: 10,
+      id: 20,
       meta: {
         icon: 'form',
         title: '代码生成'
@@ -516,10 +516,33 @@ const userNav = options => {
     },
     {
       name: 'GenDbList',
-      parentId: 10,
-      id: 6,
+      parentId: 20,
+      id: 21,
       meta: {
         title: '数据库配置'
+      },
+      component: 'GenDbList'
+    },
+
+    // 开发配置
+    {
+      name: 'sysConfiguration',
+      parentId: 0,
+      id: 30,
+      meta: {
+        icon: 'setting',
+        title: '开发配置'
+      },
+      redirect: '/sysConfiguration',
+      component: 'RouteView'
+    },
+    {
+      name: 'GenDbList',
+      parentId: 30,
+      id: 31,
+      meta: {
+        icon: 'SettingOutlined ',
+        title: '字典管理'
       },
       component: 'GenDbList'
     },
