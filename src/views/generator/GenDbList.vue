@@ -37,9 +37,9 @@
       :rangPicker="range"
     >
       <span slot="action" slot-scope="text, record">
-        <a @click="this.handleEdit(record.id)">编辑</a>
+        <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
-        <a @click="this.delByIds([record.id])">删除</a>
+        <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
     <gen-db-modal ref="modal" @ok="handleOk" />
@@ -67,7 +67,7 @@ export default {
         xs: { span: 24 },
         sm: { span: 16 }
       },
-      // form: this.$form.createForm(this),
+      form: this.$form.createForm(this),
       mdl: {},
       // 查询参数
       queryParam: {},
@@ -158,6 +158,7 @@ export default {
       this.$refs.modal.add()
     },
     handleEdit (record) {
+      console.log(record)
       this.$refs.modal.edit(record)
     },
     handleOk () {
