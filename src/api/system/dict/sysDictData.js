@@ -1,26 +1,15 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 const api = {
-  sysDictData: '/system/dict/data'
+  sysDictData: '/dict/data'
 }
 
 /**
  * 分页查询字典管理
  */
 export function getSysDictDataPageList (parameter) {
-  return axios({
+  return request({
     url: api.sysDictData + '/pageList',
-    method: 'get',
-    params: parameter
-  })
-}
-
-/**
- * 查询字典管理列表
- */
-export function getSysDictDataList (parameter) {
-  return axios({
-    url: api.sysDictData + '/list',
     method: 'get',
     params: parameter
   })
@@ -30,7 +19,7 @@ export function getSysDictDataList (parameter) {
  * 修改/保存字典管理
  */
 export function saveSysDictData (parameter) {
-  return axios({
+  return request({
     url: api.sysDictData + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
     data: parameter,
@@ -44,7 +33,7 @@ export function saveSysDictData (parameter) {
  * 删除字典管理
  */
 export function delSysDictData (parameter) {
-  return axios({
+  return request({
     url: api.sysDictData + '/delete',
     method: 'post',
     params: parameter

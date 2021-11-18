@@ -1,8 +1,7 @@
 import request from '@/utils/request'
 
 const api = {
-  sysDictType: '/system/dict',
-  shareDictType: '/share/dict'
+  sysDictType: '/dict'
 }
 
 /**

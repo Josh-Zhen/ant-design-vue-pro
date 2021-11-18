@@ -37,6 +37,21 @@ export const asyncRouterMap = [
           }
         ]
       },
+      // 系统字典配置
+      {
+        path: '/dict',
+        redirect: '/system/dict/SysDictTypeList',
+        component: RouteView,
+        meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
+        children: [
+          {
+            path: '/generator/GenDbList',
+            name: 'GenDbList',
+            component: () => import('@/views/system/dict/SysDictTypeList'),
+            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
+          }
+        ]
+      },
       // generator
       {
         path: '/generator',

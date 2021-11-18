@@ -49,7 +49,7 @@
 <script>
 import { STable } from '@/components'
 import { getGenDbPageList, delGenDb } from '@/api/generator/genDbList'
-import { sysDictTypeDropDown } from '@/api/dict/sysDictType'
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenDbModal from '@/views/generator/modules/GenDbModal'
 
 export default {
