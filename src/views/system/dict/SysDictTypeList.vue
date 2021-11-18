@@ -5,17 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="15">
             <a-form-item label="名称">
-              <a-input placeholder="请输入名称" v-model="queryParam.name" />
+              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name" />
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="15">
             <a-form-item label="编码">
-              <a-input placeholder="请输入编码" v-model="queryParam.code" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="15">
-            <a-form-item label="状态">
-              <a-input placeholder="请输入状态" v-model="queryParam.status" />
+              <a-input allow-clear placeholder="请输入编码" v-model="queryParam.code" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -27,6 +22,16 @@
         </a-row>
       </a-form>
     </div>
+
+    <a-space align="center" style="margin-bottom: 16px">
+      <a-button type="primary" icon="plus" @click="$refs.modal.add()">新增</a-button>
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
+          <a-button type="primary" icon="close">删除</a-button>
+        </a-popconfirm>
+      </a-dropdown>
+    </a-space>
+
     <s-table
       size="default"
       ref="table"
@@ -35,18 +40,12 @@
       :columns="columns"
       :data="loadData"
     >
-      <template slot="operator">
-        <a-button type="primary" v-hasPerm="'dict:sysDictType:add'" icon="plus" @click="$refs.modal.add()">新增</a-button>
-      </template>
       <span slot="status" slot-scope="text,record">
         <a-popconfirm placement="top" :title="text===0? '确定停用？':'确定启用？'" @confirm="() => editStatus(text,record)">
           <a>{{ statusFilter(text) }}</a>
         </a-popconfirm>
       </span>
-      <span slot="status">
-        {{ statusFilter(text) }}
-      </span>
-      <span slot="action" slot-scope="text, record">
+      <span slot="action" slot-scope="text,record">
         <a @click="handleIndex(record)">字典</a>
         <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>

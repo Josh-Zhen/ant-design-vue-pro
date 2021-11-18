@@ -49,10 +49,7 @@
             <a>{{ statusFilter(text) }}</a>
           </a-popconfirm>
         </span>
-        <span slot="status">
-          {{ statusFilter(text) }}
-        </span>
-        <span slot="action" slot-scope="text, record">
+        <span slot="action" slot-scope="text,record">
           <a @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical" />
           <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([[record.id]])">
@@ -99,28 +96,33 @@ export default {
         {
           title: '字典名称',
           dataIndex: 'name',
-          scopedSlots: { customRender: 'name' }
+          scopedSlots: { customRender: 'name' },
+          align: 'center'
         },
         {
           title: '字典值',
           dataIndex: 'value',
-          scopedSlots: { customRender: 'value' }
+          scopedSlots: { customRender: 'value' },
+          align: 'center'
         },
         {
           title: '状态',
           dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
+          scopedSlots: { customRender: 'status' },
+          align: 'center'
         },
         {
           title: '排序',
           dataIndex: 'sort',
-          scopedSlots: { customRender: 'sort' }
+          scopedSlots: { customRender: 'sort' },
+          align: 'center'
         },
         {
           title: '操作',
           width: '200px',
           dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
+          scopedSlots: { customRender: 'action' },
+          align: 'center'
         }
       ],
       typeId: [],

@@ -9,25 +9,34 @@
   >
     <a-form :form="form">
       <a-form-item v-show="false">
-        <a-input v-decorator="['typeId']"/>
+        <a-input v-decorator="['typeId']" />
       </a-form-item>
       <a-form-item v-show="false">
-        <a-input v-decorator="['id']"/>
+        <a-input v-decorator="['id']" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典名称" has-feedback>
-        <a-input placeholder="请输入字典名称" v-decorator="['name', {rules: [{required: true, message: '请输入字典名称'}]}]"/>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典名称">
+        <a-input
+          allow-clear
+          placeholder="请输入字典名称"
+          v-decorator="['name', {rules: [{required: true, message: '请输入字典名称'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典值" has-feedback>
-        <a-input placeholder="请输入字典值" v-decorator="['value', {rules: [{required: true, message: '请输入字典值'}]}]"/>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典值">
+        <a-input
+          allow-clear
+          placeholder="请输入字典值"
+          v-decorator="['value', {rules: [{required: true, pattern:/^[A-Za-z0-9]+$/, message: '请输入字典值'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="排序" has-feedback>
-        <a-input placeholder="请输入排序" v-decorator="['sort', {rules: [{required: true, message: '请输入排序'}]}]"/>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="排序">
+        <a-input
+          allow-clear
+          placeholder="请输入排序"
+          v-decorator="['sort', {rules: [{required: true, pattern:/^\d{1,8}$/, message: '请输入排序'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态">
-        <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['status', { valuePropName: 'checked' }]"/>
+        <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['status', { valuePropName: 'checked' }]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="备注" has-feedback>
-        <a-textarea placeholder="请输入备注" v-decorator="['remark']"/>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="备注">
+        <a-textarea allow-clear placeholder="请输入备注" v-decorator="['remark']" />
       </a-form-item>
     </a-form>
   </a-modal>
