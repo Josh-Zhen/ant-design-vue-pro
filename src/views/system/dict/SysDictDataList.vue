@@ -145,11 +145,6 @@ export default {
       this.visible = true
       this.typeId = record.id
       this.queryParam.typeId = record.id
-      try {
-        this.$refs.table.refresh()
-      } catch (e) {
-        // 首次进入界面，因表格加载顺序，会抛异常，我们不予理会
-      }
       this.statusDictTypeDropDown = statusDictTypeDropDown
     },
     onSelectChange (selectedRowKeys, selectedRows) {

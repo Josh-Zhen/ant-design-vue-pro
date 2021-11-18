@@ -1,5 +1,6 @@
 import T from 'ant-design-vue/es/table/Table'
 import get from 'lodash.get'
+import columnSetting from '@/components/Table/columnSetting'
 
 export default {
   data () {
@@ -11,7 +12,8 @@ export default {
 
       localLoading: false,
       localDataSource: [],
-      localPagination: Object.assign({}, this.pagination)
+      localPagination: Object.assign({}, this.pagination),
+      columnsSetting: []
     }
   },
   props: Object.assign({}, T.props, {
@@ -74,6 +76,10 @@ export default {
     pageURI: {
       type: Boolean,
       default: false
+    },
+    extraTool: {
+      type: Array,
+      default: () => ([])
     }
   }),
   watch: {
@@ -112,16 +118,20 @@ export default {
     this.localPagination = ['auto', true].includes(this.showPagination) && Object.assign({}, this.localPagination, {
       current: localPageNum,
       pageSize: this.pageSize,
-      showSizeChanger: this.showSizeChanger
+      showSizeChanger: this.showSizeChanger,
+      showTotal: (total, range) => {
+        return range[1] + '页 ' + '共' + total + '条'
+      }
     }) || false
     this.needTotalList = this.initTotalList(this.columns)
     this.loadData()
+    this.columnsSetting = this.columns
   },
   methods: {
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
-     * @param Boolean bool
+     * @param bool
      */
     refresh (bool = false) {
       bool && (this.localPagination = Object.assign({}, {
@@ -270,6 +280,62 @@ export default {
         </a-alert>
       )
     }
+  },
+  columnChange (val) {
+    this.columnsSetting = val
+  },
+  renderHeader () {
+    let tools = [
+      {
+        icon: 'reload',
+        title: '刷新',
+        onClick: () => {
+          this.refresh()
+        }
+      },
+      {
+        icon: 'setting',
+        title: '列设置',
+        isDropdown: true,
+        menu: () => {
+          return <columnSetting slot='overlay' columns={this.columns} onColumnChange={this.columnChange} />
+        },
+        onClick: () => {
+        }
+      }
+    ]
+    if (this.extraTool.length) {
+      tools = tools.concat(this.extraTool)
+    }
+
+    return (
+      <div class='s-table-tool'>
+        <div class='s-table-tool-left'>
+          {this.$scopedSlots.operator && this.$scopedSlots.operator()}
+        </div>
+        <div class='s-table-tool-right'>
+          {
+            tools.map(tool => {
+              if (tool.isDropdown) {
+                return (
+                  <a-dropdown trigger={['click']}>
+                    <a-tooltip title={tool.title} class='s-tool-item' onClick={tool.onClick}>
+                      <a-icon type={tool.icon} />
+                    </a-tooltip>
+                    {tool.menu()}
+                  </a-dropdown>
+                )
+              }
+              return (
+                <a-tooltip title={tool.title} class='s-tool-item' onClick={tool.onClick}>
+                  <a-icon type={tool.icon} />
+                </a-tooltip>
+              )
+            })
+          }
+        </div>
+      </div>
+    )
   },
 
   render () {
