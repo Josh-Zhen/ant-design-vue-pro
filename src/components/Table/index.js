@@ -1,6 +1,5 @@
 import T from 'ant-design-vue/es/table/Table'
 import get from 'lodash.get'
-import columnSetting from '@/components/Table/columnSetting'
 
 export default {
   data () {
@@ -291,16 +290,6 @@ export default {
         title: '刷新',
         onClick: () => {
           this.refresh()
-        }
-      },
-      {
-        icon: 'setting',
-        title: '列设置',
-        isDropdown: true,
-        menu: () => {
-          return <columnSetting slot='overlay' columns={this.columns} onColumnChange={this.columnChange} />
-        },
-        onClick: () => {
         }
       }
     ]
