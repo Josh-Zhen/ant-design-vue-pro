@@ -68,9 +68,9 @@ export default {
   created () {
   },
   methods: {
-    add () {
+    add (endId) {
       this.form.resetFields()
-      this.edit({ id: 0 })
+      this.edit({ id: 0, sort: endId })
     },
     edit (record) {
       this.mdl = Object.assign(record)

@@ -119,7 +119,7 @@ export default {
       pageSize: this.pageSize,
       showSizeChanger: this.showSizeChanger,
       showTotal: (total, range) => {
-        return range[1] + '页 ' + '共' + total + '条'
+        return range[0] + '页 ' + '共' + total + '条'
       }
     }) || false
     this.needTotalList = this.initTotalList(this.columns)

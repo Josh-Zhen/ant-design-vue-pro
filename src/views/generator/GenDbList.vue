@@ -18,6 +18,9 @@
       </a-form>
     </div>
 
+    <span slot="dbType" slot-scope="text">
+      {{ statusFilter(text) }}
+    </span>
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -139,7 +142,6 @@ export default {
           return res.data
         })
       },
-      commonStatus: [],
       selectedRowKeys: [],
       selectedRows: [],
       dbTypeDictDropDown: []
@@ -154,9 +156,17 @@ export default {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
+    // 匹配字典
+    statusFilter (status) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.dbTypeDictDropDown.filter(item => item.value == status)
+      if (values.length > 0) {
+        return values[0].name
+      }
+    },
     // 加载字典
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'db_type' }).then((res) => {
+      sysDictTypeDropDown({ code: 'database_type' }).then((res) => {
         this.dbTypeDictDropDown = res.data
       })
     },

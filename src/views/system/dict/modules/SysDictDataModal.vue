@@ -71,13 +71,13 @@ export default {
   created () {
   },
   methods: {
-    add (record) {
+    add (typeId, endId) {
       this.form.resetFields()
-      this.edit({ id: 0 })
+      this.edit({ id: 0, sort: endId })
       // 增加上级类型ID
       this.$nextTick(() => {
         this.form.setFieldsValue(
-          { typeId: record }
+          { typeId: typeId }
         )
       })
     },

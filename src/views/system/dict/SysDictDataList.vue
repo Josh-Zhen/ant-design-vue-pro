@@ -30,7 +30,7 @@
         </a-form>
       </div>
       <div class="table-operator">
-        <a-button @click="$refs.modal.add(typeId)" type="primary" icon="plus">新增
+        <a-button @click="$refs.modal.add(typeId,endId)" type="primary" icon="plus">新增
         </a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
@@ -125,10 +125,12 @@ export default {
           align: 'center'
         }
       ],
-      typeId: [],
+      typeId: 0,
+      endId: 0,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getSysDictDataPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+          this.endId = res.data.totalRows !== 0 ? res.data.totalRows + 1 : 0
           return res.data
         })
       },
@@ -146,6 +148,10 @@ export default {
       this.typeId = record.id
       this.queryParam.typeId = record.id
       this.statusDictTypeDropDown = statusDictTypeDropDown
+      try {
+        this.$refs.table.refresh()
+      } catch (e) {
+      }
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys

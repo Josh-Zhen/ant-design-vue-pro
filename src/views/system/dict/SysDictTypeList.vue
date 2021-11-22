@@ -24,7 +24,7 @@
     </div>
 
     <a-space align="center" style="margin-bottom: 16px">
-      <a-button type="primary" icon="plus" @click="$refs.modal.add()">新增</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.modal.add(endId)">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
@@ -91,6 +91,7 @@ export default {
       form: this.$form.createForm(this),
       mdl: {},
       statusDictTypeDropDown: [],
+      endId: 0,
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
@@ -152,6 +153,7 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getSysDictTypePageList(Object.assign(parameter, this.queryParam)).then((res) => {
+          this.endId = res.data.totalRows !== 0 ? res.data.rows[0].id + 1 : 0
           return res.data
         })
       },
