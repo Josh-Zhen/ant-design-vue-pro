@@ -5,7 +5,7 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="库名称">
-              <a-input placeholder="请输入库名称" v-model="queryParam.dbName" />
+              <a-input allow-clear placeholder="请输入库名称" v-model="queryParam.dbName" />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="10">
@@ -18,9 +18,6 @@
       </a-form>
     </div>
 
-    <span slot="dbType" slot-scope="text">
-      {{ statusFilter(text) }}
-    </span>
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -39,6 +36,9 @@
       :data="loadData"
       :rangPicker="range"
     >
+      <span slot="dbType" slot-scope="text">
+        {{ statusFilter(text) }}
+      </span>
       <span slot="action" slot-scope="text, record">
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
