@@ -171,11 +171,10 @@ export default {
       })
     },
     handleAdd () {
-      this.$refs.modal.add()
+      this.$refs.modal.add(this.dbTypeDictDropDown)
     },
     handleEdit (record) {
-      console.log(record)
-      this.$refs.modal.edit(record)
+      this.$refs.modal.edit(record, this.dbTypeDictDropDown)
     },
     handleOk () {
       this.$refs.table.refresh(true)

@@ -74,16 +74,23 @@ export default {
     }
   },
   methods: {
-    add () {
+    add (dbTypeDictDropDown) {
       this.form.resetFields()
-      this.edit({ id: 0 })
+      this.dbTypeDictDropDown = dbTypeDictDropDown
+      this.mdl = Object.assign({ id: 0 })
+      this.visible = true
+      this.$nextTick(() => {
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'dbName', 'dbType', 'driverClassName', 'dbAddress', 'dbPort'))
+      })
     },
-    edit (record) {
+    edit (record, dbTypeDictDropDown) {
+      record.dbType = record.dbType.toString()
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'dbName', 'dbType', 'driverClassName', 'dbAddress', 'dbPort'))
       })
+      this.dbTypeDictDropDown = dbTypeDictDropDown
     },
     handleSubmit (e) {
       e.preventDefault()
