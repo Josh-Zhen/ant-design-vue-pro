@@ -78,12 +78,6 @@ export default {
       // 表头
       columns: [
         {
-          title: 'id',
-          dataIndex: 'id',
-          scopedSlots: { customRender: 'id' },
-          align: 'center'
-        },
-        {
           title: '数据库名',
           dataIndex: 'dbName',
           scopedSlots: { customRender: 'dbName' },
