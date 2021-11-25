@@ -37,9 +37,11 @@
       :rangPicker="range"
     >
       <span slot="dbType" slot-scope="text">
-        {{ statusFilter(text) }}
+        {{ dbTypeFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="handleDb(record.id)">生成表</a>
+        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
@@ -51,8 +53,9 @@
 
 <script>
 import { STable } from '@/components'
-import { getGenDbPageList, delGenDb } from '@/api/generator/genDbList'
+import { getGenDbPageList, delGenDb } from '@/api/generator/genDb'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
+import { generateTables } from '@/api/generator/genTables'
 import GenDbModal from '@/views/generator/modules/GenDbModal'
 
 export default {
@@ -138,7 +141,8 @@ export default {
       },
       selectedRowKeys: [],
       selectedRows: [],
-      dbTypeDictDropDown: []
+      dbTypeDictDropDown: [],
+      statusDictDropDown: []
     }
   },
   filters: {},
@@ -151,7 +155,7 @@ export default {
       this.selectedRows = selectedRows
     },
     // 匹配字典
-    statusFilter (status) {
+    dbTypeFilter (status) {
       // eslint-disable-next-line eqeqeq
       const values = this.dbTypeDictDropDown.filter(item => item.value == status)
       if (values.length > 0) {
@@ -172,6 +176,17 @@ export default {
     },
     handleOk () {
       this.$refs.table.refresh(true)
+    },
+    // 生成库
+    handleDb (id) {
+      generateTables({ id: id }).then(res => {
+        if (res.success) {
+          this.$message.success('操作成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('操作失败：' + res.message)
+        }
+      })
     },
     delByIds (ids) {
       delGenDb({ ids: ids.join(',') }).then(res => {

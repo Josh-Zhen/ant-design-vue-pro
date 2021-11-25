@@ -27,17 +27,6 @@ export function getSysDictTypePageList (parameter) {
 }
 
 /**
- * 查询字典管理列表
- */
-export function getSysDictTypeList (parameter) {
-  return request({
-    url: api.sysDictType + '/list',
-    method: 'get',
-    params: parameter
-  })
-}
-
-/**
  * 修改/保存字典管理
  */
 export function saveSysDictType (parameter) {
@@ -61,5 +50,3 @@ export function delSysDictType (parameter) {
     params: parameter
   })
 }
-
-export const sysDictTypeExport = api.sysDictType + '/export'

@@ -39,5 +39,3 @@ export function delSysDictData (parameter) {
     params: parameter
   })
 }
-
-export const sysDictDataExport = api.sysDictData + '/export'

@@ -69,7 +69,7 @@
   </a-modal>
 </template>
 <script>
-import { saveGenDbType } from '@/api/generator/genDbList'
+import { saveGenDb } from '@/api/generator/genDb'
 import pick from 'lodash.pick'
 
 export default {
@@ -118,7 +118,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenDbType(values).then(res => {
+          saveGenDb(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

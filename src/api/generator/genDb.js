@@ -5,7 +5,7 @@ const api = {
 }
 
 /**
- * 分页查询字典管理
+ * 分页查询数据库配置
  */
 export function getGenDbPageList (parameter) {
   return request({
@@ -16,9 +16,9 @@ export function getGenDbPageList (parameter) {
 }
 
 /**
- * 修改/保存字典管理
+ * 修改/保存数据库配置
  */
-export function saveGenDbType (parameter) {
+export function saveGenDb (parameter) {
   return request({
     url: api.genDb + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
@@ -30,7 +30,7 @@ export function saveGenDbType (parameter) {
 }
 
 /**
- * 删除字典管理
+ * 删除数据库配置
  */
 export function delGenDb (parameter) {
   return request({
@@ -39,5 +39,3 @@ export function delGenDb (parameter) {
     params: parameter
   })
 }
-
-export const sysDictTypeExport = api.sysDictType + '/export'
