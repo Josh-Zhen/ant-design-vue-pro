@@ -523,6 +523,15 @@ const userNav = options => {
       },
       component: 'GenDbList'
     },
+    {
+      name: 'GenConfigList',
+      parentId: 20,
+      id: 22,
+      meta: {
+        title: '作者配置'
+      },
+      component: 'GenConfigList'
+    },
 
     // 开发配置
     {
