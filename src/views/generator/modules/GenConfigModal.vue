@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <a-modal
     title="作者配置"
@@ -31,15 +32,19 @@
           placeholder="请输入公钥"
           v-decorator="['publicKey', {rules: [{required: true, message: '请输入公钥'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="默认">
-        <a-switch checkedChildren="是" unCheckedChildren="否" v-decorator="['type', { valuePropName: 'checked' }]" />
+      <a-form-item layout="inline" :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol" label="默认">
+        <a-switch checked-children="是" un-checked-children="否" v-decorator="['type', { valuePropName: 'checked' }]" />
+
+        <a-button type="primary" icon="sync" @click="handleKeys">
+          刷新密鑰
+        </a-button>
       </a-form-item>
       <p style="color:#FF0000">公、私钥用于加密数据库的用户与密码</p>
     </a-form>
   </a-modal>
 </template>
 <script>
-import { saveGenConfig } from '@/api/generator/genCongfig'
+import { saveGenConfig, getKeys } from '@/api/generator/genCongfig'
 import pick from 'lodash.pick'
 
 export default {
@@ -102,6 +107,14 @@ export default {
     },
     handleClose () {
       this.alerts = false
+    },
+    handleKeys () {
+      getKeys().then((res) => {
+        this.form.setFieldsValue({
+          publicKey: res.data.publicKey,
+          privateKey: res.data.privateKey
+        })
+      })
     }
   }
 }

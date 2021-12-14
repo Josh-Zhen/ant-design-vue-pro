@@ -9,7 +9,7 @@ const api = {
  */
 export function getTablesPageList (parameter) {
   return request({
-    url: api.genDb + '/pageList',
+    url: api.genTables + '/pageList',
     method: 'get',
     params: parameter
   })
@@ -20,7 +20,7 @@ export function getTablesPageList (parameter) {
  */
 export function saveGenTables (parameter) {
   return request({
-    url: api.genDb + (parameter.id > 0 ? '/update' : '/save'),
+    url: api.genTables + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
     data: parameter,
     headers: {
@@ -34,7 +34,7 @@ export function saveGenTables (parameter) {
  */
 export function delGenTables (parameter) {
   return request({
-    url: api.genDb + '/delete',
+    url: api.genTables + '/delete',
     method: 'post',
     params: parameter
   })

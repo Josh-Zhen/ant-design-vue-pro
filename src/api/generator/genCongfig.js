@@ -39,3 +39,13 @@ export function delGenConfig (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 獲取公、私鑰
+ */
+export function getKeys () {
+  return request({
+    url: api.genDb + '/generateKeys',
+    method: 'get'
+  })
+}
