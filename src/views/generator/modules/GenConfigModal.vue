@@ -31,15 +31,14 @@
           :rows="6"
           placeholder="请输入公钥"
           v-decorator="['publicKey', {rules: [{required: true, message: '请输入公钥'}]}]" />
-      </a-form-item>
-      <a-form-item layout="inline" :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol" label="默认">
-        <a-switch checked-children="是" un-checked-children="否" v-decorator="['type', { valuePropName: 'checked' }]" />
-
         <a-button type="primary" icon="sync" @click="handleKeys">
           刷新密鑰
         </a-button>
+        <p style="color:#FF0000">公、私钥用于加密数据库登录的用户与密码</p>
       </a-form-item>
-      <p style="color:#FF0000">公、私钥用于加密数据库的用户与密码</p>
+      <a-form-item layout="inline" :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol" label="默認">
+        <a-switch checked-children="是" un-checked-children="否" v-decorator="['type', { valuePropName: 'checked' }]" />
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
@@ -65,7 +64,6 @@ export default {
       // 数据类型字典
       confirmLoading: false,
       mdl: {},
-      statusDef: true,
       form: this.$form.createForm(this),
       alerts: true
     }
@@ -76,11 +74,11 @@ export default {
       this.edit({ id: 0 })
     },
     edit (record) {
+      // eslint-disable-next-line eqeqeq
+      record.type = record.type == 1
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
-        this.statusDef = record.status !== 0
-        this.form.setFieldsValue({ status: this.statusDef })
         this.form.setFieldsValue(pick(this.mdl, 'id', 'author', 'privateKey', 'publicKey', 'type'))
       })
     },
@@ -89,6 +87,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
+          values.type = values.type === true ? 1 : 0
           saveGenConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')

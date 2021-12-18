@@ -184,7 +184,6 @@ export default {
     },
     handleOk () {
       this.$refs.table.refresh(true)
-      console.log('handleSaveOk')
     },
     handleCancel () {
       this.queryParam = {}
