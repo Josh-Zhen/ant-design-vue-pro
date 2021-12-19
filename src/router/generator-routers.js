@@ -19,10 +19,9 @@ const constantRouterComponents = {
   Analysis: () => import('@/views/dashboard/Analysis'),
 
   // generator
-  GenDbList: () => import('@/views/generator/GenDbList'),
-  GenConfigList: () => import('@/views/generator/GenConfigList'),
+  GenDbList: () => import('@/views/generator/database/GenDbList'),
+  GenConfigList: () => import('@/views/generator/authorConfig/GenConfigList'),
   SysDictTypeList: () => import('@/views/system/dict/SysDictTypeList'),
-  // SysDictDataList: () => import('@/views/system/dict/SysDictDataList'),
 
   // form
   // BasicForm: () => import('@/views/form/basicForm'),

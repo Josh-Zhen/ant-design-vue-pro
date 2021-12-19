@@ -55,7 +55,7 @@
 import { STable } from '@/components'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import { getGenConfigPageList, delGenConfig } from '@/api/generator/genCongfig'
-import GenConfigModal from '@/views/generator/modules/GenConfigModal'
+import GenConfigModal from '@/views/generator/authorConfig/modules/GenConfigModal'
 
 export default {
   name: 'GenConfigList',

@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <a-modal
     title="操作"

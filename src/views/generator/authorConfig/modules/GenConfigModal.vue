@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <a-modal
     title="作者配置"
@@ -48,8 +47,6 @@ import pick from 'lodash.pick'
 
 export default {
   name: 'GenConfigModal',
-  props: {},
-  components: {},
   data () {
     return {
       visible: false,

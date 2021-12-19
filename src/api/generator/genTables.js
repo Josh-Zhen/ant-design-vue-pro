@@ -41,6 +41,17 @@ export function delGenTables (parameter) {
 }
 
 /**
+ * 查詢需要添加的表
+ */
+export function getTablesList (parameter) {
+  return request({
+    url: api.genTables + '/list',
+    method: 'get',
+    params: parameter
+  })
+}
+
+/**
  * 生成表
  */
 export function generateTables (parameter) {

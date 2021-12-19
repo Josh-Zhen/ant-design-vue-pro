@@ -1,5 +1,5 @@
 <template>
-  <a-card :bordered="false">
+  <a-card>
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
@@ -8,6 +8,7 @@
               <a-input allow-clear placeholder="请输入库名称" v-model="queryParam.dbName" />
             </a-form-item>
           </a-col>
+
           <a-col :md="4" :sm="10">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
@@ -36,33 +37,26 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="dbType" slot-scope="text">
-        {{ dbTypeFilter(text) }}
-      </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="handleDb(record.id)">生成表</a>
-        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-db-modal ref="modal" @ok="handleOk" />
+    <gen-tables-modal ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { getGenDbPageList, delGenDb } from '@/api/generator/genDb'
-import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import { generateTables } from '@/api/generator/genTables'
-import GenDbModal from '@/views/generator/modules/GenDbModal'
+import { getTablesPageList, delGenTables } from '@/api/generator/genTables'
+import GenTablesModal from '@/views/generator/database/modules/GenTablesModal'
 
 export default {
-  name: 'GenDbList',
+  name: 'GenTablesList',
   components: {
     STable,
-    GenDbModal
+    GenTablesModal
   },
   data () {
     return {
@@ -76,10 +70,23 @@ export default {
       },
       form: this.$form.createForm(this),
       mdl: {},
+      range: null,
       // 查询参数
       queryParam: {},
       // 表头
       columns: [
+        {
+          title: '数据库名',
+          dataIndex: 'databaseName',
+          scopedSlots: { customRender: 'databaseName' },
+          align: 'center'
+        },
+        {
+          title: '表描述',
+          dataIndex: 'tableComment',
+          scopedSlots: { customRender: 'tableComment' },
+          align: 'center'
+        },
         {
           title: '数据库名',
           dataIndex: 'dbName',
@@ -87,41 +94,39 @@ export default {
           align: 'center'
         },
         {
-          title: '数据库类型',
-          dataIndex: 'dbType',
-          scopedSlots: { customRender: 'dbType' },
+          title: '包路径',
+          dataIndex: 'packageName',
+          scopedSlots: { customRender: 'packageName' },
           align: 'center'
         },
         {
-          title: '连接类型',
-          dataIndex: 'driverClassName',
-          scopedSlots: { customRender: 'dbName' },
+          title: '类名',
+          dataIndex: 'moduleName',
+          scopedSlots: { customRender: 'moduleName' },
           align: 'center'
         },
         {
-          title: '数据库地址',
-          dataIndex: 'dbAddress',
-          scopedSlots: { customRender: 'dbAddress' },
+          title: '业务名',
+          dataIndex: 'businessName',
+          scopedSlots: { customRender: 'businessName' },
           align: 'center'
         },
         {
-          title: '端口',
-          dataIndex: 'dbPort',
-          scopedSlots: { customRender: 'dbPort' },
+          title: '类作者',
+          dataIndex: 'classAuthor',
+          scopedSlots: { customRender: 'classAuthor' },
           align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createDate',
           scopedSlots: { customRender: 'dbName' },
-          sorter: true,
           align: 'center'
         },
         {
           title: '更新时间',
           dataIndex: 'updateDate',
           scopedSlots: { customRender: 'dbName' },
-          sorter: true,
           align: 'center'
         },
         {
@@ -132,17 +137,13 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
-      range: null,
-      // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenDbPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getTablesPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
       },
       selectedRowKeys: [],
-      selectedRows: [],
-      dbTypeDictDropDown: [],
-      statusDictDropDown: []
+      selectedRows: []
     }
   },
   filters: {},
@@ -154,42 +155,17 @@ export default {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
-    // 匹配字典
-    dbTypeFilter (status) {
-      // eslint-disable-next-line eqeqeq
-      const values = this.dbTypeDictDropDown.filter(item => item.value == status)
-      if (values.length > 0) {
-        return values[0].name
-      }
-    },
-    // 加载字典
-    sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'database_type' }).then((res) => {
-        this.dbTypeDictDropDown = res.data
-      })
-    },
     handleAdd () {
-      this.$refs.modal.add(this.dbTypeDictDropDown)
+      this.$refs.modal.add()
     },
     handleEdit (record) {
-      this.$refs.modal.edit(record, this.dbTypeDictDropDown)
+      this.$refs.modal.edit(record)
     },
     handleOk () {
       this.$refs.table.refresh(true)
     },
-    // 生成库
-    handleDb (id) {
-      generateTables({ id: id }).then(res => {
-        if (res.success) {
-          this.$message.success('操作成功')
-          this.$refs.table.refresh()
-        } else {
-          this.$message.error('操作失败：' + res.message)
-        }
-      })
-    },
     delByIds (ids) {
-      delGenDb({ ids: ids.join(',') }).then(res => {
+      delGenTables({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

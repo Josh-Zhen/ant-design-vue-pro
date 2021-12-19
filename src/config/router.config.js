@@ -62,7 +62,7 @@ export const asyncRouterMap = [
           {
             path: '/generator/GenDbList',
             name: 'GenDbList',
-            component: () => import('@/views/generator/GenDbList'),
+            component: () => import('@/views/generator/database/GenDbList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
           }
         ]

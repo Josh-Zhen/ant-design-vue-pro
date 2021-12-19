@@ -74,8 +74,6 @@ import pick from 'lodash.pick'
 
 export default {
   name: 'GenDbModal',
-  props: {},
-  components: {},
   data () {
     return {
       visible: false,
