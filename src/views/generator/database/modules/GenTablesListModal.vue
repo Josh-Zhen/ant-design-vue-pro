@@ -8,6 +8,7 @@
     @ok="handleSubmit"
   >
     <a-card :bordered="false">
+
       <a-table
         size="default"
         ref="table"
@@ -69,10 +70,15 @@ export default {
   },
   methods: {
     getTablesList (databaseId) {
+      this.data = []
       this.visible = true
       this.queryParam.databaseId = databaseId
-      getTablesList(this.queryParam).then((res) => {
-        this.data = res.data
+      getTablesList(this.queryParam).then(res => {
+        if (res.code === 200) {
+          this.data = res.data
+        } else {
+          this.$message.error(res.message)
+        }
       })
     },
     onSelectChange (selectedRowKeys, selectedRows) {
@@ -81,7 +87,6 @@ export default {
     },
     handleCancel () {
       this.queryParam = {}
-      this.data = []
       this.visible = false
     },
     handleSubmit (e) {
