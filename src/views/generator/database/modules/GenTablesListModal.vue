@@ -8,16 +8,16 @@
     @ok="handleSubmit"
   >
     <a-card :bordered="false">
-      <s-table
+      <a-table
         size="default"
         ref="table"
         rowKey="tableName"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
-        :data="loadData"
+        :data-source="this.data"
         :rangPicker="range"
       >
-      </s-table>
+      </a-table>
     </a-card>
   </a-modal>
 </template>
@@ -62,20 +62,18 @@ export default {
           align: 'center'
         }
       ],
-      // 加载数据方法 必须为 Promise 对象
-      loadData: parameter => {
-        return getTablesList(Object.assign(parameter, this.queryParam)).then((res) => {
-          return res.data
-        })
-      },
+      data: [],
       selectedRowKeys: [],
       selectedRows: []
     }
   },
   methods: {
-    getTablesList (dbId) {
+    getTablesList (databaseId) {
       this.visible = true
-      this.queryParam.dbId = dbId
+      this.queryParam.databaseId = databaseId
+      getTablesList(this.queryParam).then((res) => {
+        this.data = res.data
+      })
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
@@ -83,12 +81,8 @@ export default {
     },
     handleCancel () {
       this.queryParam = {}
+      this.data = []
       this.visible = false
-    },
-    add () {
-      this.form.resetFields()
-      this.mdl = Object.assign({ id: 0 })
-      this.visible = true
     },
     handleSubmit (e) {
       e.preventDefault()
