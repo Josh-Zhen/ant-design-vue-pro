@@ -73,7 +73,7 @@ import { saveGenDb } from '@/api/generator/genDb'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'GenDbModal',
+  name: 'GenDbModel',
   data () {
     return {
       visible: false,

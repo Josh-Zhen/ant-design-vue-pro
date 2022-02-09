@@ -40,15 +40,14 @@
         {{ dbTypeFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="$refs.tablesList.getTablesList(record.id)">生成表</a>
+        <a @click="jumpTablesLists(record.id)">表配置</a>
         <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-db-modal ref="modal" @ok="handleOk" />
-    <gen-tables-list-modal ref="tablesList" @ok="handleOk" />
+    <gen-db-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -56,15 +55,13 @@
 import { STable } from '@/components'
 import { getGenDbPageList, delGenDb } from '@/api/generator/genDb'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenDbModal from '@/views/generator/database/modules/GenDbModal'
-import GenTablesListModal from '@/views/generator/database/modules/GenTablesListModal'
+import GenDbModel from '@/views/generator/database/modules/GenDbModel'
 
 export default {
   name: 'GenDbList',
   components: {
-    GenTablesListModal,
     STable,
-    GenDbModal
+    GenDbModel
   },
   data () {
     return {
@@ -168,11 +165,17 @@ export default {
         this.dbTypeDictDropDown = res.data
       })
     },
+    // 處理新增
     handleAdd () {
       this.$refs.modal.add(this.dbTypeDictDropDown)
     },
+    // 處理修改
     handleEdit (record) {
       this.$refs.modal.edit(record, this.dbTypeDictDropDown)
+    },
+    // 跳轉數據表頁面
+    jumpTablesLists (databaseId) {
+      this.$router.push({ name: 'GenTablesList', query: { databaseId: databaseId } })
     },
     handleOk () {
       this.$refs.table.refresh(true)

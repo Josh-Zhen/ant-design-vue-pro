@@ -46,7 +46,7 @@ import { saveGenConfig, getKeys } from '@/api/generator/genCongfig'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'GenConfigModal',
+  name: 'GenConfigModel',
   data () {
     return {
       visible: false,

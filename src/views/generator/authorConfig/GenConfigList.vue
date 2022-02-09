@@ -47,7 +47,7 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-config-modal ref="modal" @ok="handleOk" />
+    <gen-config-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -55,13 +55,13 @@
 import { STable } from '@/components'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import { getGenConfigPageList, delGenConfig } from '@/api/generator/genCongfig'
-import GenConfigModal from '@/views/generator/authorConfig/modules/GenConfigModal'
+import GenConfigModel from '@/views/generator/authorConfig/modules/GenConfigModel'
 
 export default {
   name: 'GenConfigList',
   components: {
     STable,
-    GenConfigModal
+    GenConfigModel
   },
   data () {
     return {

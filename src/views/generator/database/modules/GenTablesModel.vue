@@ -15,7 +15,7 @@ import pick from 'lodash.pick'
 import { saveGenTables } from '@/api/generator/genTables'
 
 export default {
-  name: 'GenTablesModal',
+  name: 'GenTablesModel',
   data () {
     return {
       visible: false,

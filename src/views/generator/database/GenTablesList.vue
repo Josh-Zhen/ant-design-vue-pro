@@ -1,5 +1,5 @@
 <template>
-  <a-card>
+  <a-card :bordered="false">
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
@@ -43,20 +43,20 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-tables-modal ref="modal" @ok="handleOk" />
+    <gen-tables-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { getTablesPageList, delGenTables } from '@/api/generator/genTables'
-import GenTablesModal from '@/views/generator/database/modules/GenTablesModal'
+import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
+import GenTablesModel from '@/views/generator/database/modules/GenTablesModel'
 
 export default {
   name: 'GenTablesList',
   components: {
     STable,
-    GenTablesModal
+    GenTablesModel
   },
   data () {
     return {
@@ -138,6 +138,7 @@ export default {
         }
       ],
       loadData: parameter => {
+        this.queryParam.databaseId = this.$route.query.databaseId
         return getTablesPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
@@ -148,7 +149,7 @@ export default {
   },
   filters: {},
   created () {
-    this.sysDictTypeDropDown()
+    // this.sysDictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="数据库-表添加"
+    title="数据表添加"
     style="top: 20px;"
     :width="1000"
     v-model="visible"
@@ -28,7 +28,7 @@ import { STable } from '@/components'
 import { getTablesList, saveGenTables } from '@/api/generator/genTables'
 
 export default {
-  name: 'GenTablesListModal',
+  name: 'GenTablesAddListModel',
   components: {
     STable
   },
@@ -69,7 +69,7 @@ export default {
     }
   },
   methods: {
-    getTablesList (databaseId) {
+    addTablesList (databaseId) {
       this.data = []
       this.visible = true
       this.queryParam.databaseId = databaseId

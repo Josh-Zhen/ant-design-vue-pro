@@ -1,6 +1,5 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
-import { bxAnaalyse } from '@/core/icons'
 
 const RouteView = {
   name: 'RouteView',
@@ -13,45 +12,8 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/workplace',
+    redirect: '/generator/GenDbList',
     children: [
-      // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
-        children: [
-          {
-            path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-            name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: ['dashboard'] }
-          },
-          {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
-            component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: ['dashboard'] }
-          }
-        ]
-      },
-      // 系统字典配置
-      {
-        path: '/dict',
-        redirect: '/system/dict/SysDictTypeList',
-        component: RouteView,
-        meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
-        children: [
-          {
-            path: '/generator/GenDbList',
-            name: 'GenDbList',
-            component: () => import('@/views/system/dict/SysDictTypeList'),
-            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
-          }
-        ]
-      },
       // generator
       {
         path: '/generator',
@@ -63,6 +25,21 @@ export const asyncRouterMap = [
             path: '/generator/GenDbList',
             name: 'GenDbList',
             component: () => import('@/views/generator/database/GenDbList'),
+            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
+          }
+        ]
+      },
+      // system dictionary
+      {
+        path: '/dict',
+        redirect: '/system/dict/SysDictTypeList',
+        component: RouteView,
+        meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
+        children: [
+          {
+            path: '/generator/GenDbList',
+            name: 'GenDbList',
+            component: () => import('@/views/system/dict/SysDictTypeList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
           }
         ]
