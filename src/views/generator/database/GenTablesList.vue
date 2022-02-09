@@ -4,8 +4,13 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
-            <a-form-item label="库名称">
-              <a-input allow-clear placeholder="请输入库名称" v-model="queryParam.dbName" />
+            <a-form-item label="表名称">
+              <a-input allow-clear placeholder="请输入表名称" v-model="queryParam.tableName" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="5">
+            <a-form-item label="表描述">
+              <a-input allow-clear placeholder="请输入表描述" v-model="queryParam.tableComment" />
             </a-form-item>
           </a-col>
 
@@ -20,7 +25,7 @@
     </div>
 
     <a-space align="center" style="margin-bottom: 16px">
-      <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
+      <a-button v-if="databaseId" type="primary" icon="plus" @click="handleAdd">添加表</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
@@ -43,7 +48,8 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-tables-model ref="modal" @ok="handleOk" />
+    <gen-tables-model ref="model" @ok="handleOk" />
+    <gen-tables-add-list-model ref="addModel" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -51,10 +57,12 @@
 import { STable } from '@/components'
 import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
 import GenTablesModel from '@/views/generator/database/modules/GenTablesModel'
+import GenTablesAddListModel from '@/views/generator/database/modules/GenTablesAddListModel'
 
 export default {
   name: 'GenTablesList',
   components: {
+    GenTablesAddListModel,
     STable,
     GenTablesModel
   },
@@ -71,6 +79,7 @@ export default {
       form: this.$form.createForm(this),
       mdl: {},
       range: null,
+      databaseId: this.$route.query.databaseId,
       // 查询参数
       queryParam: {},
       // 表头
@@ -82,15 +91,15 @@ export default {
           align: 'center'
         },
         {
-          title: '表描述',
-          dataIndex: 'tableComment',
-          scopedSlots: { customRender: 'tableComment' },
+          title: '表名称',
+          dataIndex: 'tableName',
+          scopedSlots: { customRender: 'tableName' },
           align: 'center'
         },
         {
-          title: '数据库名',
-          dataIndex: 'dbName',
-          scopedSlots: { customRender: 'dbName' },
+          title: '表描述',
+          dataIndex: 'tableComment',
+          scopedSlots: { customRender: 'tableComment' },
           align: 'center'
         },
         {
@@ -138,7 +147,7 @@ export default {
         }
       ],
       loadData: parameter => {
-        this.queryParam.databaseId = this.$route.query.databaseId
+        this.queryParam.databaseId = this.databaseId
         return getTablesPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
@@ -156,11 +165,13 @@ export default {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
+    // 根據庫id獲取表數據
     handleAdd () {
-      this.$refs.modal.add()
+      this.$refs.addModel.addTablesList(this.databaseId)
     },
+    // 修改表數據
     handleEdit (record) {
-      this.$refs.modal.edit(record)
+      this.$refs.model.edit(record)
     },
     handleOk () {
       this.$refs.table.refresh(true)

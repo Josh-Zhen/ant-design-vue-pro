@@ -8,14 +8,13 @@
     @ok="handleSubmit"
   >
     <a-card :bordered="false">
-
       <a-table
         size="default"
         ref="table"
         rowKey="tableName"
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
-        :data-source="this.data"
+        :data-source="data"
         :rangPicker="range"
       >
       </a-table>
@@ -48,6 +47,7 @@ export default {
       },
       form: this.$form.createForm(this),
       queryParam: {},
+      data: [],
       // 表头
       columns: [
         {
@@ -63,7 +63,6 @@ export default {
           align: 'center'
         }
       ],
-      data: [],
       selectedRowKeys: [],
       selectedRows: []
     }

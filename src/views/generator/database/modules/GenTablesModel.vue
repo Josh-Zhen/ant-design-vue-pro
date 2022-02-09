@@ -35,10 +35,6 @@ export default {
     }
   },
   methods: {
-    add () {
-      this.form.resetFields()
-      this.edit({ id: 0 })
-    },
     edit (record) {
       this.mdl = Object.assign(record)
       this.visible = true
