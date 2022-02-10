@@ -69,11 +69,11 @@
   </a-modal>
 </template>
 <script>
-import { saveGenDb } from '@/api/generator/genDb'
+import { saveGenDatabase } from '@/api/generator/genDatabase'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'GenDbModel',
+  name: 'GenDatabaseModel',
   data () {
     return {
       visible: false,
@@ -116,7 +116,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenDb(values).then(res => {
+          saveGenDatabase(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

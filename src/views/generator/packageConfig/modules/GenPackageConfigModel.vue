@@ -1,6 +1,7 @@
+<!--suppress ALL -->
 <template>
   <a-modal
-    title="作者配置"
+    title="包配置"
     style="top: 20px;"
     :width="800"
     v-model="visible"
@@ -11,42 +12,27 @@
       <a-form-item style="display:none">
         <a-input v-decorator="['id']" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="作者">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="包路径">
         <a-input
           allow-clear
-          placeholder="请输入作者名"
-          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]" />
+          placeholder="请输入包路径"
+          v-decorator="['packageName', {rules: [{required: true, message: '请输入包路径'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="私钥">
-        <a-textarea
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模块名">
+        <a-input
           allow-clear
-          :rows="8"
-          placeholder="请输入私钥"
-          v-decorator="['privateKey', {rules: [{required: true, message: '请输入私钥'}]}]" />
-      </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="公钥">
-        <a-textarea
-          allow-clear
-          :rows="6"
-          placeholder="请输入公钥"
-          v-decorator="['publicKey', {rules: [{required: true, message: '请输入公钥'}]}]" />
-        <a-button type="primary" icon="sync" @click="handleKeys">
-          刷新密鑰
-        </a-button>
-        <p style="color:#FF0000">公、私钥用于加密数据库登录的用户与密码</p>
-      </a-form-item>
-      <a-form-item layout="inline" :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol" label="默認">
-        <a-switch checked-children="是" un-checked-children="否" v-decorator="['type', { valuePropName: 'checked' }]" />
+          placeholder="请输入模块名"
+          v-decorator="['moduleName', {rules: [{required: true, message: '请输入模块名'}]}]" />
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 <script>
-import { saveGenConfig, getKeys } from '@/api/generator/genCongfig'
+import { saveGenPackageConfig } from '@/api/generator/genPackageCongfig'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'GenConfigModel',
+  name: 'GenPackageConfigModel',
   data () {
     return {
       visible: false,
@@ -85,7 +71,7 @@ export default {
         if (!err) {
           this.confirmLoading = true
           values.type = values.type === true ? 1 : 0
-          saveGenConfig(values).then(res => {
+          saveGenPackageConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')
@@ -103,14 +89,6 @@ export default {
     },
     handleClose () {
       this.alerts = false
-    },
-    handleKeys () {
-      getKeys().then((res) => {
-        this.form.setFieldsValue({
-          publicKey: res.data.publicKey,
-          privateKey: res.data.privateKey
-        })
-      })
     }
   }
 }

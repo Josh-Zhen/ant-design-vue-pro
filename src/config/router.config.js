@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
+import { UserLayout, BasicLayout } from '@/layouts'
 
 const RouteView = {
   name: 'RouteView',
@@ -12,19 +12,19 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/generator/GenDbList',
+    redirect: '/generator/GenDatabaseList',
     children: [
       // generator
       {
         path: '/generator',
-        redirect: '/generator/GenDbList',
+        redirect: '/generator/GenDatabaseList',
         component: RouteView,
         meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
         children: [
           {
-            path: '/generator/GenDbList',
-            name: 'GenDbList',
-            component: () => import('@/views/generator/database/GenDbList'),
+            path: '/generator/GenDatabaseList',
+            name: 'GenDatabaseList',
+            component: () => import('@/views/generator/database/GenDatabaseList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
           }
         ]
@@ -37,8 +37,8 @@ export const asyncRouterMap = [
         meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
         children: [
           {
-            path: '/generator/GenDbList',
-            name: 'GenDbList',
+            path: '/generator/GenDatabaseList',
+            name: 'GenDatabaseList',
             component: () => import('@/views/system/dict/SysDictTypeList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
           }

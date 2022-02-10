@@ -4,16 +4,15 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
-            <a-form-item label="表名称">
-              <a-input allow-clear placeholder="请输入表名称" v-model="queryParam.tableName" />
+            <a-form-item label="数据库名称">
+              <a-input allow-clear placeholder="请输入数据库名称" v-model="queryParam.dbName" />
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="5">
-            <a-form-item label="表描述">
-              <a-input allow-clear placeholder="请输入表描述" v-model="queryParam.tableComment" />
+            <a-form-item label="数据库地址">
+              <a-input allow-clear placeholder="请输入数据库地址" v-model="queryParam.dbAddress" />
             </a-form-item>
           </a-col>
-
           <a-col :md="4" :sm="10">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
@@ -25,7 +24,7 @@
     </div>
 
     <a-space align="center" style="margin-bottom: 16px">
-      <a-button v-if="databaseId" type="primary" icon="plus" @click="handleAdd">添加表</a-button>
+      <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
@@ -42,29 +41,32 @@
       :data="loadData"
       :rangPicker="range"
     >
+      <span slot="dbType" slot-scope="text">
+        {{ dbTypeFilter(text) }}
+      </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="jumpTablesLists(record.id)">表配置</a>
+        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-tables-model ref="model" @ok="handleOk" />
-    <gen-tables-add-list-model ref="addModel" @ok="handleOk" />
+    <gen-database-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
-import GenTablesModel from '@/views/generator/database/modules/GenTablesModel'
-import GenTablesAddListModel from '@/views/generator/database/modules/GenTablesAddListModel'
+import { delGenDatabase, getGenDatabasePageList } from '@/api/generator/genDatabase'
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
+import GenDatabaseModel from '@/views/generator/database/modules/GenDatabaseModel'
 
 export default {
-  name: 'GenTablesList',
+  name: 'GenDatabaseList',
   components: {
-    GenTablesAddListModel,
     STable,
-    GenTablesModel
+    GenDatabaseModel
   },
   data () {
     return {
@@ -77,47 +79,40 @@ export default {
         sm: { span: 16 }
       },
       form: this.$form.createForm(this),
-      mdl: {},
       range: null,
-      databaseId: this.$route.query.databaseId,
+      mdl: {},
       // 查询参数
       queryParam: {},
       // 表头
       columns: [
         {
           title: '数据库名',
-          dataIndex: 'databaseName',
-          scopedSlots: { customRender: 'databaseName' },
+          dataIndex: 'dbName',
+          scopedSlots: { customRender: 'dbName' },
           align: 'center'
         },
         {
-          title: '表名称',
-          dataIndex: 'tableName',
-          scopedSlots: { customRender: 'tableName' },
+          title: '数据库类型',
+          dataIndex: 'dbType',
+          scopedSlots: { customRender: 'dbType' },
           align: 'center'
         },
         {
-          title: '表描述',
-          dataIndex: 'tableComment',
-          scopedSlots: { customRender: 'tableComment' },
+          title: '连接类型',
+          dataIndex: 'driverClassName',
+          scopedSlots: { customRender: 'dbName' },
           align: 'center'
         },
         {
-          title: '包路径',
-          dataIndex: 'packageName',
-          scopedSlots: { customRender: 'packageName' },
+          title: '数据库地址',
+          dataIndex: 'dbAddress',
+          scopedSlots: { customRender: 'dbAddress' },
           align: 'center'
         },
         {
-          title: '类名',
-          dataIndex: 'moduleName',
-          scopedSlots: { customRender: 'moduleName' },
-          align: 'center'
-        },
-        {
-          title: '业务名',
-          dataIndex: 'businessName',
-          scopedSlots: { customRender: 'businessName' },
+          title: '端口',
+          dataIndex: 'dbPort',
+          scopedSlots: { customRender: 'dbPort' },
           align: 'center'
         },
         {
@@ -140,38 +135,58 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
+      // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        this.queryParam.databaseId = this.databaseId
-        return getTablesPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getGenDatabasePageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
       },
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      dbTypeDictDropDown: [],
+      statusDictDropDown: []
     }
   },
   filters: {},
   created () {
-    // this.sysDictTypeDropDown()
+    this.sysDictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
-    // 根據庫id獲取表數據
-    handleAdd () {
-      this.$refs.addModel.addTablesList(this.databaseId)
+    // 匹配字典
+    dbTypeFilter (status) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.dbTypeDictDropDown.filter(item => item.value == status)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
-    // 修改表數據
+    // 加载字典
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'database_type' }).then((res) => {
+        this.dbTypeDictDropDown = res.data
+      })
+    },
+    // 處理新增
+    handleAdd () {
+      this.$refs.modal.add(this.dbTypeDictDropDown)
+    },
+    // 處理修改
     handleEdit (record) {
-      this.$refs.model.edit(record)
+      this.$refs.modal.edit(record, this.dbTypeDictDropDown)
+    },
+    // 跳轉數據表頁面
+    jumpTablesLists (databaseId) {
+      this.$router.push({ name: 'GenTablesList', query: { databaseId: databaseId } })
     },
     handleOk () {
       this.$refs.table.refresh(true)
     },
     delByIds (ids) {
-      delGenTables({ ids: ids.join(',') }).then(res => {
+      delGenDatabase({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

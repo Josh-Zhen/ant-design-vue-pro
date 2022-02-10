@@ -15,8 +15,9 @@ const constantRouterComponents = {
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
 
   // generator
-  GenDbList: () => import('@/views/generator/database/GenDbList'),
-  GenConfigList: () => import('@/views/generator/authorConfig/GenConfigList'),
+  GenDatabaseList: () => import('@/views/generator/database/GenDatabaseList'),
+  GenAuthorConfigList: () => import('@/views/generator/authorConfig/GenAuthorConfigList'),
+  GenPackageConfigList: () => import('@/views/generator/packageConfig/GenPackageConfigList'),
   SysDictTypeList: () => import('@/views/system/dict/SysDictTypeList'),
   GenTablesList: () => import('@/views/generator/database/GenTablesList'),
 
@@ -46,7 +47,7 @@ const rootRouter = {
   name: 'index',
   path: '',
   component: 'BasicLayout',
-  redirect: '/generator/GenDbList',
+  redirect: '/generator/GenDatabaseList',
   meta: {
     title: '首页'
   },

@@ -1,15 +1,15 @@
 import request from '@/utils/request'
 
 const api = {
-  genDb: '/genConfig'
+  genAuthorConfig: '/genAuthorConfig'
 }
 
 /**
  * 分页查询作者
  */
-export function getGenConfigPageList (parameter) {
+export function getGenAuthorConfigPageList (parameter) {
   return request({
-    url: api.genDb + '/pageList',
+    url: api.genAuthorConfig + '/pageList',
     method: 'get',
     params: parameter
   })
@@ -18,9 +18,9 @@ export function getGenConfigPageList (parameter) {
 /**
  * 修改/保存作者
  */
-export function saveGenConfig (parameter) {
+export function saveGenAuthorConfig (parameter) {
   return request({
-    url: api.genDb + (parameter.id > 0 ? '/update' : '/save'),
+    url: api.genAuthorConfig + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
     data: parameter,
     headers: {
@@ -32,9 +32,9 @@ export function saveGenConfig (parameter) {
 /**
  * 删除作者
  */
-export function delGenConfig (parameter) {
+export function delGenAuthorConfig (parameter) {
   return request({
-    url: api.genDb + '/delete',
+    url: api.genAuthorConfig + '/delete',
     method: 'post',
     params: parameter
   })
@@ -45,7 +45,7 @@ export function delGenConfig (parameter) {
  */
 export function getKeys () {
   return request({
-    url: api.genDb + '/generateKeys',
+    url: api.genAuthorConfig + '/generateKeys',
     method: 'get'
   })
 }

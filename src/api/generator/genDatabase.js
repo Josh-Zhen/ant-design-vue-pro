@@ -1,15 +1,15 @@
 import request from '@/utils/request'
 
 const api = {
-  genDb: '/genDb'
+  genDatabase: '/genDatabase'
 }
 
 /**
  * 分页查询数据库配置
  */
-export function getGenDbPageList (parameter) {
+export function getGenDatabasePageList (parameter) {
   return request({
-    url: api.genDb + '/pageList',
+    url: api.genDatabase + '/pageList',
     method: 'get',
     params: parameter
   })
@@ -18,9 +18,9 @@ export function getGenDbPageList (parameter) {
 /**
  * 修改/保存数据库配置
  */
-export function saveGenDb (parameter) {
+export function saveGenDatabase (parameter) {
   return request({
-    url: api.genDb + (parameter.id > 0 ? '/update' : '/save'),
+    url: api.genDatabase + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
     data: parameter,
     headers: {
@@ -32,9 +32,9 @@ export function saveGenDb (parameter) {
 /**
  * 删除数据库配置
  */
-export function delGenDb (parameter) {
+export function delGenDatabase (parameter) {
   return request({
-    url: api.genDb + '/delete',
+    url: api.genDatabase + '/delete',
     method: 'post',
     params: parameter
   })

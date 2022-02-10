@@ -4,8 +4,8 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
-            <a-form-item label="库名称">
-              <a-input allow-clear placeholder="请输入库名称" v-model="queryParam.dbName" />
+            <a-form-item label="作者">
+              <a-input allow-clear placeholder="请输入作者名称" v-model="queryParam.author" />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="10">
@@ -36,32 +36,32 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="dbType" slot-scope="text">
-        {{ dbTypeFilter(text) }}
+      <span slot="type" slot-scope="text">
+        <a-tag :color="text === 1 ? 'purple' :'blue'">
+          {{ statusFilter(text) }}
+        </a-tag>
       </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="jumpTablesLists(record.id)">表配置</a>
-        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-db-model ref="modal" @ok="handleOk" />
+    <gen-author-config-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { getGenDbPageList, delGenDb } from '@/api/generator/genDb'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenDbModel from '@/views/generator/database/modules/GenDbModel'
+import { getGenAuthorConfigPageList, delGenAuthorConfig } from '@/api/generator/genAuthorCongfig'
+import GenAuthorConfigModel from '@/views/generator/authorConfig/modules/GenAuthorConfigModel'
 
 export default {
-  name: 'GenDbList',
+  name: 'GenAuthorConfigList',
   components: {
     STable,
-    GenDbModel
+    GenAuthorConfigModel
   },
   data () {
     return {
@@ -74,52 +74,35 @@ export default {
         sm: { span: 16 }
       },
       form: this.$form.createForm(this),
-      range: null,
       mdl: {},
       // 查询参数
       queryParam: {},
       // 表头
       columns: [
         {
-          title: '数据库名',
-          dataIndex: 'dbName',
-          scopedSlots: { customRender: 'dbName' },
+          title: '作者',
+          dataIndex: 'author',
+          scopedSlots: { customRender: 'author' },
           align: 'center'
         },
         {
-          title: '数据库类型',
-          dataIndex: 'dbType',
-          scopedSlots: { customRender: 'dbType' },
-          align: 'center'
-        },
-        {
-          title: '连接类型',
-          dataIndex: 'driverClassName',
-          scopedSlots: { customRender: 'dbName' },
-          align: 'center'
-        },
-        {
-          title: '数据库地址',
-          dataIndex: 'dbAddress',
-          scopedSlots: { customRender: 'dbAddress' },
-          align: 'center'
-        },
-        {
-          title: '端口',
-          dataIndex: 'dbPort',
-          scopedSlots: { customRender: 'dbPort' },
+          title: '默认',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type' },
           align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'createDate' },
+          sorter: true,
           align: 'center'
         },
         {
-          title: '更新时间',
+          title: '修改时间',
           dataIndex: 'updateDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'updateDate' },
+          sorter: true,
           align: 'center'
         },
         {
@@ -130,15 +113,15 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
+      range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenDbPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getGenAuthorConfigPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
       },
       selectedRowKeys: [],
       selectedRows: [],
-      dbTypeDictDropDown: [],
       statusDictDropDown: []
     }
   },
@@ -152,36 +135,30 @@ export default {
       this.selectedRows = selectedRows
     },
     // 匹配字典
-    dbTypeFilter (status) {
+    statusFilter (status) {
       // eslint-disable-next-line eqeqeq
-      const values = this.dbTypeDictDropDown.filter(item => item.value == status)
+      const values = this.statusDictDropDown.filter(item => item.value == status)
       if (values.length > 0) {
         return values[0].name
       }
     },
     // 加载字典
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'database_type' }).then((res) => {
-        this.dbTypeDictDropDown = res.data
+      sysDictTypeDropDown({ code: 'status' }).then((res) => {
+        this.statusDictDropDown = res.data
       })
     },
-    // 處理新增
     handleAdd () {
-      this.$refs.modal.add(this.dbTypeDictDropDown)
+      this.$refs.modal.add()
     },
-    // 處理修改
     handleEdit (record) {
-      this.$refs.modal.edit(record, this.dbTypeDictDropDown)
-    },
-    // 跳轉數據表頁面
-    jumpTablesLists (databaseId) {
-      this.$router.push({ name: 'GenTablesList', query: { databaseId: databaseId } })
+      this.$refs.modal.edit(record)
     },
     handleOk () {
       this.$refs.table.refresh(true)
     },
     delByIds (ids) {
-      delGenDb({ ids: ids.join(',') }).then(res => {
+      delGenAuthorConfig({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()
