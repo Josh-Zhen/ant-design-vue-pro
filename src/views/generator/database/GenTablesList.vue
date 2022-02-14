@@ -152,7 +152,7 @@ export default {
   },
   filters: {},
   created () {
-    // this.sysDictTypeDropDown()
+
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {

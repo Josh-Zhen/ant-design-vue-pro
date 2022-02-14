@@ -1,5 +1,24 @@
 <template>
   <a-card :bordered="false">
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="5">
+            <a-form-item label="配置名">
+              <a-input allow-clear placeholder="请输入配置名" v-model="queryParam.name" />
+            </a-form-item>
+          </a-col>
+
+          <a-col :md="4" :sm="10">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -18,8 +37,8 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="type" slot-scope="text">
-        <a-tag :color="text === 1 ? 'purple' :'blue'">
+      <span slot="removePrefix" slot-scope="text">
+        <a-tag :color="text === true ? 'purple' :'blue'">
           {{ statusFilter(text) }}
         </a-tag>
       </span>
@@ -29,20 +48,21 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-package-config-model ref="modal" @ok="handleOk" />
+    <gen-tables-config-model ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { delGenPackageConfig, getGenPackageConfigPageList } from '@/api/generator/genPackageCongfig'
-import GenPackageConfigModel from '@/views/generator/packageConfig/modules/GenPackageConfigModel'
+import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/genTablesConfig'
+import GenTablesConfigModel from '@/views/generator/tablesConfig/modules/GenTablesConfigModel'
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
 export default {
-  name: 'GenPackageConfigList',
+  name: 'GenTablesConfigList',
   components: {
     STable,
-    GenPackageConfigModel
+    GenTablesConfigModel
   },
   data () {
     return {
@@ -61,7 +81,13 @@ export default {
       // 表头
       columns: [
         {
-          title: '包路径',
+          title: '配置名',
+          dataIndex: 'name',
+          scopedSlots: { customRender: 'name' },
+          align: 'center'
+        },
+        {
+          title: '包名',
           dataIndex: 'packageName',
           scopedSlots: { customRender: 'packageName' },
           align: 'center'
@@ -70,6 +96,18 @@ export default {
           title: '模块名',
           dataIndex: 'moduleName',
           scopedSlots: { customRender: 'moduleName' },
+          align: 'center'
+        },
+        {
+          title: '表前綴',
+          dataIndex: 'tablePrefix',
+          scopedSlots: { customRender: 'tablePrefix' },
+          align: 'center'
+        },
+        {
+          title: '移除表前綴',
+          dataIndex: 'removePrefix',
+          scopedSlots: { customRender: 'removePrefix' },
           align: 'center'
         },
         {
@@ -90,7 +128,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenPackageConfigPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getGenTablesConfigPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
       },
@@ -101,11 +139,24 @@ export default {
   },
   filters: {},
   created () {
+    this.sysDictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'status' }).then((res) => {
+        this.statusDictTypeDropDown = res.data
+      })
+    },
+    statusFilter (status) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.statusDictTypeDropDown.filter(item => item.value == status ? 1 : 0)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
     handleAdd () {
       this.$refs.modal.add()
@@ -117,7 +168,7 @@ export default {
       this.$refs.table.refresh(true)
     },
     delByIds (ids) {
-      delGenPackageConfig({ ids: ids.join(',') }).then(res => {
+      delGenTablesConfig({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

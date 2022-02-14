@@ -260,13 +260,13 @@ const userNav = options => {
       component: 'GenAuthorConfigList'
     },
     {
-      name: 'GenPackageConfigList',
+      name: 'GenTablesConfigList',
       parentId: 10,
       id: 14,
       meta: {
-        title: '包配置'
+        title: '表配置'
       },
-      component: 'GenPackageConfigList'
+      component: 'GenTablesConfigList'
     },
 
     // 系統配置
