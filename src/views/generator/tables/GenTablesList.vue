@@ -56,7 +56,7 @@
 <script>
 import { STable } from '@/components'
 import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
-import GenTablesModel from '@/views/generator/database/modules/GenTablesModel'
+import GenTablesModel from '@/views/generator/tables/modules/GenTablesModel'
 import GenTablesAddListModel from '@/views/generator/database/modules/GenTablesAddListModel'
 
 export default {

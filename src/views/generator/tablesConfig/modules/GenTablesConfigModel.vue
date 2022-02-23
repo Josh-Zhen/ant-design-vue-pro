@@ -33,7 +33,7 @@
         <a-input
           allow-clear
           placeholder="请输入包名"
-          v-decorator="['packageName',{rules: [{pattern:/^([a-zA-Z_]\w*)+([.][a-zA-Z_]\w*)+$/, message: '请输入格式正确的包名'}]}]"
+          v-decorator="['packageName',{rules: [{required: true, pattern:/^([a-zA-Z_]\w*)+([.][a-zA-Z_]\w*)+$/, message: '请输入格式正确的包名'}]}]"
         />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模块名">

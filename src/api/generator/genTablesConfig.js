@@ -39,3 +39,13 @@ export function delGenTablesConfig (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 獲取表配置
+ */
+export function getTablesConfig () {
+  return request({
+    url: api.genTablesConfig + '/getTablesConfig',
+    method: 'get'
+  })
+}

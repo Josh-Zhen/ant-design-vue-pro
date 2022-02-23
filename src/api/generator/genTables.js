@@ -16,11 +16,25 @@ export function getTablesPageList (parameter) {
 }
 
 /**
- * 修改/保存表配置
+ * 保存表配置
  */
 export function saveGenTables (parameter) {
   return request({
-    url: api.genTables + (parameter.id > 0 ? '/update' : '/save'),
+    url: api.genTables + '/save',
+    method: 'post',
+    data: parameter,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 修改表配置
+ */
+export function updateGenTables (parameter) {
+  return request({
+    url: api.genTables + '/update',
     method: 'post',
     data: parameter,
     headers: {

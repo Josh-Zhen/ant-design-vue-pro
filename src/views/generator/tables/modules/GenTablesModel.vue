@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="数据库-表配置"
+    title="数据表配置"
     style="top: 20px;"
     :width="800"
     v-model="visible"
@@ -12,7 +12,7 @@
 
 <script>
 import pick from 'lodash.pick'
-import { saveGenTables } from '@/api/generator/genTables'
+import { updateGenTables } from '@/api/generator/genTables'
 
 export default {
   name: 'GenTablesModel',
@@ -47,7 +47,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenTables(values).then(res => {
+          updateGenTables(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

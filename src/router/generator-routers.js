@@ -18,7 +18,7 @@ const constantRouterComponents = {
   GenDatabaseList: () => import('@/views/generator/database/GenDatabaseList'),
   GenTablesConfigList: () => import('@/views/generator/tablesConfig/GenTablesConfigList'),
   SysDictTypeList: () => import('@/views/system/dict/SysDictTypeList'),
-  GenTablesList: () => import('@/views/generator/database/GenTablesList'),
+  GenTablesList: () => import('@/views/generator/tables/GenTablesList'),
 
   // exception
   Exception403: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
