@@ -131,14 +131,14 @@ export default {
         {
           title: '创建时间',
           dataIndex: 'createDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'createDate' },
           sorter: true,
           align: 'center'
         },
         {
           title: '更新时间',
           dataIndex: 'updateDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'updateDate' },
           sorter: true,
           align: 'center'
         },

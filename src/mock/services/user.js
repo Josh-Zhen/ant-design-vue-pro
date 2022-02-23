@@ -2,7 +2,7 @@ import Mock from 'mockjs2'
 import { builder } from '../util'
 
 const info = options => {
-  console.log('options', options)
+  // console.log('options', options)
   const userInfo = {
     id: '4291d7da9005377ec9aec4a71ea837f',
     name: '天野远子',
@@ -249,15 +249,6 @@ const userNav = options => {
         title: '数据表配置'
       },
       component: 'GenTablesList'
-    },
-    {
-      name: 'GenAuthorConfigList',
-      parentId: 10,
-      id: 13,
-      meta: {
-        title: '作者配置'
-      },
-      component: 'GenAuthorConfigList'
     },
     {
       name: 'GenTablesConfigList',

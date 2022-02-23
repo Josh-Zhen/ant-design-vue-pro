@@ -23,6 +23,12 @@
           placeholder="请输入配置名"
           v-decorator="['name', {rules: [{required: true, message: '请输入配置名'}]}]" />
       </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="作者">
+        <a-input
+          allow-clear
+          placeholder="请输入作者名"
+          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]" />
+      </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="包名">
         <a-input
           allow-clear
@@ -65,7 +71,6 @@ export default {
         xs: { span: 24 },
         sm: { span: 16 }
       },
-      // 数据类型字典
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
@@ -78,8 +83,6 @@ export default {
       this.edit({ id: 0 })
     },
     edit (record) {
-      // eslint-disable-next-line eqeqeq
-      record.type = record.type == 1
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
@@ -91,7 +94,6 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          values.type = values.type === true ? 1 : 0
           saveGenTablesConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')

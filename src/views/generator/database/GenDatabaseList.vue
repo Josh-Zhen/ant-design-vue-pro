@@ -5,12 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="数据库名称">
-              <a-input allow-clear placeholder="请输入数据库名称" v-model="queryParam.dbName" />
+              <a-input allow-clear placeholder="请输入数据库名称" v-model="queryParam.name" />
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="5">
             <a-form-item label="数据库地址">
-              <a-input allow-clear placeholder="请输入数据库地址" v-model="queryParam.dbAddress" />
+              <a-input allow-clear placeholder="请输入数据库地址" v-model="queryParam.address" />
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="10">
@@ -41,7 +41,7 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="dbType" slot-scope="text">
+      <span slot="type" slot-scope="text">
         {{ dbTypeFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
@@ -87,44 +87,44 @@ export default {
       columns: [
         {
           title: '数据库名',
-          dataIndex: 'dbName',
-          scopedSlots: { customRender: 'dbName' },
+          dataIndex: 'name',
+          scopedSlots: { customRender: 'name' },
           align: 'center'
         },
         {
           title: '数据库类型',
-          dataIndex: 'dbType',
-          scopedSlots: { customRender: 'dbType' },
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type' },
           align: 'center'
         },
         {
           title: '连接类型',
           dataIndex: 'driverClassName',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'driverClassName' },
           align: 'center'
         },
         {
           title: '数据库地址',
-          dataIndex: 'dbAddress',
-          scopedSlots: { customRender: 'dbAddress' },
+          dataIndex: 'address',
+          scopedSlots: { customRender: 'address' },
           align: 'center'
         },
         {
           title: '端口',
-          dataIndex: 'dbPort',
-          scopedSlots: { customRender: 'dbPort' },
+          dataIndex: 'port',
+          scopedSlots: { customRender: 'port' },
           align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'createDate' },
           align: 'center'
         },
         {
           title: '更新时间',
           dataIndex: 'updateDate',
-          scopedSlots: { customRender: 'dbName' },
+          scopedSlots: { customRender: 'updateDate' },
           align: 'center'
         },
         {

@@ -21,6 +21,7 @@
 
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
+      <a-button type="primary" @click="handleKey">刷新系统密钥</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
@@ -57,6 +58,7 @@ import { STable } from '@/components'
 import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/genTablesConfig'
 import GenTablesConfigModel from '@/views/generator/tablesConfig/modules/GenTablesConfigModel'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
+import { refreshKey } from '@/api/generator/genSystemConfig'
 
 export default {
   name: 'GenTablesConfigList',
@@ -84,6 +86,12 @@ export default {
           title: '配置名',
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
+          align: 'center'
+        },
+        {
+          title: '作者',
+          dataIndex: 'author',
+          scopedSlots: { customRender: 'author' },
           align: 'center'
         },
         {
@@ -176,6 +184,17 @@ export default {
           this.$message.error(res.message)
         }
         this.selectedRowKeys = []
+      })
+    },
+    // 刷新密钥
+    handleKey () {
+      refreshKey().then((res) => {
+        console.log(res.data)
+        if (res.data === true) {
+          this.$message.info('系统密钥已刷新')
+        } else {
+          this.$message.error('密钥刷新失败')
+        }
       })
     }
   }

@@ -15,13 +15,13 @@
         <a-input
           allow-clear
           placeholder="请输入数据库名"
-          v-decorator="['dbName', {rules: [{required: true, message: '请输入数据库名'}]}]" />
+          v-decorator="['name', {rules: [{required: true, message: '请输入数据库名'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="数据库类型">
         <a-select
           allow-clear
           placeholder="请选择数据库类型"
-          v-decorator="['dbType',{rules: [{ required: true, message: '请选择数据库类型！'}]}]">
+          v-decorator="['type',{rules: [{ required: true, message: '请选择数据库类型！'}]}]">
           <a-select-option v-for="(item,index) in dbTypeDictDropDown" :key="index" :value="item.value">
             {{ item.name }}
           </a-select-option>
@@ -39,13 +39,13 @@
         <a-input
           allow-clear
           placeholder="请输入数据库地址"
-          v-decorator="['dbAddress', {rules: [{required: true, pattern:/^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$/, message: '请输入格式正确的地址'}]}]" />
+          v-decorator="['address', {rules: [{required: true, pattern:/^((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])(?::(?:[0-9]|[1-9][0-9]{1,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$/, message: '请输入格式正确的地址'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="端口">
         <a-input
           allow-clear
           placeholder="请输入数据库端口"
-          v-decorator="['dbPort', {rules: [{required: true,pattern: /^\d{1,8}$/, message: '请输入正确的端口号'}]}]" />
+          v-decorator="['port', {rules: [{required: true,pattern: /^\d{1,8}$/, message: '请输入正确的端口号'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="账号">
         <a-tooltip>
@@ -99,15 +99,15 @@ export default {
       this.mdl = Object.assign({ id: 0 })
       this.visible = true
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'dbName', 'dbType', 'driverClassName', 'dbAddress', 'dbPort', 'userName', 'password'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'type', 'driverClassName', 'address', 'port', 'userName', 'password'))
       })
     },
     edit (record, dbTypeDictDropDown) {
-      record.dbType = record.dbType.toString()
+      record.type = record.type.toString()
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'dbName', 'dbType', 'driverClassName', 'dbAddress', 'dbPort', 'userName', 'password'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'type', 'driverClassName', 'address', 'port', 'userName', 'password'))
       })
       this.dbTypeDictDropDown = dbTypeDictDropDown
     },
