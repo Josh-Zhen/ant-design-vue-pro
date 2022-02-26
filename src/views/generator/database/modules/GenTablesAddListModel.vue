@@ -13,14 +13,14 @@
         <a-row :gutter="48">
           <a-col :md="6" :sm="5">
             <a-form-item label="表配置">
-              <a-select placeholder="请选择表配置" @change="handleChange">
-                <a-select-option v-for="(item,index) in tablesConfig" :key="index" :value="item.value">
+              <a-select allow-clear placeholder="请选择表配置" v-model="queryParam.tableConfigId" @change="handleChange">
+                <a-select-option v-for="(item,index) in tablesConfig" :key="index" :value="item.id">
                   {{ item.name }}
                 </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="6" :sm="5">
+          <a-col :md="18" :sm="15">
             <a-alert :message="remark" type="success" />
           </a-col>
         </a-row>
@@ -143,9 +143,12 @@ export default {
         }
       })
     },
+    // 匹配备注值
     handleChange (value) {
-      this.remark = 'hhhhh'
-      console.log(value)
+      const values = this.tablesConfig.filter(item => item.id === value)
+      if (values.length > 0) {
+        this.remark = values[0].remark
+      }
     }
   }
 }
