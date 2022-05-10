@@ -86,7 +86,7 @@ export default {
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
       })
     },
     handleSubmit (e) {

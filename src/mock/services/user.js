@@ -282,9 +282,7 @@ const userNav = options => {
       component: 'SysDictTypeList'
     }
   ]
-  const json = builder(nav)
-  console.log('json', json)
-  return json
+  return builder(nav)
 }
 
 Mock.mock(/\/api\/user\/info/, 'get', info)
