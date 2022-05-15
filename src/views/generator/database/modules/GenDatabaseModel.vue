@@ -27,14 +27,6 @@
           </a-select-option>
         </a-select>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="连接类型">
-        <a-tooltip>
-          <template #title>mysql的连接类型为“com.mysql.cj.jdbc.Driver”</template>
-          <a-input
-            placeholder="请输入数据库连接类型"
-            v-decorator="['driverClassName', {rules: [{required: true, pattern:/^([a-zA-Z_]\w*)+([.][a-zA-Z_]\w*)+$/, message: '请输入格式正确的连接类型'}]}]" />
-        </a-tooltip>
-      </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="数据库地址">
         <a-input
           allow-clear
@@ -96,7 +88,7 @@ export default {
     add (dbTypeDictDropDown) {
       this.form.resetFields()
       this.dbTypeDictDropDown = dbTypeDictDropDown
-      this.mdl = Object.assign({ id: 0 })
+      this.mdl = Object.assign({ id: 0, address: '127.0.0.1', port: 3306, userName: 'root' })
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'type', 'driverClassName', 'address', 'port', 'userName', 'password'))
