@@ -86,8 +86,8 @@ export default {
       columns: [
         {
           title: '数据库名',
-          dataIndex: 'databaseName',
-          scopedSlots: { customRender: 'databaseName' },
+          dataIndex: 'databaseId',
+          scopedSlots: { customRender: 'databaseId' },
           align: 'center'
         },
         {
@@ -102,22 +102,28 @@ export default {
           scopedSlots: { customRender: 'tableComment' },
           align: 'center'
         },
-        {
-          title: '包路径',
-          dataIndex: 'packageName',
-          scopedSlots: { customRender: 'packageName' },
-          align: 'center'
-        },
+        // {
+        //   title: '包路径',
+        //   dataIndex: 'packageName',
+        //   scopedSlots: { customRender: 'packageName' },
+        //   align: 'center'
+        // },
         {
           title: '类名',
-          dataIndex: 'moduleName',
-          scopedSlots: { customRender: 'moduleName' },
+          dataIndex: 'className',
+          scopedSlots: { customRender: 'className' },
           align: 'center'
         },
         {
           title: '业务名',
           dataIndex: 'businessName',
           scopedSlots: { customRender: 'businessName' },
+          align: 'center'
+        },
+        {
+          title: '功能名',
+          dataIndex: 'functionName',
+          scopedSlots: { customRender: 'functionName' },
           align: 'center'
         },
         {

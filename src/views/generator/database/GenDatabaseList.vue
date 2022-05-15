@@ -159,7 +159,7 @@ export default {
     // 匹配字典
     dbTypeFilter (status) {
       // eslint-disable-next-line eqeqeq
-      const values = this.dbTypeDictDropDown.filter(item => item.value == status)
+      const values = this.dbTypeDictDropDown.filter(item => item.key == status)
       if (values.length > 0) {
         return values[0].name
       }

@@ -22,7 +22,7 @@
           allow-clear
           placeholder="请选择数据库类型"
           v-decorator="['type',{rules: [{ required: true, message: '请选择数据库类型！'}]}]">
-          <a-select-option v-for="(item,index) in dbTypeDictDropDown" :key="index" :value="item.value">
+          <a-select-option v-for="(item,index) in dbTypeDictDropDown" :key="index" :value="item.key">
             {{ item.name }}
           </a-select-option>
         </a-select>
