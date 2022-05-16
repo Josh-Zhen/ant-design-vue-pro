@@ -39,3 +39,13 @@ export function delGenDatabase (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 获取數據庫名稱字典
+ */
+export function DictTypeDropDown () {
+  return request({
+    url: api.genDatabase + '/dropDown',
+    method: 'get'
+  })
+}

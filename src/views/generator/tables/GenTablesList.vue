@@ -42,6 +42,9 @@
       :data="loadData"
       :rangPicker="range"
     >
+      <span slot="databaseId" slot-scope="text">
+        {{ databaseIdFilter(text) }}
+      </span>
       <span slot="action" slot-scope="text, record">
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
@@ -56,6 +59,7 @@
 <script>
 import { STable } from '@/components'
 import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
+import { DictTypeDropDown } from '@/api/generator/genDatabase'
 import GenTablesModel from '@/views/generator/tables/modules/GenTablesModel'
 import GenTablesAddListModel from '@/views/generator/database/modules/GenTablesAddListModel'
 
@@ -104,8 +108,8 @@ export default {
         },
         // {
         //   title: '包路径',
-        //   dataIndex: 'packageName',
-        //   scopedSlots: { customRender: 'packageName' },
+        //   dataIndex: 'packagePath',
+        //   scopedSlots: { customRender: 'packagePath' },
         //   align: 'center'
         // },
         {
@@ -153,17 +157,31 @@ export default {
         })
       },
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      idDropDown: []
     }
   },
   filters: {},
   created () {
-
+    this.DictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    DictTypeDropDown () {
+      DictTypeDropDown().then((res) => {
+        this.idDropDown = res.data
+      })
+    },
+    // 數據庫名稱匹配
+    databaseIdFilter (id) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.idDropDown.filter(item => item.key == id)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
     // 根據庫id獲取表數據
     handleAdd () {

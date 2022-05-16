@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <a-modal
     title="表配置"
@@ -42,14 +41,14 @@
           placeholder="请输入模块名"
           v-decorator="['moduleName',{rules: [{pattern:/^[a-zA-Z]+$/, message: '请输入格式正确的模块名'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="表前綴">
-        <a-input
-          allow-clear
-          placeholder="请输入表前綴"
-          v-decorator="['tablePrefix']" />
-      </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="移除表前綴">
-        <a-switch default-checked v-decorator="['removePrefix', { valuePropName: 'checked' }]" />
+        <a-switch
+          :default-checked="true"
+          @change="onChange"
+          v-decorator="['removePrefix', { valuePropName: 'checked' }]" />
+      </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="表前綴" v-show="inputVisible">
+        <a-input allow-clear placeholder="请输入表前綴" v-decorator="['tablePrefix',{rules: [{required: true, message: '请输入表前綴'}]}]" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -74,7 +73,8 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      alerts: true
+      alerts: true,
+      inputVisible: false
     }
   },
   methods: {
@@ -88,6 +88,10 @@ export default {
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
       })
+    },
+    // 開啓表前綴
+    onChange (checked) {
+      this.inputVisible = checked
     },
     handleSubmit (e) {
       e.preventDefault()
