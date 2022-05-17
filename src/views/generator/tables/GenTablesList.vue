@@ -51,8 +51,8 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-tables-model ref="model" @ok="handleOk" />
-    <gen-tables-add-list-model ref="addModel" @ok="handleOk" />
+    <gen-tables-modal ref="model" @ok="handleOk" />
+    <gen-tables-add-list-modal ref="addModel" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -60,15 +60,15 @@
 import { STable } from '@/components'
 import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
 import { DictTypeDropDown } from '@/api/generator/genDatabase'
-import GenTablesModel from '@/views/generator/tables/modules/GenTablesModel'
-import GenTablesAddListModel from '@/views/generator/database/modules/GenTablesAddListModel'
+import GenTablesModal from '@/views/generator/tables/modal/GenTablesModal'
+import GenTablesAddListModal from '@/views/generator/database/modal/GenTablesAddListModal'
 
 export default {
   name: 'GenTablesList',
   components: {
-    GenTablesAddListModel,
+    GenTablesAddListModal,
     STable,
-    GenTablesModel
+    GenTablesModal
   },
   data () {
     return {

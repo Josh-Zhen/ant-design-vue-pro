@@ -52,7 +52,7 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-database-model ref="modal" @ok="handleOk" />
+    <gen-database-modal ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -60,13 +60,13 @@
 import { STable } from '@/components'
 import { delGenDatabase, getGenDatabasePageList } from '@/api/generator/genDatabase'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenDatabaseModel from '@/views/generator/database/modules/GenDatabaseModel'
+import GenDatabaseModal from '@/views/generator/database/modal/GenDatabaseModal'
 
 export default {
   name: 'GenDatabaseList',
   components: {
     STable,
-    GenDatabaseModel
+    GenDatabaseModal
   },
   data () {
     return {

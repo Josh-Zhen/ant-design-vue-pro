@@ -68,7 +68,7 @@ import {
   sysDictTypeDropDown,
   saveSysDictType
 } from '@/api/system/dict/sysDictType'
-import SysDictTypeModal from './modules/SysDictTypeModal.vue'
+import SysDictTypeModal from './modal/SysDictTypeModal.vue'
 import SysDictDataList from './SysDictDataList.vue'
 
 export default {

@@ -13,7 +13,8 @@
       </a-form-item>
       <a-form-item>
         <a-alert
-          banner
+          type="warning"
+          show-icon
           message="生成的文件路径会以包路径 + 模块名组成 例如：包路径为&quot;com.moonlit&quot; 模块名为&quot;generator&quot;则生成的文件路径为&quot;com.moonlit.generator&quot;" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="配置名">
@@ -43,12 +44,14 @@
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="移除表前綴">
         <a-switch
-          :default-checked="true"
           @change="onChange"
           v-decorator="['removePrefix', { valuePropName: 'checked' }]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="表前綴" v-show="inputVisible">
-        <a-input allow-clear placeholder="请输入表前綴" v-decorator="['tablePrefix',{rules: [{required: true, message: '请输入表前綴'}]}]" />
+        <a-input
+          allow-clear
+          placeholder="请输入表前綴"
+          v-decorator="['tablePrefix',{rules: [{required: inputVisible, message: '请输入表前綴'}]}]" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -73,7 +76,6 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      alerts: true,
       inputVisible: false
     }
   },
@@ -85,6 +87,7 @@ export default {
     edit (record) {
       this.mdl = Object.assign(record)
       this.visible = true
+      this.inputVisible = false
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
       })
@@ -110,12 +113,10 @@ export default {
             this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
+            this.inputVisible = false
           })
         }
       })
-    },
-    handleClose () {
-      this.alerts = false
     }
   }
 }

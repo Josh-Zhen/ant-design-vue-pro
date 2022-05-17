@@ -65,7 +65,7 @@
 <script>
 import { STable } from '@/components'
 import { getSysDictDataPageList, delSysDictData, saveSysDictData } from '@/api/system/dict/sysDictData'
-import SysDictDataModal from './modules/SysDictDataModal.vue'
+import SysDictDataModal from './modal/SysDictDataModal.vue'
 
 export default {
   name: 'TableList',
