@@ -2,7 +2,7 @@
   <a-modal
     title="数据库配置"
     style="top: 20px;"
-    :width="800"
+    width="40%"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"

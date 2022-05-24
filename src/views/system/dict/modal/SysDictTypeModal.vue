@@ -1,8 +1,8 @@
 <template>
   <a-modal
-    title="操作"
+    title="字典类型配置"
     style="top: 20px;"
-    :width="800"
+    width="40%"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"

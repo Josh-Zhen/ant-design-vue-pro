@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="字典值管理"
-    :width="900"
+    width="60%"
     :visible="visible"
     :footer="null"
     @cancel="handleCancel"

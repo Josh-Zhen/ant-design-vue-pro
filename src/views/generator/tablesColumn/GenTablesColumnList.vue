@@ -26,7 +26,7 @@
               <span class="table-page-search-submitButtons">
                 <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
                 <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-                <a-button style="margin-left: 8px" type="primary" icon="undo" @click="handleAdd">更新字段</a-button>
+                <a-button style="margin-left: 8px" v-if="this.queryParam.tableId" type="primary" icon="undo" @click="handleAdd">更新字段</a-button>
               </span>
             </a-col>
           </a-row>

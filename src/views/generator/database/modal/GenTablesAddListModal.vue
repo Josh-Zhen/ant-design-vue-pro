@@ -2,7 +2,7 @@
   <a-modal
     title="添加数据表"
     style="top: 20px;"
-    :width="1000"
+    width="50%"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
