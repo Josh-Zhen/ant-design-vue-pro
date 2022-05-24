@@ -5,6 +5,7 @@
     :dialog-style="{ top: '20px' }"
     v-model="visible"
     :footer="null"
+    @cancel="handleCancel"
   >
     <a-card :bordered="false">
       <div class="table-page-search-wrapper">
@@ -65,6 +66,7 @@
 import { STable } from '@/components'
 import { delGenTableColumns, getTableColumnPageList } from '@/api/generator/genTablesColumn'
 import GenTablesColumnModal from '@/views/generator/tablesColumn/modal/GenTablesColumnModal'
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
 export default {
   name: 'GenTablesColumnList',
@@ -200,6 +202,13 @@ export default {
           align: 'center'
         },
         {
+          title: '更新时间',
+          width: 110,
+          dataIndex: 'updateDate',
+          scopedSlots: { customRender: 'updateDate' },
+          align: 'center'
+        },
+        {
           title: '操作',
           fixed: 'right',
           width: 150,
@@ -212,28 +221,44 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getTableColumnPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+          console.log(res.data)
           return res.data
         })
       },
       selectedRowKeys: [],
       selectedRows: [],
-      statusDictDropDown: []
+      statusDictTypeDropDown: []
     }
   },
   filters: {},
   created () {
-    // this.sysDictTypeDropDown()
+    this.sysDictTypeDropDown()
   },
   methods: {
     getTableColumnList (tableId) {
       this.data = []
       this.visible = true
       this.queryParam.tableId = tableId
-      this.$refs.table.refresh()
+      try {
+        this.$refs.table.refresh()
+      } catch (e) {
+      }
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'status' }).then((res) => {
+        this.statusDictTypeDropDown = res.data
+      })
+    },
+    statusFilter (status) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.statusDictTypeDropDown.filter(item => item.key == status)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
     handleAdd () {
       // this.$refs.modal.add()
@@ -254,6 +279,10 @@ export default {
         }
         this.selectedRowKeys = []
       })
+    },
+    handleCancel () {
+      this.queryParam = {}
+      this.visible = false
     }
   }
 }
