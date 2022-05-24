@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="表字段"
-    :width="2000"
+    width="85%"
     :dialog-style="{ top: '20px' }"
     v-model="visible"
     :footer="null"
