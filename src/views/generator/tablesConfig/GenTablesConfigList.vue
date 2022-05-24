@@ -189,7 +189,6 @@ export default {
     // 刷新密钥
     handleKey () {
       refreshKey().then((res) => {
-        console.log(res.data)
         if (res.data === true) {
           this.$message.info('系统密钥已刷新')
         } else {

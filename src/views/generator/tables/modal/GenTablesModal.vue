@@ -11,44 +11,30 @@
       <a-form-item style="display:none">
         <a-input v-decorator="['id']" />
       </a-form-item>
-      <a-form-item>
-        <a-alert
-          banner
-          message="生成的文件路径会以包路径 + 模块名组成 例如：包路径为&quot;com.moonlit&quot; 模块名为&quot;generator&quot;则生成的文件路径为&quot;com.moonlit.generator&quot;" />
+      <a-descriptions bordered :column="2">
+        <a-descriptions-item label="所属数据库">{{ databaseIdFilter(mdl.databaseId) }}</a-descriptions-item>
+        <a-descriptions-item label="表名">{{ mdl.tableName }}</a-descriptions-item>
+      </a-descriptions>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述">
+        <a-input v-decorator="['tableComment']" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="配置名">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="类名">
         <a-input
           allow-clear
-          placeholder="请输入配置名"
-          v-decorator="['name', {rules: [{required: true, message: '请输入配置名'}]}]" />
+          placeholder="请输入类名"
+          v-decorator="['className',{rules: [{ required: true, pattern: /^[A-Z][0-9a-zA-Z_]+$/, message: '请输入正确格式的类名！'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="作者">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="业务名">
         <a-input
           allow-clear
-          placeholder="请输入作者名"
-          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]" />
+          placeholder="请输入业务名"
+          v-decorator="['businessName',{rules: [{ required: true, pattern: /^[a-z]+$/, message: '请输入业务名！'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="包名">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="功能名">
         <a-input
           allow-clear
-          placeholder="请输入包名"
-          v-decorator="['packageName',{rules: [{required: true, pattern:/^([a-zA-Z_]\w*)+([.][a-zA-Z_]\w*)+$/, message: '请输入格式正确的包名'}]}]"
-        />
-      </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模块名">
-        <a-input
-          allow-clear
-          placeholder="请输入模块名"
-          v-decorator="['moduleName',{rules: [{pattern:/^[a-zA-Z]+$/, message: '请输入格式正确的模块名'}]}]" />
-      </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="表前綴">
-        <a-input
-          allow-clear
-          placeholder="请输入表前綴"
-          v-decorator="['tablePrefix']" />
-      </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="移除表前綴">
-        <a-switch v-decorator="['removePrefix', { valuePropName: 'checked' }]" />
+          placeholder="请输入功能名"
+          v-decorator="['functionName',{rules: [{ required: true, message: '请输入功能名！'}]}]" />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -75,16 +61,26 @@ export default {
       dbTypeDictDropDown: [],
       confirmLoading: false,
       mdl: {},
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      idDropDown: []
     }
   },
   methods: {
-    edit (record) {
+    edit (record, idDropDown) {
       this.mdl = Object.assign(record)
       this.visible = true
+      this.idDropDown = idDropDown
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'databaseId', 'tableName', 'tableComment', 'className', 'businessName', 'functionName'))
       })
+    },
+    // 數據庫名稱匹配
+    databaseIdFilter (id) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.idDropDown.filter(item => item.key == id)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
     handleSubmit (e) {
       e.preventDefault()

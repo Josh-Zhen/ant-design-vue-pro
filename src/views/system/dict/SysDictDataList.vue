@@ -29,6 +29,7 @@
           </a-row>
         </a-form>
       </div>
+
       <div class="table-operator">
         <a-button @click="$refs.modal.add(typeId,endId)" type="primary" icon="plus">新增
         </a-button>
@@ -36,6 +37,7 @@
           <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
         </a-dropdown>
       </div>
+
       <s-table
         size="default"
         ref="table"
@@ -87,8 +89,6 @@ export default {
       form: this.$form.createForm(this),
       mdl: {},
       statusDictTypeDropDown: [],
-      // 高级搜索 展开/关闭
-      advanced: false,
       // 查询参数
       queryParam: {},
       // 表头

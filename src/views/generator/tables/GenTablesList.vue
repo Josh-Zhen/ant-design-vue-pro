@@ -46,6 +46,8 @@
         {{ databaseIdFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="jumpTablesColumnLists(record.id)">字段配置</a>
+        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
@@ -53,6 +55,7 @@
     </s-table>
     <gen-tables-modal ref="model" @ok="handleOk" />
     <gen-tables-add-list-modal ref="addModel" @ok="handleOk" />
+    <gen-tables-column-list ref="columnModal" />
   </a-card>
 </template>
 
@@ -62,10 +65,12 @@ import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
 import { DictTypeDropDown } from '@/api/generator/genDatabase'
 import GenTablesModal from '@/views/generator/tables/modal/GenTablesModal'
 import GenTablesAddListModal from '@/views/generator/database/modal/GenTablesAddListModal'
+import GenTablesColumnList from '@/views/generator/tablesColumn/GenTablesColumnList'
 
 export default {
   name: 'GenTablesList',
   components: {
+    GenTablesColumnList,
     GenTablesAddListModal,
     STable,
     GenTablesModal
@@ -89,19 +94,19 @@ export default {
       // 表头
       columns: [
         {
-          title: '数据库名',
+          title: '所属数据库',
           dataIndex: 'databaseId',
           scopedSlots: { customRender: 'databaseId' },
           align: 'center'
         },
         {
-          title: '表名称',
+          title: '表名',
           dataIndex: 'tableName',
           scopedSlots: { customRender: 'tableName' },
           align: 'center'
         },
         {
-          title: '表描述',
+          title: '描述',
           dataIndex: 'tableComment',
           scopedSlots: { customRender: 'tableComment' },
           align: 'center'
@@ -189,7 +194,11 @@ export default {
     },
     // 修改表數據
     handleEdit (record) {
-      this.$refs.model.edit(record)
+      this.$refs.model.edit(record, this.idDropDown)
+    },
+    // 跳转字段配置页面
+    jumpTablesColumnLists (tableId) {
+      this.$refs.columnModal.getTableColumnList(tableId)
     },
     handleOk () {
       this.$refs.table.refresh(true)
