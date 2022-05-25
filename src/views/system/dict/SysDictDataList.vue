@@ -31,7 +31,7 @@
       </div>
 
       <div class="table-operator">
-        <a-button @click="$refs.modal.add(typeId,endId)" type="primary" icon="plus">新增
+        <a-button @click="handleAdd()" type="primary" icon="plus">新增
         </a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
@@ -129,8 +129,8 @@ export default {
       endId: 0,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getSysDictDataPageList(Object.assign(parameter, this.queryParam)).then((res) => {
-          this.endId = res.data.totalRows !== 0 ? res.data.totalRows + 1 : 0
+        return getSysDictDataPageList(Object.assign(parameter, this.queryParam)).then(res => {
+          this.endId = res.data.totalRows !== 0 ? res.data.totalRows + 1 : 1
           return res.data
         })
       },
@@ -178,6 +178,9 @@ export default {
           this.$message.error('操作失败：' + res.message)
         }
       })
+    },
+    handleAdd () {
+      this.$refs.modal.add(this.typeId, this.endId)
     },
     handleEdit (record) {
       this.$refs.modal.edit(record)

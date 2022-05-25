@@ -152,8 +152,8 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getSysDictTypePageList(Object.assign(parameter, this.queryParam)).then((res) => {
-          this.endId = res.data.totalRows !== 0 ? res.data.rows[0].id + 1 : 0
+        return getSysDictTypePageList(Object.assign(parameter, this.queryParam)).then(res => {
+          this.endId = res.data.totalRows !== 0 ? res.data.rows[0].id + 1 : 1
           return res.data
         })
       },
@@ -178,7 +178,7 @@ export default {
       }
     },
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'common_status' }).then((res) => {
+      sysDictTypeDropDown({ code: 'common_status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
     },
