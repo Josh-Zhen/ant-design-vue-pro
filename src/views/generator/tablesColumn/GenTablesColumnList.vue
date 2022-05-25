@@ -273,7 +273,9 @@ export default {
       selectedRowKeys: [],
       selectedRows: [],
       statusDictTypeDropDown: [],
-      tableName: ''
+      databaseId: '',
+      tableName: '',
+      tableId: ''
     }
   },
   filters: {},
@@ -281,11 +283,13 @@ export default {
     this.sysDictTypeDropDown()
   },
   methods: {
-    getTableColumnList (tableId, tableName) {
+    getTableColumnList (databaseId, tableId, tableName) {
       this.data = []
       this.visible = true
       this.queryParam.tableId = tableId
+      this.databaseId = databaseId
       this.tableName = tableName
+      this.tableId = tableId
       try {
         this.$refs.table.refresh()
       } catch (e) {
@@ -309,9 +313,13 @@ export default {
     },
     // 刷新表字段
     handleRefresh () {
-      refreshGenTablesColumn().then(res => {
+      refreshGenTablesColumn({
+        databaseId: this.databaseId,
+        tableName: this.tableName,
+        tableId: this.tableId
+      }).then(res => {
         if (res.code === 200) {
-          // TODO 重新加載頁面數據
+          this.$refs.table.refresh()
         } else {
           this.$message.error(res.message)
         }

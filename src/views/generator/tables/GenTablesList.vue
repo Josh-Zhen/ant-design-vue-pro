@@ -64,7 +64,7 @@ import { STable } from '@/components'
 import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
 import { DictTypeDropDown } from '@/api/generator/genDatabase'
 import GenTablesModal from '@/views/generator/tables/modal/GenTablesModal'
-import GenTablesAddListModal from '@/views/generator/database/modal/GenTablesAddListModal'
+import GenTablesAddListModal from '@/views/generator/tables/modal/GenTablesAddListModal'
 import GenTablesColumnList from '@/views/generator/tablesColumn/GenTablesColumnList'
 
 export default {
@@ -198,7 +198,7 @@ export default {
     },
     // 跳转字段配置页面
     jumpTablesColumnLists (record) {
-      this.$refs.columnModal.getTableColumnList(record.id, record.tableName)
+      this.$refs.columnModal.getTableColumnList(this.databaseId, record.id, record.tableName)
     },
     handleOk () {
       this.$refs.table.refresh(true)
