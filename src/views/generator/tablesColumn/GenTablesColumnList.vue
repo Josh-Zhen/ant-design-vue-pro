@@ -12,6 +12,11 @@
         <a-form layout="inline">
           <a-row :gutter="48">
             <a-col :md="5" :sm="5">
+              <a-form-item label="表名">
+                <a-alert :message="this.tableName" type="success" />
+              </a-form-item>
+            </a-col>
+            <a-col :md="5" :sm="5">
               <a-form-item label="字段名">
                 <a-input allow-clear placeholder="请输入字段名" v-model="queryParam.columnName" />
               </a-form-item>
@@ -26,7 +31,12 @@
               <span class="table-page-search-submitButtons">
                 <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
                 <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-                <a-button style="margin-left: 8px" v-if="this.queryParam.tableId" type="primary" icon="undo" @click="handleAdd">更新字段</a-button>
+                <a-button
+                  style="margin-left: 8px"
+                  v-if="this.queryParam.tableId"
+                  type="primary"
+                  icon="undo"
+                  @click="handleRefresh">更新字段</a-button>
               </span>
             </a-col>
           </a-row>
@@ -51,6 +61,42 @@
         :rangPicker="range"
         :scroll="{ x: 2000 }"
       >
+        <span slot="isPrimaryKey" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isIncrement" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isRequired" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isInsert" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isEdit" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isList" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+        <span slot="isQuery" slot-scope="text">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </span>
+
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical" />
@@ -64,7 +110,7 @@
 
 <script>
 import { STable } from '@/components'
-import { delGenTableColumns, getTableColumnPageList } from '@/api/generator/genTablesColumn'
+import { delGenTableColumns, getTableColumnPageList, refreshGenTablesColumn } from '@/api/generator/genTablesColumn'
 import GenTablesColumnModal from '@/views/generator/tablesColumn/modal/GenTablesColumnModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
@@ -137,17 +183,17 @@ export default {
           align: 'center'
         },
         {
-          title: 'JAVA类型',
-          width: 100,
-          dataIndex: 'javaType',
-          scopedSlots: { customRender: 'javaType' },
-          align: 'center'
-        },
-        {
           title: 'JAVA字段名',
           width: 110,
           dataIndex: 'javaField',
           scopedSlots: { customRender: 'javaField' },
+          align: 'center'
+        },
+        {
+          title: 'JAVA类型',
+          width: 100,
+          dataIndex: 'javaType',
+          scopedSlots: { customRender: 'javaType' },
           align: 'center'
         },
         {
@@ -220,14 +266,14 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getTableColumnPageList(Object.assign(parameter, this.queryParam)).then((res) => {
-          console.log(res.data)
+        return getTableColumnPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
       selectedRowKeys: [],
       selectedRows: [],
-      statusDictTypeDropDown: []
+      statusDictTypeDropDown: [],
+      tableName: ''
     }
   },
   filters: {},
@@ -235,10 +281,11 @@ export default {
     this.sysDictTypeDropDown()
   },
   methods: {
-    getTableColumnList (tableId) {
+    getTableColumnList (tableId, tableName) {
       this.data = []
       this.visible = true
       this.queryParam.tableId = tableId
+      this.tableName = tableName
       try {
         this.$refs.table.refresh()
       } catch (e) {
@@ -249,7 +296,7 @@ export default {
       this.selectedRows = selectedRows
     },
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'status' }).then((res) => {
+      sysDictTypeDropDown({ code: 'status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
     },
@@ -260,8 +307,17 @@ export default {
         return values[0].name
       }
     },
-    handleAdd () {
-      // this.$refs.modal.add()
+    // 刷新表字段
+    handleRefresh () {
+      refreshGenTablesColumn().then(res => {
+        if (res.code === 200) {
+          // TODO 重新加載頁面數據
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch(() => {
+        this.$message.error('系统错误，请稍后再试')
+      })
     },
     handleEdit (record) {
       this.$refs.modal.edit(record)

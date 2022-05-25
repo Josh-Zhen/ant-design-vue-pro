@@ -137,7 +137,7 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenDatabasePageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getGenDatabasePageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
@@ -166,7 +166,7 @@ export default {
     },
     // 加载字典
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'database_type' }).then((res) => {
+      sysDictTypeDropDown({ code: 'database_type' }).then(res => {
         this.dbTypeDictDropDown = res.data
       })
     },

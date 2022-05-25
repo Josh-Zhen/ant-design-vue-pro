@@ -46,7 +46,7 @@
         {{ databaseIdFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="jumpTablesColumnLists(record.id)">字段配置</a>
+        <a @click="jumpTablesColumnLists(record)">字段配置</a>
         <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
@@ -157,7 +157,7 @@ export default {
       ],
       loadData: parameter => {
         this.queryParam.databaseId = this.databaseId
-        return getTablesPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getTablesPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
@@ -176,7 +176,7 @@ export default {
       this.selectedRows = selectedRows
     },
     DictTypeDropDown () {
-      DictTypeDropDown().then((res) => {
+      DictTypeDropDown().then(res => {
         this.idDropDown = res.data
       })
     },
@@ -197,8 +197,8 @@ export default {
       this.$refs.model.edit(record, this.idDropDown)
     },
     // 跳转字段配置页面
-    jumpTablesColumnLists (tableId) {
-      this.$refs.columnModal.getTableColumnList(tableId)
+    jumpTablesColumnLists (record) {
+      this.$refs.columnModal.getTableColumnList(record.id, record.tableName)
     },
     handleOk () {
       this.$refs.table.refresh(true)

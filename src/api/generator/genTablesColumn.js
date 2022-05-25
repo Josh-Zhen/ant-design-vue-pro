@@ -5,7 +5,7 @@ const api = {
 }
 
 /**
- * 分页查询表配置
+ * 分页查询表字段詳情
  */
 export function getTableColumnPageList (parameter) {
   return request({
@@ -16,11 +16,11 @@ export function getTableColumnPageList (parameter) {
 }
 
 /**
- * 保存表配置
+ * 保存表字段詳情
  */
-export function saveGenTablesColumn (parameter) {
+export function refreshGenTablesColumn (parameter) {
   return request({
-    url: api.genTablesColumn + '/save',
+    url: api.genTablesColumn + '/refresh',
     method: 'post',
     data: parameter,
     headers: {
@@ -30,7 +30,7 @@ export function saveGenTablesColumn (parameter) {
 }
 
 /**
- * 修改表配置
+ * 修改表字段詳情
  */
 export function updateGenTablesColumn (parameter) {
   return request({
@@ -44,7 +44,7 @@ export function updateGenTablesColumn (parameter) {
 }
 
 /**
- * 删除表配置
+ * 删除表字段詳情
  */
 export function delGenTableColumns (parameter) {
   return request({

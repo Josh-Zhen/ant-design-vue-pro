@@ -136,7 +136,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenTablesConfigPageList(Object.assign(parameter, this.queryParam)).then((res) => {
+        return getGenTablesConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
@@ -155,7 +155,7 @@ export default {
       this.selectedRows = selectedRows
     },
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'status' }).then((res) => {
+      sysDictTypeDropDown({ code: 'status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
     },
@@ -188,7 +188,7 @@ export default {
     },
     // 刷新密钥
     handleKey () {
-      refreshKey().then((res) => {
+      refreshKey().then(res => {
         if (res.data === true) {
           this.$message.info('系统密钥已刷新')
         } else {

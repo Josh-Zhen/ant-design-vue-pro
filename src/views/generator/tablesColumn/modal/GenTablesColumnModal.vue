@@ -1,8 +1,8 @@
 <template>
   <a-modal
     title="字段配置"
-    style="top: 20px;"
-    width="40%"
+    width="45%"
+    :dialog-style="{ top: '20px' }"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
@@ -11,43 +11,130 @@
       <a-form-item style="display:none">
         <a-input v-decorator="['id']" />
       </a-form-item>
-      <a-form-item>
-        <a-alert
-          type="warning"
-          show-icon
-          message="生成的文件路径会以包路径 + 模块名组成 例如：包路径为&quot;com.moonlit&quot; 模块名为&quot;generator&quot;则生成的文件路径为&quot;com.moonlit.generator&quot;" />
+
+      <a-descriptions bordered :column="2">
+        <a-descriptions-item label="字段名">
+          {{ mdl.columnName }}
+        </a-descriptions-item>
+        <a-descriptions-item label="描述">
+          {{ mdl.columnComment }}
+        </a-descriptions-item>
+        <a-descriptions-item label="排序">
+          {{ mdl.sort }}
+        </a-descriptions-item>
+        <a-descriptions-item label="列类型">
+          {{ mdl.columnType }}
+        </a-descriptions-item>
+      </a-descriptions>
+      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:95px">
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="主鍵">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isPrimaryKey', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="自增">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isIncrement', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+      </div>
+
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否為空">
+        <a-switch
+          checkedChildren="是"
+          unCheckedChildren="否"
+          v-decorator="['isRequired', { valuePropName: 'checked' }]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="配置名">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="JAVA字段名">
         <a-input
           allow-clear
-          placeholder="请输入配置名"
-          v-decorator="['name', {rules: [{required: true, message: '请输入配置名'}]}]" />
+          placeholder="请输入JAVA字段名"
+          v-decorator="['javaField', {rules: [{required: true, message: '请输入JAVA字段名'}]}]" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="作者">
-        <a-input
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="JAVA类型">
+        <a-select
           allow-clear
-          placeholder="请输入作者名"
-          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]" />
+          placeholder="请选择JAVA类型"
+          v-decorator="['javaType',{rules: [{ required: true, message: '请选择JAVA类型！'}]}]">
+          <a-select-option v-for="(item,index) in javaDataType" :key="index" :value="item.key">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="包名">
-        <a-input
+
+      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:95px">
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否插入">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isInsert', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否编辑">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isEdit', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否列表">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isList', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+        <div style="width:50%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否查询">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isQuery', { valuePropName: 'checked' }]" />
+          </a-form-item>
+        </div>
+      </div>
+
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="查询方式">
+        <a-select
           allow-clear
-          placeholder="请输入包名"
-          v-decorator="['packageName',{rules: [{required: true, pattern:/^([a-zA-Z_]\w*)+([.][a-zA-Z_]\w*)+$/, message: '请输入格式正确的包名'}]}]"
-        />
+          placeholder="请选择查询方式"
+          v-decorator="['queryType',{rules: [{ required: true, message: '请选择查询方式！'}]}]">
+          <a-select-option v-for="(item,index) in queryType" :key="index" :value="item.key">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模块名">
-        <a-input
+
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="web显示类型">
+        <a-select
           allow-clear
-          placeholder="请输入模块名"
-          v-decorator="['moduleName',{rules: [{pattern:/^[a-zA-Z]+$/, message: '请输入格式正确的模块名'}]}]" />
+          placeholder="请选择web显示类型"
+          v-decorator="['htmlType',{rules: [{ required: true, message: '请选择web显示类型！'}]}]">
+          <a-select-option v-for="(item,index) in webLabel" :key="index" :value="item.key">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典类型">
+        <a-input allow-clear placeholder="请输入字典类型" v-decorator="['dictType']" />
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 <script>
-import { saveGenTablesColumn } from '@/api/generator/genTablesColumn'
+import { updateGenTablesColumn } from '@/api/generator/genTablesColumn'
 import pick from 'lodash.pick'
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
 export default {
   name: 'GenTablesColumnModal',
@@ -64,8 +151,14 @@ export default {
       },
       confirmLoading: false,
       mdl: {},
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      javaDataType: [],
+      webLabel: [],
+      queryType: []
     }
+  },
+  created () {
+    this.sysDictTypeDropDown()
   },
   methods: {
     edit (record) {
@@ -73,7 +166,18 @@ export default {
       this.visible = true
       this.inputVisible = false
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'columnName', 'columnComment', 'sort', 'columnType', 'isPrimaryKey', 'isIncrement', 'isRequired', 'javaType', 'javaField', 'isInsert', 'isEdit', 'isList', 'isQuery', 'queryType', 'htmlType', 'dictType'))
+      })
+    },
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'java_data_type' }).then(res => {
+        this.javaDataType = res.data
+      })
+      sysDictTypeDropDown({ code: 'web_label' }).then(res => {
+        this.webLabel = res.data
+      })
+      sysDictTypeDropDown({ code: 'query_type' }).then(res => {
+        this.queryType = res.data
       })
     },
     handleSubmit (e) {
@@ -81,7 +185,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenTablesColumn(values).then(res => {
+          updateGenTablesColumn(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')
