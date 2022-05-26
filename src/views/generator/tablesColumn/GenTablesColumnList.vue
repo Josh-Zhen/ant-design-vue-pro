@@ -160,6 +160,7 @@ export default {
         },
         {
           title: '列类型',
+          width: 150,
           dataIndex: 'columnType',
           scopedSlots: { customRender: 'columnType' },
           align: 'center'

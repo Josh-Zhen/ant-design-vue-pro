@@ -8,6 +8,11 @@
               <a-input allow-clear placeholder="请输入配置名" v-model="queryParam.name" />
             </a-form-item>
           </a-col>
+          <a-col :md="5" :sm="5">
+            <a-form-item label="作者">
+              <a-input allow-clear placeholder="请输入作者" v-model="queryParam.author" />
+            </a-form-item>
+          </a-col>
 
           <a-col :md="4" :sm="10">
             <span class="table-page-search-submitButtons">
