@@ -198,7 +198,7 @@ export default {
     },
     // 跳转字段配置页面
     jumpTablesColumnLists (record) {
-      this.$refs.columnModal.getTableColumnList(this.databaseId, record.id, record.tableName)
+      this.$refs.columnModal.getTableColumnList(record.databaseId, record.id, record.tableName)
     },
     handleOk () {
       this.$refs.table.refresh(true)
