@@ -8,15 +8,21 @@
     @ok="handleSubmit"
   >
     <a-form-model :form="form">
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="密钥">
-        <a-textarea allow-clear :auto-size="{ minRows: 8, maxRows: 10 }" placeholder="请输入密钥" v-model="salt" />
+      <a-form-item>
+        <a-alert show-icon message="数据密钥加密数据，系统密钥加密数据密钥" />
+      </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统密钥">
+        <a-button type="primary" @click="handleKey">刷新</a-button>
+      </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="数据密钥">
+        <a-textarea allow-clear :auto-size="{ minRows: 8, maxRows: 10 }" placeholder="请输入数据密钥" v-model="salt" />
       </a-form-item>
     </a-form-model>
   </a-modal>
 </template>
 
 <script>
-import { setSalt } from '@/api/generator/genSystemConfig'
+import { refreshKey, setSalt } from '@/api/generator/genSystemConfig'
 
 export default {
   name: 'SetSaltModal',
@@ -41,6 +47,16 @@ export default {
     handleSalt () {
       this.salt = ''
       this.visible = true
+    },
+    // 刷新密钥
+    handleKey () {
+      refreshKey().then(res => {
+        if (res.data === true) {
+          this.$message.info('系统密钥已刷新')
+        } else {
+          this.$message.error('密钥刷新失败')
+        }
+      })
     },
     handleSubmit (e) {
       e.preventDefault()

@@ -27,7 +27,6 @@
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-button type="primary" @click="handleSalt">设置系统密钥</a-button>
-      <a-button type="primary" @click="handleKey">刷新系统密钥</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
@@ -65,7 +64,6 @@ import { STable } from '@/components'
 import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/genTablesConfig'
 import GenTablesConfigModal from '@/views/generator/tablesConfig/modal/GenTablesConfigModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import { refreshKey } from '@/api/generator/genSystemConfig'
 import SetSaltModal from '@/views/generator/systemConfig/modal/SetSaltModal'
 
 export default {
@@ -194,16 +192,6 @@ export default {
           this.$message.error(res.message)
         }
         this.selectedRowKeys = []
-      })
-    },
-    // 刷新密钥
-    handleKey () {
-      refreshKey().then(res => {
-        if (res.data === true) {
-          this.$message.info('系统密钥已刷新')
-        } else {
-          this.$message.error('密钥刷新失败')
-        }
       })
     },
     // 設置密鑰
