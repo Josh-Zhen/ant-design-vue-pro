@@ -26,6 +26,7 @@
 
     <a-space align="center" style="margin-bottom: 16px">
       <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
+      <a-button type="primary" @click="handleSalt">设置系统密钥</a-button>
       <a-button type="primary" @click="handleKey">刷新系统密钥</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
@@ -55,6 +56,7 @@
       </span>
     </s-table>
     <gen-tables-config-modal ref="modal" @ok="handleOk" />
+    <set-salt-modal ref="salt" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -64,10 +66,12 @@ import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/
 import GenTablesConfigModal from '@/views/generator/tablesConfig/modal/GenTablesConfigModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import { refreshKey } from '@/api/generator/genSystemConfig'
+import SetSaltModal from '@/views/generator/systemConfig/modal/SetSaltModal'
 
 export default {
   name: 'GenTablesConfigList',
   components: {
+    SetSaltModal,
     STable,
     GenTablesConfigModal
   },
@@ -147,7 +151,8 @@ export default {
       },
       selectedRowKeys: [],
       selectedRows: [],
-      statusDictDropDown: []
+      statusDictDropDown: [],
+      salt: ''
     }
   },
   filters: {},
@@ -200,6 +205,10 @@ export default {
           this.$message.error('密钥刷新失败')
         }
       })
+    },
+    // 設置密鑰
+    handleSalt (salt) {
+      this.$refs.salt.handleSalt(salt)
     }
   }
 }
