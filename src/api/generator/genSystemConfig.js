@@ -5,7 +5,17 @@ const api = {
 }
 
 /**
- * 獲取公、私鑰
+ * 獲取系統配置
+ */
+export function getSystemConfig () {
+  return request({
+    url: api.genSystemConfig + '/getSystemConfig',
+    method: 'get'
+  })
+}
+
+/**
+ * 刷新公、私鑰
  */
 export function refreshKey () {
   return request({
@@ -21,7 +31,7 @@ export function setSalt (parameter) {
   return request({
     url: api.genSystemConfig + '/setSalt',
     method: 'post',
-    params: parameter,
+    data: parameter,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

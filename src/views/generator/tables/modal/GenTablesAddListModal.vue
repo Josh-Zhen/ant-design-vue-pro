@@ -37,6 +37,7 @@
       :rangPicker="range"
     >
     </a-table>
+    <system-config-modal ref="salt" @ok="handleOk" />
   </a-modal>
 </template>
 
@@ -44,10 +45,12 @@
 import { STable } from '@/components'
 import { getTablesList, saveGenTables } from '@/api/generator/genTables'
 import { getTablesConfig } from '@/api/generator/genTablesConfig'
+import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
   name: 'GenTablesAddListModel',
   components: {
+    SystemConfigModal,
     STable
   },
   data () {
@@ -97,6 +100,8 @@ export default {
       getTablesList(this.queryParam).then(res => {
         if (res.code === 200) {
           this.data = res.data
+        } else if (res.code === 11005) {
+          this.$refs.salt.handleSalt(false)
         } else {
           this.$message.error(res.message)
         }
@@ -117,6 +122,7 @@ export default {
         if (!err) {
           this.confirmLoading = true
           values = this.queryParam
+          console.log(values)
           saveGenTables(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
@@ -138,6 +144,8 @@ export default {
       getTablesConfig().then(res => {
         if (res.code === 200) {
           this.tablesConfig = res.data
+          this.queryParam.tableConfigId = res.data[0].id
+          this.remark = res.data[0].remark
         } else {
           this.$message.error(res.message)
         }
@@ -149,6 +157,15 @@ export default {
       if (values.length > 0) {
         this.remark = values[0].remark
       }
+    },
+    handleOk () {
+      getTablesList(this.queryParam).then(res => {
+        if (res.code === 200) {
+          this.data = res.data
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
   }
 }

@@ -55,7 +55,7 @@
       </span>
     </s-table>
     <gen-tables-config-modal ref="modal" @ok="handleOk" />
-    <set-salt-modal ref="salt" @ok="handleOk" />
+    <system-config-modal ref="systemConfig" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -64,12 +64,12 @@ import { STable } from '@/components'
 import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/genTablesConfig'
 import GenTablesConfigModal from '@/views/generator/tablesConfig/modal/GenTablesConfigModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import SetSaltModal from '@/views/generator/systemConfig/modal/SetSaltModal'
+import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
   name: 'GenTablesConfigList',
   components: {
-    SetSaltModal,
+    SystemConfigModal,
     STable,
     GenTablesConfigModal
   },
@@ -195,8 +195,8 @@ export default {
       })
     },
     // 設置密鑰
-    handleSalt (salt) {
-      this.$refs.salt.handleSalt(salt)
+    handleSalt () {
+      this.$refs.systemConfig.handleSalt(true)
     }
   }
 }
