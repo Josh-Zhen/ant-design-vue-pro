@@ -104,6 +104,7 @@
         </span>
       </s-table>
       <gen-tables-column-modal ref="modal" @ok="handleOk" />
+      <system-config-modal ref="salt" @ok="handleOk" />
     </a-card>
   </a-modal>
 </template>
@@ -113,10 +114,12 @@ import { STable } from '@/components'
 import { delGenTableColumns, getTableColumnPageList, refreshGenTablesColumn } from '@/api/generator/genTablesColumn'
 import GenTablesColumnModal from '@/views/generator/tablesColumn/modal/GenTablesColumnModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
+import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
   name: 'GenTablesColumnList',
   components: {
+    SystemConfigModal,
     STable,
     GenTablesColumnModal
   },
@@ -321,6 +324,8 @@ export default {
       }).then(res => {
         if (res.code === 200) {
           this.$refs.table.refresh()
+        } else if (res.code === 11005) {
+          this.$refs.salt.handleSalt(false)
         } else {
           this.$message.error(res.message)
         }
