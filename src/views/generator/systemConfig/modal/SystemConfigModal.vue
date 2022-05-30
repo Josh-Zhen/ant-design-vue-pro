@@ -8,9 +8,6 @@
     @ok="handleSubmit"
   >
     <a-form :form="form">
-      <a-form-item v-show="show">
-        <a-alert show-icon message="数据密钥加密数据，系统密钥加密数据密钥" />
-      </a-form-item>
       <a-form-item v-show="show" :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统密钥">
         <a-button type="primary" @click="handleKey">刷新</a-button>
       </a-form-item>
@@ -73,13 +70,15 @@ export default {
       if (this.show) {
         refreshKey().then(res => {
           if (res.code === 200) {
-            this.$message.info('系统密钥已刷新')
-            this.$notification['success']({
-              message: '新密钥，请妥善保存',
-              description: res.data.salt,
-              duration: 0
-            })
-            this.visible = false
+            if (!this.mdl.state) {
+              this.$success({
+                title: '新密钥，请妥善保存',
+                content: (
+                  <p>{res.data}</p>
+                )
+              })
+            }
+            this.mdl.salt = res.data
           } else {
             this.$message.error('密钥刷新失败')
           }
