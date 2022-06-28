@@ -259,6 +259,15 @@ const userNav = options => {
       },
       component: 'GenTablesConfigList'
     },
+    {
+      name: 'GenTemplateCollectionList',
+      parentId: 10,
+      id: 15,
+      meta: {
+        title: '模板组配置'
+      },
+      component: 'GenTemplateCollectionList'
+    },
 
     // 系統配置
     {
