@@ -169,7 +169,7 @@ export default {
     },
     statusFilter (status) {
       // eslint-disable-next-line eqeqeq
-      const values = this.statusDictTypeDropDown.filter(item => item.key == status ? 1 : 0)
+      const values = this.statusDictTypeDropDown.filter(item => item.key == status)
       if (values.length > 0) {
         return values[0].name
       }

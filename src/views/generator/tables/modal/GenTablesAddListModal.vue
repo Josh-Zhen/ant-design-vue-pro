@@ -122,7 +122,6 @@ export default {
         if (!err) {
           this.confirmLoading = true
           values = this.queryParam
-          console.log(values)
           saveGenTables(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')

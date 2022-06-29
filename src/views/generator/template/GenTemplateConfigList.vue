@@ -42,28 +42,30 @@
           {{ statusFilter(text) }}
         </a-tag>
       </span>
+      <span slot="collectionId" slot-scope="text">
+        {{ collectionFilter(text) }}
+      </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="jumpTemplateConfigLists(record.id)">模板配置</a>
-        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-template-collection-modal ref="modal" @ok="handleOk" />
+    <gen-template-config-modal ref="modal" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { delGenTemplateCollection, getGenTemplateCollectionPageList } from '@/api/generator/genTemplateCollection'
+import { delGenTemplateConfig, getGenTemplateConfigPageList } from '@/api/generator/genTemplateConfig'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenTemplateCollectionModal from '@/views/generator/template/modal/GenTemplateCollectionModal'
+import GenTemplateConfigModal from '@/views/generator/template/modal/GenTemplateConfigModal'
+import { getCollectionName } from '@/api/generator/genTemplateCollection'
 
 export default {
-  name: 'GenTemplateCollectionList',
+  name: 'GenTemplateConfigList',
   components: {
-    GenTemplateCollectionModal,
+    GenTemplateConfigModal,
     STable
   },
   data () {
@@ -83,9 +85,21 @@ export default {
       // 表头
       columns: [
         {
+          title: '模板組',
+          dataIndex: 'collectionId',
+          scopedSlots: { customRender: 'collectionId' },
+          align: 'center'
+        },
+        {
           title: '名称',
           dataIndex: 'name',
           scopedSlots: { customRender: 'name' },
+          align: 'center'
+        },
+        {
+          title: '后缀名',
+          dataIndex: 'suffixName',
+          scopedSlots: { customRender: 'suffixName' },
           align: 'center'
         },
         {
@@ -112,27 +126,33 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenTemplateCollectionPageList(Object.assign(parameter, this.queryParam)).then(res => {
+        this.queryParam.collectionId = this.$route.query.collectionId
+        return getGenTemplateConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
       selectedRowKeys: [],
       selectedRows: [],
-      statusDictDropDown: []
+      statusDictDropDown: [],
+      collectionDropDown: []
     }
   },
   filters: {},
   created () {
-    this.sysDictTypeDropDown()
+    this.dictTypeDropDown()
   },
   methods: {
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
-    sysDictTypeDropDown () {
+    // 加載字典
+    dictTypeDropDown () {
       sysDictTypeDropDown({ code: 'status' }).then(res => {
         this.statusDictTypeDropDown = res.data
+      })
+      getCollectionName().then(res => {
+        this.collectionDropDown = res.data
       })
     },
     statusFilter (status) {
@@ -142,22 +162,25 @@ export default {
         return values[0].name
       }
     },
+    collectionFilter (collection) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.collectionDropDown.filter(item => item.id == collection)
+      if (values.length > 0) {
+        return values[0].name
+      }
+    },
     handleAdd () {
-      this.$refs.modal.add()
+      this.$refs.modal.add(this.collectionDropDown)
     },
     handleEdit (record) {
-      this.$refs.modal.edit(record)
+      this.$refs.modal.edit(record, this.collectionDropDown)
     },
     handleOk () {
       this.$refs.table.refresh(true)
     },
-    // 跳转到模板配置页面
-    jumpTemplateConfigLists (id) {
-      this.$router.push({ name: 'GenTemplateConfigList', query: { collectionId: id } })
-    },
     // 删除
     delByIds (ids) {
-      delGenTemplateCollection({ ids: ids.join(',') }).then(res => {
+      delGenTemplateConfig({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

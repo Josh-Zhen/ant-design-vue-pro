@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="模板组配置"
+    title="模板配置"
     style="top: 20px;"
     width="40%"
     v-model="visible"
@@ -11,11 +11,27 @@
       <a-form-item style="display:none">
         <a-input v-decorator="['id']" />
       </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模板組">
+        <a-select
+          allow-clear
+          placeholder="请选择模板組"
+          v-decorator="['collectionId',{rules: [{ required: true, message: '请选择模板組！'}]}]">
+          <a-select-option v-for="(item,index) in collectionDropDown" :key="index" :value="item.id">
+            {{ item.name }}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="名称">
         <a-input
           allow-clear
           placeholder="请输入名称"
           v-decorator="['name', {rules: [{required: true, message: '请输入名称'}]}]" />
+      </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="后缀名">
+        <a-input
+          allow-clear
+          placeholder="请输入后缀名"
+          v-decorator="['suffixName', {rules: [{required: true, message: '请输入后缀名'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态">
         <a-switch v-decorator="['state', {rules: [{required: true, message: '请选择状态'}], valuePropName: 'checked' }]" />
@@ -24,11 +40,11 @@
   </a-modal>
 </template>
 <script>
-import { saveGenTemplateCollection } from '@/api/generator/genTemplateCollection'
+import { saveGenTemplateConfig } from '@/api/generator/genTemplateConfig'
 import pick from 'lodash.pick'
 
 export default {
-  name: 'GenTemplateCollectionModal',
+  name: 'GenTemplateConfigModal',
   data () {
     return {
       visible: false,
@@ -42,19 +58,22 @@ export default {
       },
       confirmLoading: false,
       mdl: {},
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      collectionDropDown: [],
+      statusDictDropDown: []
     }
   },
   methods: {
-    add () {
+    add (collectionDropDown) {
       this.form.resetFields()
-      this.edit({ id: 0, state: true })
+      this.edit({ id: 0, state: true }, collectionDropDown)
     },
-    edit (record) {
+    edit (record, collectionDropDown) {
+      this.collectionDropDown = collectionDropDown
       this.mdl = Object.assign(record)
       this.visible = true
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'state'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'collectionId', 'name', 'suffixName', 'state'))
       })
     },
     handleSubmit (e) {
@@ -62,7 +81,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenTemplateCollection(values).then(res => {
+          saveGenTemplateConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')
