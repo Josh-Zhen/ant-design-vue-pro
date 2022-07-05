@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 const api = {
-  genTables: '/genTables'
+  genTables: '/genTable'
 }
 
 /**
  * 分页查询表配置
  */
-export function getTablesPageList (parameter) {
+export function getTablePageList (parameter) {
   return request({
     url: api.genTables + '/pageList',
     method: 'get',
@@ -18,7 +18,7 @@ export function getTablesPageList (parameter) {
 /**
  * 保存表配置
  */
-export function saveGenTables (parameter) {
+export function saveGenTable (parameter) {
   return request({
     url: api.genTables + '/save',
     method: 'post',
@@ -32,7 +32,7 @@ export function saveGenTables (parameter) {
 /**
  * 修改表配置
  */
-export function updateGenTables (parameter) {
+export function updateGenTable (parameter) {
   return request({
     url: api.genTables + '/update',
     method: 'post',
@@ -46,7 +46,7 @@ export function updateGenTables (parameter) {
 /**
  * 删除表配置
  */
-export function delGenTables (parameter) {
+export function delGenTable (parameter) {
   return request({
     url: api.genTables + '/delete',
     method: 'post',
@@ -57,7 +57,7 @@ export function delGenTables (parameter) {
 /**
  * 查詢需要添加的表
  */
-export function getTablesList (parameter) {
+export function getTableList (parameter) {
   return request({
     url: api.genTables + '/list',
     method: 'get',
@@ -68,7 +68,7 @@ export function getTablesList (parameter) {
 /**
  * 生成表
  */
-export function generateTables (parameter) {
+export function generateTable (parameter) {
   return request({
     url: api.genTables + '/generate',
     method: 'post',

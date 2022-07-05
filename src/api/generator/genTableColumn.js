@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 const api = {
-  genTablesColumn: '/genTablesColumn'
+  genTablesColumn: '/genTableColumn'
 }
 
 /**
@@ -16,9 +16,9 @@ export function getTableColumnPageList (parameter) {
 }
 
 /**
- * 保存表字段詳情
+ * 刷新表字段
  */
-export function refreshGenTablesColumn (parameter) {
+export function refreshGenTableColumn (parameter) {
   return request({
     url: api.genTablesColumn + '/refresh',
     method: 'post',
@@ -32,7 +32,7 @@ export function refreshGenTablesColumn (parameter) {
 /**
  * 修改表字段詳情
  */
-export function updateGenTablesColumn (parameter) {
+export function updateGenTableColumn (parameter) {
   return request({
     url: api.genTablesColumn + '/update',
     method: 'post',

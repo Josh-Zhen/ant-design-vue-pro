@@ -46,6 +46,8 @@
         {{ databaseIdFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="handlePreview(record.id)">预览</a>
+        <a-divider type="vertical" />
         <a @click="jumpTablesColumnLists(record)">字段配置</a>
         <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
@@ -55,25 +57,28 @@
     </s-table>
     <gen-tables-modal ref="model" @ok="handleOk" />
     <gen-tables-add-list-modal ref="addModel" @ok="handleOk" />
-    <gen-tables-column-list ref="columnModal" />
+    <gen-table-column-list ref="columnModal" />
+    <gen-template-preview-modal ref="preview" @ok="handleOk" />
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { delGenTables, getTablesPageList } from '@/api/generator/genTables'
+import { delGenTable, getTablePageList } from '@/api/generator/genTable'
 import { DictTypeDropDown } from '@/api/generator/genDatabase'
-import GenTablesModal from '@/views/generator/tables/modal/GenTablesModal'
-import GenTablesAddListModal from '@/views/generator/tables/modal/GenTablesAddListModal'
-import GenTablesColumnList from '@/views/generator/tablesColumn/GenTablesColumnList'
+import GenTableModel from '@/views/generator/table/modal/GenTableModal'
+import GenTableAddListModel from '@/views/generator/table/modal/GenTableAddListModal'
+import GenTableColumnList from '@/views/generator/tableColumn/GenTableColumnList'
+import GenTemplatePreviewModal from '@/views/generator/template/modal/GenTemplatePreviewModal'
 
 export default {
-  name: 'GenTablesList',
+  name: 'GenTableList',
   components: {
-    GenTablesColumnList,
-    GenTablesAddListModal,
+    GenTemplatePreviewModal,
+    GenTableColumnList,
+    GenTableAddListModel,
     STable,
-    GenTablesModal
+    GenTableModel
   },
   data () {
     return {
@@ -157,7 +162,7 @@ export default {
       ],
       loadData: parameter => {
         this.queryParam.databaseId = this.databaseId
-        return getTablesPageList(Object.assign(parameter, this.queryParam)).then(res => {
+        return getTablePageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
@@ -196,15 +201,18 @@ export default {
     handleEdit (record) {
       this.$refs.model.edit(record, this.idDropDown)
     },
+    handleOk () {
+      this.$refs.table.refresh(true)
+    },
+    handlePreview (id) {
+      this.$refs.preview.show(id)
+    },
     // 跳转字段配置页面
     jumpTablesColumnLists (record) {
       this.$refs.columnModal.getTableColumnList(record.databaseId, record.id, record.tableName)
     },
-    handleOk () {
-      this.$refs.table.refresh(true)
-    },
     delByIds (ids) {
-      delGenTables({ ids: ids.join(',') }).then(res => {
+      delGenTable({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

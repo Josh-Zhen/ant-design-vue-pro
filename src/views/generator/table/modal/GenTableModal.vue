@@ -42,10 +42,10 @@
 
 <script>
 import pick from 'lodash.pick'
-import { updateGenTables } from '@/api/generator/genTables'
+import { updateGenTable } from '@/api/generator/genTable'
 
 export default {
-  name: 'GenTablesModel',
+  name: 'GenTableModel',
   data () {
     return {
       visible: false,
@@ -87,7 +87,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          updateGenTables(values).then(res => {
+          updateGenTable(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

@@ -16,9 +16,9 @@ const constantRouterComponents = {
 
   // generator
   GenDatabaseList: () => import('@/views/generator/database/GenDatabaseList'),
-  GenTablesConfigList: () => import('@/views/generator/tablesConfig/GenTablesConfigList'),
+  GenTablesConfigList: () => import('@/views/generator/tableConfig/GenTableConfigList'),
   SysDictTypeList: () => import('@/views/system/dict/SysDictTypeList'),
-  GenTablesList: () => import('@/views/generator/tables/GenTablesList'),
+  GenTablesList: () => import('@/views/generator/table/GenTableList'),
   GenTemplateCollectionList: () => import('@/views/generator/template/GenTemplateCollectionList'),
   GenTemplateConfigList: () => import('@/views/generator/template/GenTemplateConfigList'),
 

@@ -59,8 +59,7 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      collectionDropDown: [],
-      statusDictDropDown: []
+      collectionDropDown: []
     }
   },
   methods: {

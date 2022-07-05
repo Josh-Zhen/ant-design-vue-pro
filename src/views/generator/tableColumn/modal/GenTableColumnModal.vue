@@ -132,12 +132,12 @@
   </a-modal>
 </template>
 <script>
-import { updateGenTablesColumn } from '@/api/generator/genTablesColumn'
+import { updateGenTableColumn } from '@/api/generator/genTableColumn'
 import pick from 'lodash.pick'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
 export default {
-  name: 'GenTablesColumnModal',
+  name: 'GenTableColumnModal',
   data () {
     return {
       visible: false,
@@ -185,7 +185,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          updateGenTablesColumn(values).then(res => {
+          updateGenTableColumn(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

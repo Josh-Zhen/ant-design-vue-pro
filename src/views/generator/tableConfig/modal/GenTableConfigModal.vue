@@ -57,7 +57,7 @@
   </a-modal>
 </template>
 <script>
-import { saveGenTablesConfig } from '@/api/generator/genTablesConfig'
+import { saveGenTableConfig } from '@/api/generator/genTableConfig'
 import pick from 'lodash.pick'
 
 export default {
@@ -101,7 +101,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
-          saveGenTablesConfig(values).then(res => {
+          saveGenTableConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')

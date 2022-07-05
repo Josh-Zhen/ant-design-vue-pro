@@ -43,12 +43,12 @@
 
 <script>
 import { STable } from '@/components'
-import { getTablesList, saveGenTables } from '@/api/generator/genTables'
-import { getTablesConfig } from '@/api/generator/genTablesConfig'
+import { getTableList, saveGenTable } from '@/api/generator/genTable'
+import { getTableConfig } from '@/api/generator/genTableConfig'
 import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
-  name: 'GenTablesAddListModel',
+  name: 'GenTableAddListModel',
   components: {
     SystemConfigModal,
     STable
@@ -97,7 +97,7 @@ export default {
       this.data = []
       this.visible = true
       this.queryParam.databaseId = databaseId
-      getTablesList(this.queryParam).then(res => {
+      getTableList(this.queryParam).then(res => {
         if (res.code === 200) {
           this.data = res.data
         } else if (res.code === 11005) {
@@ -122,7 +122,7 @@ export default {
         if (!err) {
           this.confirmLoading = true
           values = this.queryParam
-          saveGenTables(values).then(res => {
+          saveGenTable(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')
               this.$emit('ok')
@@ -140,7 +140,7 @@ export default {
     },
     // 加載作者配置
     handleTablesConfig () {
-      getTablesConfig().then(res => {
+      getTableConfig().then(res => {
         if (res.code === 200) {
           this.tablesConfig = res.data
           this.queryParam.tableConfigId = res.data[0].id
@@ -158,7 +158,7 @@ export default {
       }
     },
     handleOk () {
-      getTablesList(this.queryParam).then(res => {
+      getTableList(this.queryParam).then(res => {
         if (res.code === 200) {
           this.data = res.data
         } else {

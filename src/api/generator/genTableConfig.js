@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
 const api = {
-  genTablesConfig: '/genTablesConfig'
+  genTablesConfig: '/genTableConfig'
 }
 
 /**
  * 分页查询表配置
  */
-export function getGenTablesConfigPageList (parameter) {
+export function getGenTableConfigPageList (parameter) {
   return request({
     url: api.genTablesConfig + '/pageList',
     method: 'get',
@@ -18,7 +18,7 @@ export function getGenTablesConfigPageList (parameter) {
 /**
  * 修改/保存表配置
  */
-export function saveGenTablesConfig (parameter) {
+export function saveGenTableConfig (parameter) {
   return request({
     url: api.genTablesConfig + (parameter.id > 0 ? '/update' : '/save'),
     method: 'post',
@@ -32,7 +32,7 @@ export function saveGenTablesConfig (parameter) {
 /**
  * 删除表配置
  */
-export function delGenTablesConfig (parameter) {
+export function delGenTableConfig (parameter) {
   return request({
     url: api.genTablesConfig + '/delete',
     method: 'post',
@@ -43,9 +43,9 @@ export function delGenTablesConfig (parameter) {
 /**
  * 獲取表配置
  */
-export function getTablesConfig () {
+export function getTableConfig () {
   return request({
-    url: api.genTablesConfig + '/getTablesConfig',
+    url: api.genTablesConfig + '/getTableConfig',
     method: 'get'
   })
 }

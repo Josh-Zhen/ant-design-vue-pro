@@ -39,3 +39,13 @@ export function delGenTemplateConfig (parameter) {
     params: parameter
   })
 }
+
+/**
+ * 獲取所有模板
+ */
+export function preview (tableId) {
+  return request({
+    url: api.genTemplateConfig + '/preview/' + `${tableId}`,
+    method: 'get'
+  })
+}

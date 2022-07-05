@@ -46,12 +46,15 @@
         {{ collectionFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="jumpEditTemplate(record)">编辑模板</a>
+        <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
     <gen-template-config-modal ref="modal" @ok="handleOk" />
+    <gen-template-modal ref="template" @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -61,10 +64,12 @@ import { delGenTemplateConfig, getGenTemplateConfigPageList } from '@/api/genera
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenTemplateConfigModal from '@/views/generator/template/modal/GenTemplateConfigModal'
 import { getCollectionName } from '@/api/generator/genTemplateCollection'
+import GenTemplateModal from '@/views/generator/template/modal/GenTemplateModal'
 
 export default {
   name: 'GenTemplateConfigList',
   components: {
+    GenTemplateModal,
     GenTemplateConfigModal,
     STable
   },
@@ -133,7 +138,7 @@ export default {
       },
       selectedRowKeys: [],
       selectedRows: [],
-      statusDictDropDown: [],
+      statusDictTypeDropDown: [],
       collectionDropDown: []
     }
   },
@@ -177,6 +182,10 @@ export default {
     },
     handleOk () {
       this.$refs.table.refresh(true)
+    },
+    // 跳转到模板内容编辑页面
+    jumpEditTemplate (record) {
+      this.$refs.template.editTemplate(record)
     },
     // 删除
     delByIds (ids) {

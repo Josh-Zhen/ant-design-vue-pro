@@ -61,13 +61,13 @@
 
 <script>
 import { STable } from '@/components'
-import { delGenTablesConfig, getGenTablesConfigPageList } from '@/api/generator/genTablesConfig'
-import GenTablesConfigModal from '@/views/generator/tablesConfig/modal/GenTablesConfigModal'
+import { delGenTableConfig, getGenTableConfigPageList } from '@/api/generator/genTableConfig'
+import GenTablesConfigModal from '@/views/generator/tableConfig/modal/GenTableConfigModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
-  name: 'GenTablesConfigList',
+  name: 'GenTableConfigList',
   components: {
     SystemConfigModal,
     STable,
@@ -143,7 +143,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        return getGenTablesConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
+        return getGenTableConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
       },
@@ -184,7 +184,7 @@ export default {
       this.$refs.table.refresh(true)
     },
     delByIds (ids) {
-      delGenTablesConfig({ ids: ids.join(',') }).then(res => {
+      delGenTableConfig({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

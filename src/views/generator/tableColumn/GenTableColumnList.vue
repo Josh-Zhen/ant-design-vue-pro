@@ -103,7 +103,7 @@
           <a @click="delByIds([record.id])">删除</a>
         </span>
       </s-table>
-      <gen-tables-column-modal ref="modal" @ok="handleOk" />
+      <gen-table-column-modal ref="modal" @ok="handleOk" />
       <system-config-modal ref="salt" @ok="handleOk" />
     </a-card>
   </a-modal>
@@ -111,17 +111,17 @@
 
 <script>
 import { STable } from '@/components'
-import { delGenTableColumns, getTableColumnPageList, refreshGenTablesColumn } from '@/api/generator/genTablesColumn'
-import GenTablesColumnModal from '@/views/generator/tablesColumn/modal/GenTablesColumnModal'
+import { delGenTableColumns, getTableColumnPageList, refreshGenTableColumn } from '@/api/generator/genTableColumn'
+import GenTableColumnModal from '@/views/generator/tableColumn/modal/GenTableColumnModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
 
 export default {
-  name: 'GenTablesColumnList',
+  name: 'GenTableColumnList',
   components: {
     SystemConfigModal,
     STable,
-    GenTablesColumnModal
+    GenTableColumnModal
   },
   data () {
     return {
@@ -317,13 +317,14 @@ export default {
     },
     // 刷新表字段
     handleRefresh () {
-      refreshGenTablesColumn({
+      refreshGenTableColumn({
         databaseId: this.databaseId,
         tableName: this.tableName,
         tableId: this.tableId
       }).then(res => {
         if (res.code === 200) {
           this.$refs.table.refresh()
+          this.$message.success('更新成功')
         } else if (res.code === 11005) {
           this.$refs.salt.handleSalt(false)
         } else {
