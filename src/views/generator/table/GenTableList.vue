@@ -55,8 +55,8 @@
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-tables-modal ref="model" @ok="handleOk" />
-    <gen-tables-add-list-modal ref="addModel" @ok="handleOk" />
+    <gen-table-model ref="model" @ok="handleOk" />
+    <gen-table-add-list-model ref="addModel" @ok="handleOk" />
     <gen-table-column-list ref="columnModal" />
     <gen-template-preview-modal ref="preview" @ok="handleOk" />
   </a-card>

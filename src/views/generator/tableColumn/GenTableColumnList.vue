@@ -294,10 +294,7 @@ export default {
       this.databaseId = databaseId
       this.tableName = tableName
       this.tableId = tableId
-      try {
-        this.$refs.table.refresh()
-      } catch (e) {
-      }
+      this.$refs.table.refresh()
     },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys

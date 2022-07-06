@@ -152,8 +152,8 @@ export default {
       this.$refs.table.refresh(true)
     },
     // 跳转到模板配置页面
-    jumpTemplateConfigLists (id) {
-      this.$router.push({ name: 'GenTemplateConfigList', query: { collectionId: id } })
+    jumpTemplateConfigLists (templateCollectionId) {
+      this.$router.push({ name: 'GenTemplateConfigList', query: { collectionId: templateCollectionId } })
     },
     // 删除
     delByIds (ids) {

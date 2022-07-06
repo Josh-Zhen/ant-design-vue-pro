@@ -54,7 +54,7 @@
       </span>
     </s-table>
     <gen-template-config-modal ref="modal" @ok="handleOk" />
-    <gen-template-modal ref="template" @ok="handleOk"/>
+    <gen-template-modal ref="template" @ok="handleOk" />
   </a-card>
 </template>
 
@@ -132,6 +132,7 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         this.queryParam.collectionId = this.$route.query.collectionId
+        console.log(this.queryParam.collectionId)
         return getGenTemplateConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
