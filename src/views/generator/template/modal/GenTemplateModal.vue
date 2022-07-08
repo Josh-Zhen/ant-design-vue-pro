@@ -2,23 +2,17 @@
   <a-modal
     title="模板内容"
     style="top: 20px;"
-    width="80%"
+    width="65%"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
     <a-form :form="form">
       <a-form-item style="display:none">
-        <a-input v-decorator="['id']" />
+        <a-input v-decorator="['id']"/>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模板内容">
-        <quill-editor
-          ref="myTextEditor"
-          v-model="template"
-          :options="editorOption"
-        >
-        </quill-editor>
-      </a-form-item>
+      <quill-editor ref="myTextEditor" v-model="template" :options="editorOption">
+      </quill-editor>
     </a-form>
   </a-modal>
 </template>
@@ -26,11 +20,9 @@
 import { saveGenTemplateConfig } from '@/api/generator/genTemplateConfig'
 import pick from 'lodash.pick'
 import hljs from 'highlight.js'
+import 'highlight.js/styles/monokai-sublime.css'
 import { quillEditor } from 'vue-quill-editor'
 
-hljs.configure({
-  languages: ['java', 'javascript']
-})
 export default {
   name: 'GenTemplateModal',
   components: {
@@ -39,14 +31,6 @@ export default {
   data () {
     return {
       visible: false,
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
@@ -61,7 +45,9 @@ export default {
             highlight: text => hljs.highlightAuto(text).value
           }
         }
-      }
+      },
+      // 默認文本
+      defaultTemplate: '<pre class="ql-syntax" spellcheck="false">\n&nbsp;</pre>'
     }
   },
   methods: {
@@ -71,11 +57,16 @@ export default {
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id'))
       })
-      this.handleInitialization(record.suffixName, record.template)
+      this.handleInitialization(record.template)
     },
     // 處理文本初始化
-    handleInitialization (suffixName, template) {
-      this.template = template
+    handleInitialization (template) {
+      if (template === null || template === undefined || template === '') {
+        this.template = this.defaultTemplate
+        console.log('測試:' + this.template)
+      } else {
+        this.template = template
+      }
     },
     handleSubmit (e) {
       e.preventDefault()
