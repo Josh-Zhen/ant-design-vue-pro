@@ -1,8 +1,8 @@
 <template>
   <a-modal
+    title="预览模板"
+    style="top: 20px;"
     v-model="visible"
-    :width="1000"
-    :footer="null"
     @ok="handleOk"
   >
     <a-tabs @change="callback" v-if="codes" tabPosition="left">

@@ -15,10 +15,8 @@
         <quill-editor
           ref="myTextEditor"
           v-model="template"
-          :config="editorOption"
-          @blur="onEditorBlur($event)"
-          @focus="onEditorFocus($event)"
-          @ready="onEditorReady($event)">
+          :options="editorOption"
+        >
         </quill-editor>
       </a-form-item>
     </a-form>
@@ -30,6 +28,9 @@ import pick from 'lodash.pick'
 import hljs from 'highlight.js'
 import { quillEditor } from 'vue-quill-editor'
 
+hljs.configure({
+  languages: ['java', 'javascript']
+})
 export default {
   name: 'GenTemplateModal',
   components: {
@@ -53,25 +54,8 @@ export default {
       editorOption: {
         modules: {
           toolbar: [
-            ['bold', 'italic', 'underline', 'strike'], // 字体
-            ['blockquote', 'code-block'],
-
-            [{ 'header': 1 }, { 'header': 2 }], // 样式标题
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }], // 下标、上标
-            [{ 'indent': '-1' }, { 'indent': '+1' }], // 缩进
-            [{ 'direction': 'rtl' }]
-
-            // [{ 'size': ['small', false, 'large', 'huge'] }], // 字体
-            // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-            // [{ 'color': [] }, { 'background': [] }],
-            // [{ 'font': [] }],
-            // [{ 'align': [] }],
-
-            // ['clean'] // 格式清除
+            ['code-block']
           ],
-
           // 语法高亮
           syntax: {
             highlight: text => hljs.highlightAuto(text).value
@@ -87,20 +71,11 @@ export default {
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id'))
       })
-      this.template = record.template
+      this.handleInitialization(record.suffixName, record.template)
     },
-    onEditorBlur (editor) {
-      // console.log('editor blur!', editor)
-    },
-    onEditorFocus (editor) {
-      // console.log('editor focus!', editor)
-    },
-    onEditorReady (editor) {
-      // console.log('editor ready!', editor)
-    },
-    onEditorChange ({ editor, html, text }) {
-      console.log('editor change!', editor, html, text)
-      this.content = html
+    // 處理文本初始化
+    handleInitialization (suffixName, template) {
+      this.template = template
     },
     handleSubmit (e) {
       e.preventDefault()
