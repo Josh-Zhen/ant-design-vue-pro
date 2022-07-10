@@ -175,7 +175,10 @@ export default {
       }
     },
     handleAdd () {
-      this.$refs.modal.add(this.collectionDropDown)
+      if (this.queryParam.collectionId == null) {
+        this.queryParam.collectionId = 1
+      }
+      this.$refs.modal.add(this.queryParam.collectionId, this.collectionDropDown)
     },
     handleEdit (record) {
       this.$refs.modal.edit(record, this.collectionDropDown)

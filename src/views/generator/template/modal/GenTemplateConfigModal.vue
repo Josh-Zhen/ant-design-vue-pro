@@ -63,9 +63,9 @@ export default {
     }
   },
   methods: {
-    add (collectionDropDown) {
+    add (collectionId, collectionDropDown) {
       this.form.resetFields()
-      this.edit({ id: 0, state: true }, collectionDropDown)
+      this.edit({ id: 0, collectionId: collectionId, state: true }, collectionDropDown)
     },
     edit (record, collectionDropDown) {
       this.collectionDropDown = collectionDropDown
