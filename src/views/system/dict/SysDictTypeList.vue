@@ -41,7 +41,7 @@
       :data="loadData"
     >
       <span slot="status" slot-scope="text,record">
-        <a-popconfirm placement="top" :title="text===0? '确定停用？':'确定启用？'" @confirm="() => editStatus(text,record)">
+        <a-popconfirm placement="top" :title="text===true? '确定停用？':'确定启用？'" @confirm="() => editStatus(record)">
           <a>{{ statusFilter(text) }}</a>
         </a-popconfirm>
       </span>
@@ -161,7 +161,6 @@ export default {
       selectedRows: []
     }
   },
-  filters: {},
   created () {
     this.sysDictTypeDropDown()
   },
@@ -182,13 +181,8 @@ export default {
         this.statusDictTypeDropDown = res.data
       })
     },
-    editStatus (code, record) {
-      if (code === 0) {
-        this.status = 1
-      } else if (code === 1) {
-        this.status = 0
-      }
-      saveSysDictType({ id: record.id, status: this.status }).then(res => {
+    editStatus (record) {
+      saveSysDictType({ id: record.id, status: !record.status }).then(res => {
         if (res.success) {
           this.$message.success('操作成功')
           this.$refs.table.refresh()

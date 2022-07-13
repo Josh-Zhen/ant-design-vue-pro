@@ -5,7 +5,7 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="名称">
-              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name" />
+              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name"/>
             </a-form-item>
           </a-col>
 
@@ -42,25 +42,36 @@
           {{ statusFilter(text) }}
         </a-tag>
       </span>
+      <span slot="display" slot-scope="text,record">
+        <a-popconfirm placement="top" :title="text===true? '不展示？':'展示？'" @confirm="() => editDisplay(record)">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </a-popconfirm>
+      </span>
       <span slot="collectionId" slot-scope="text">
         {{ collectionFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="jumpEditTemplate(record)">编辑模板</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-template-config-modal ref="modal" @ok="handleOk" />
-    <gen-template-modal ref="template" @ok="handleOk" />
+    <gen-template-config-modal ref="modal" @ok="handleOk"/>
+    <gen-template-modal ref="template" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import { delGenTemplateConfig, getGenTemplateConfigPageList } from '@/api/generator/genTemplateConfig'
+import {
+  delGenTemplateConfig,
+  getGenTemplateConfigPageList,
+  saveGenTemplateConfig
+} from '@/api/generator/genTemplateConfig'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenTemplateConfigModal from '@/views/generator/template/modal/GenTemplateConfigModal'
 import { getCollectionName } from '@/api/generator/genTemplateCollection'
@@ -105,6 +116,12 @@ export default {
           title: '后缀名',
           dataIndex: 'suffixName',
           scopedSlots: { customRender: 'suffixName' },
+          align: 'center'
+        },
+        {
+          title: '展示',
+          dataIndex: 'display',
+          scopedSlots: { customRender: 'display' },
           align: 'center'
         },
         {
@@ -182,6 +199,17 @@ export default {
     },
     handleEdit (record) {
       this.$refs.modal.edit(record, this.collectionDropDown)
+    },
+    // 修改展示状态
+    editDisplay (record) {
+      saveGenTemplateConfig({ id: record.id, display: !record.display }).then(res => {
+        if (res.success) {
+          this.$message.success('操作成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('操作失败：' + res.message)
+        }
+      })
     },
     handleOk () {
       this.$refs.table.refresh(true)
