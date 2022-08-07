@@ -39,7 +39,7 @@
     >
       <span slot="state" slot-scope="text">
         <a-tag :color="text === true ? 'purple' :'blue'">
-          {{ statusFilter(text) }}
+          {{ commonStatusFilter(text) }}
         </a-tag>
       </span>
       <span slot="display" slot-scope="text,record">
@@ -155,6 +155,7 @@ export default {
       },
       selectedRowKeys: [],
       selectedRows: [],
+      commonStatusDictTypeDropDown: [],
       statusDictTypeDropDown: [],
       collectionDropDown: []
     }
@@ -170,12 +171,22 @@ export default {
     },
     // 加載字典
     dictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'common_status' }).then(res => {
+        this.commonStatusDictTypeDropDown = res.data
+      })
       sysDictTypeDropDown({ code: 'status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
       getCollectionName().then(res => {
         this.collectionDropDown = res.data
       })
+    },
+    commonStatusFilter (status) {
+      // eslint-disable-next-line eqeqeq
+      const values = this.commonStatusDictTypeDropDown.filter(item => item.key == status)
+      if (values.length > 0) {
+        return values[0].name
+      }
     },
     statusFilter (status) {
       // eslint-disable-next-line eqeqeq

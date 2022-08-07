@@ -124,8 +124,8 @@ export default {
         // },
         {
           title: '类名',
-          dataIndex: 'className',
-          scopedSlots: { customRender: 'className' },
+          dataIndex: 'objectName',
+          scopedSlots: { customRender: 'objectName' },
           align: 'center'
         },
         {

@@ -131,7 +131,7 @@ export default {
       this.selectedRows = selectedRows
     },
     sysDictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'status' }).then(res => {
+      sysDictTypeDropDown({ code: 'common_status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
     },

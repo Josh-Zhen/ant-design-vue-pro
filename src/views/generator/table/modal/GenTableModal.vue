@@ -21,8 +21,8 @@
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="类名">
         <a-input
           allow-clear
-          placeholder="请输入类名"
-          v-decorator="['className',{rules: [{ required: true, pattern: /^[A-Z][0-9a-zA-Z_]+$/, message: '请输入正确格式的类名！'}]}]" />
+          placeholder="请输入对象名"
+          v-decorator="['objectName',{rules: [{ required: true, pattern: /^[a-z][0-9a-zA-Z_]+$/, message: '请输入正确格式的类名！'}]}]" />
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="业务名">
         <a-input
@@ -71,7 +71,7 @@ export default {
       this.visible = true
       this.idDropDown = idDropDown
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'databaseId', 'tableName', 'tableComment', 'className', 'businessName', 'functionName'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'databaseId', 'tableName', 'tableComment', 'objectName', 'businessName', 'functionName'))
       })
     },
     // 數據庫名稱匹配
