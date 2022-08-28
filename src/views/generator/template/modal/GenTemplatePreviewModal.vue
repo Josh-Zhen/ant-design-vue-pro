@@ -28,9 +28,11 @@ export default {
   methods: {
     show (tableId) {
       preview(tableId).then(res => {
-        console.log(res.data)
-        // TODO 補異常處理
-        this.codes = res.data
+        if (res.code === 200) {
+          this.codes = res.data
+        } else {
+          this.$message.error(res.message)
+        }
       })
       this.visible = true
     },
