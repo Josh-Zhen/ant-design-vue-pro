@@ -43,7 +43,7 @@
         </a-tag>
       </span>
       <span slot="display" slot-scope="text,record">
-        <a-popconfirm placement="top" :title="text===true? '不展示？':'展示？'" @confirm="() => editDisplay(record)">
+        <a-popconfirm placement="top" :title="text===true? '不使用？':'使用？'" @confirm="() => editDisplay(record)">
           <a-tag :color="text === true ? 'purple' :'blue'">
             {{ statusFilter(text) }}
           </a-tag>

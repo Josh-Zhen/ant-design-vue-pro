@@ -116,12 +116,6 @@ export default {
           scopedSlots: { customRender: 'tableComment' },
           align: 'center'
         },
-        // {
-        //   title: '包路径',
-        //   dataIndex: 'packagePath',
-        //   scopedSlots: { customRender: 'packagePath' },
-        //   align: 'center'
-        // },
         {
           title: '类名',
           dataIndex: 'objectName',

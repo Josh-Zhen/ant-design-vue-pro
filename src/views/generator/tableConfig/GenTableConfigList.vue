@@ -114,6 +114,12 @@ export default {
           align: 'center'
         },
         {
+          title: '时间格式',
+          dataIndex: 'dateFormat',
+          scopedSlots: { customRender: 'dateFormat' },
+          align: 'center'
+        },
+        {
           title: '表前綴',
           dataIndex: 'tablePrefix',
           scopedSlots: { customRender: 'tablePrefix' },

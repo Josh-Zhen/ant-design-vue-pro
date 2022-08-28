@@ -9,25 +9,25 @@
   >
     <a-form :form="form">
       <a-form-item style="display:none">
-        <a-input v-decorator="['id']" />
+        <a-input v-decorator="['id']"/>
       </a-form-item>
       <a-form-item>
         <a-alert
           type="warning"
           show-icon
-          message="生成的文件路径会以包路径 + 模块名组成 例如：包路径为&quot;com.moonlit&quot; 模块名为&quot;generator&quot;则生成的文件路径为&quot;com.moonlit.generator&quot;" />
+          message="生成的文件路径会以包路径 + 模块名组成 例如：包路径为&quot;com.moonlit&quot; 模块名为&quot;generator&quot;则生成的文件路径为&quot;com.moonlit.generator&quot;"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="配置名">
         <a-input
           allow-clear
           placeholder="请输入配置名"
-          v-decorator="['name', {rules: [{required: true, message: '请输入配置名'}]}]" />
+          v-decorator="['name', {rules: [{required: true, message: '请输入配置名'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="作者">
         <a-input
           allow-clear
           placeholder="请输入作者名"
-          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]" />
+          v-decorator="['author', {rules: [{required: true, message: '请输入作者名'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="包名">
         <a-input
@@ -40,18 +40,28 @@
         <a-input
           allow-clear
           placeholder="请输入模块名"
-          v-decorator="['moduleName',{rules: [{pattern:/^[a-zA-Z]+$/, message: '请输入格式正确的模块名'}]}]" />
+          v-decorator="['moduleName',{rules: [{pattern:/^[a-zA-Z]+$/, message: '请输入格式正确的模块名'}]}]"/>
+      </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="时间格式">
+        <a-select
+          allow-clear
+          placeholder="请选择时间格式"
+          v-decorator="['dateFormat']">
+          <a-select-option v-for="(item) in dateFormats" :key="item" :value="item">
+            {{ item }}
+          </a-select-option>
+        </a-select>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="移除表前綴">
         <a-switch
           @change="onChange"
-          v-decorator="['removePrefix', { valuePropName: 'checked' }]" />
+          v-decorator="['removePrefix', { valuePropName: 'checked' }]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="表前綴" v-show="inputVisible">
         <a-input
           allow-clear
           placeholder="请输入表前綴"
-          v-decorator="['tablePrefix',{rules: [{required: inputVisible, message: '请输入表前綴'}]}]" />
+          v-decorator="['tablePrefix',{rules: [{required: inputVisible, message: '请输入表前綴'}]}]"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -76,7 +86,8 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      inputVisible: false
+      inputVisible: false,
+      dateFormats: ['yyyy/MM/dd HH:mm', 'yyyy/MM/dd', 'dd/MM/yyyy HH:mm', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd', 'dd-MM-yyyy HH:mm']
     }
   },
   methods: {
@@ -89,7 +100,7 @@ export default {
       this.visible = true
       this.inputVisible = false
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'tablePrefix', 'removePrefix'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'dateFormat', 'tablePrefix', 'removePrefix'))
       })
     },
     // 開啓表前綴
