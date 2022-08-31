@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="字典类型配置"
+    :title="title"
     style="top: 20px;"
     width="40%"
     v-model="visible"
@@ -60,7 +60,8 @@ export default {
       confirmLoading: false,
       mdl: {},
       statusDef: true,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      title: ''
     }
   },
   beforeCreate () {
@@ -74,6 +75,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
+      record.id === 0 ? this.title = '添加字典类型' : this.title = '修改字典类型'
       this.visible = true
       this.$nextTick(() => {
         this.statusDef = record.status !== 0
