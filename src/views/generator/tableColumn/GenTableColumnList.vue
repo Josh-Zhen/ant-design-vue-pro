@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="表字段"
+    title="字段详情"
     width="85%"
     :dialog-style="{ top: '20px' }"
     v-model="visible"

@@ -48,7 +48,7 @@
       <span slot="action" slot-scope="text, record">
         <a @click="handlePreview(record.id)">预览</a>
         <a-divider type="vertical" />
-        <a @click="jumpTablesColumnLists(record)">字段配置</a>
+        <a @click="jumpTablesColumnLists(record)">字段详情</a>
         <a-divider type="vertical" />
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
@@ -201,7 +201,7 @@ export default {
     handlePreview (id) {
       this.$refs.preview.show(id)
     },
-    // 跳转字段配置页面
+    // 跳转字段详情页面
     jumpTablesColumnLists (record) {
       this.$refs.columnModal.getTableColumnList(record.databaseId, record.id, record.tableName)
     },

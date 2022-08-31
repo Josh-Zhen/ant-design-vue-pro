@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="模板组配置"
+    :title="title"
     style="top: 20px;"
     width="40%"
     v-model="visible"
@@ -42,7 +42,8 @@ export default {
       },
       confirmLoading: false,
       mdl: {},
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      title: ''
     }
   },
   methods: {
@@ -52,6 +53,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
+      record.id === 0 ? this.title = '添加模板组' : this.title = '修改模板组'
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'state'))

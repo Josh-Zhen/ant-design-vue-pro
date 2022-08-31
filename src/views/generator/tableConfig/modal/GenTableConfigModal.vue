@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="表配置"
+    :title="title"
     style="top: 20px;"
     width="40%"
     v-model="visible"
@@ -87,7 +87,8 @@ export default {
       mdl: {},
       form: this.$form.createForm(this),
       inputVisible: false,
-      dateFormats: ['yyyy/MM/dd HH:mm', 'yyyy/MM/dd', 'dd/MM/yyyy HH:mm', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd', 'dd-MM-yyyy HH:mm']
+      dateFormats: ['yyyy/MM/dd HH:mm', 'yyyy/MM/dd', 'dd/MM/yyyy HH:mm', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd', 'dd-MM-yyyy HH:mm'],
+      title: ''
     }
   },
   methods: {
@@ -97,6 +98,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
+      record.id === 0 ? this.title = '添加表配置' : this.title = '修改表配置'
       this.visible = true
       this.inputVisible = false
       this.$nextTick(() => {
