@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="预览模板"
-    width="55%"
+    width="65%"
     style="top: 20px;"
     v-model="visible"
     :footer="null"

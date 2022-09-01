@@ -11,6 +11,12 @@
       <a-form-item style="display:none">
         <a-input v-decorator="['id']"/>
       </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模板名">
+        <a-input
+          :value="mdl.name"
+          disabled="true"
+        />
+      </a-form-item>
       <quill-editor ref="myTextEditor" v-model="template" :options="editorOption">
       </quill-editor>
     </a-form>
@@ -31,6 +37,14 @@ export default {
   data () {
     return {
       visible: false,
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+      },
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
@@ -63,7 +77,6 @@ export default {
     handleInitialization (template) {
       if (template === null || template === undefined || template === '') {
         this.template = this.defaultTemplate
-        console.log('測試:' + this.template)
       } else {
         this.template = template
       }

@@ -5,12 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="数据库名称">
-              <a-input allow-clear placeholder="请输入数据库名称" v-model="queryParam.name" />
+              <a-input allow-clear placeholder="请输入数据库名称" v-model="queryParam.name"/>
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="5">
             <a-form-item label="数据库地址">
-              <a-input allow-clear placeholder="请输入数据库地址" v-model="queryParam.address" />
+              <a-input allow-clear placeholder="请输入数据库地址" v-model="queryParam.address"/>
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="10">
@@ -46,13 +46,13 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="jumpTablesLists(record.id)">表配置</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-database-modal ref="modal" @ok="handleOk" />
+    <gen-database-modal ref="modal" @ok="handleOk"/>
   </a-card>
 </template>
 

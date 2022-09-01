@@ -5,7 +5,7 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="名称">
-              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name" />
+              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name"/>
             </a-form-item>
           </a-col>
 
@@ -44,13 +44,13 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="jumpTemplateConfigLists(record.id)">模板配置</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-template-collection-modal ref="modal" @ok="handleOk" />
+    <gen-template-collection-modal ref="modal" @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -58,7 +58,7 @@
 import { STable } from '@/components'
 import { delGenTemplateCollection, getGenTemplateCollectionPageList } from '@/api/generator/genTemplateCollection'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenTemplateCollectionModal from '@/views/generator/template/modal/GenTemplateCollectionModal'
+import GenTemplateCollectionModal from './modal/GenTemplateCollectionModal'
 
 export default {
   name: 'GenTemplateCollectionList',

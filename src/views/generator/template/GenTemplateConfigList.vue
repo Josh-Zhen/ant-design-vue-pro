@@ -73,9 +73,9 @@ import {
   saveGenTemplateConfig
 } from '@/api/generator/genTemplateConfig'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import GenTemplateConfigModal from '@/views/generator/template/modal/GenTemplateConfigModal'
 import { getCollectionName } from '@/api/generator/genTemplateCollection'
-import GenTemplateModal from '@/views/generator/template/modal/GenTemplateModal'
+import GenTemplateModal from './modal/GenTemplateModal'
+import GenTemplateConfigModal from './modal/GenTemplateConfigModal'
 
 export default {
   name: 'GenTemplateConfigList',
