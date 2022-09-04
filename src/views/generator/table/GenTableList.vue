@@ -46,6 +46,8 @@
         {{ databaseIdFilter(text) }}
       </span>
       <span slot="action" slot-scope="text, record">
+        <a @click="handleExport(record)">导出</a>
+        <a-divider type="vertical" />
         <a @click="handlePreview(record.id)">预览</a>
         <a-divider type="vertical" />
         <a @click="jumpTablesColumnLists(record)">字段详情</a>
@@ -59,6 +61,7 @@
     <gen-table-add-list-model ref="addModel" @ok="handleOk" />
     <gen-table-column-list ref="columnModal" />
     <gen-template-preview-modal ref="preview" @ok="handleOk" />
+    <gen-generator-code-modal ref="export" @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -70,10 +73,12 @@ import GenTableModel from '@/views/generator/table/modal/GenTableModal'
 import GenTableAddListModel from '@/views/generator/table/modal/GenTableAddListModal'
 import GenTableColumnList from '@/views/generator/tableColumn/GenTableColumnList'
 import GenTemplatePreviewModal from '@/views/generator/template/modal/GenTemplatePreviewModal'
+import GenGeneratorCodeModal from '@/views/generator/template/modal/GenGeneratorCodeModal'
 
 export default {
   name: 'GenTableList',
   components: {
+    GenGeneratorCodeModal,
     GenTemplatePreviewModal,
     GenTableColumnList,
     GenTableAddListModel,
@@ -148,7 +153,7 @@ export default {
         },
         {
           title: '操作',
-          width: '240px',
+          width: '280px',
           dataIndex: 'action',
           align: 'center',
           scopedSlots: { customRender: 'action' }
@@ -198,6 +203,11 @@ export default {
     handleOk () {
       this.$refs.table.refresh(true)
     },
+    // 導出代碼
+    handleExport (record) {
+      this.$refs.export.generator(record.id, record.tableName)
+    },
+    // 預覽
     handlePreview (id) {
       this.$refs.preview.show(id)
     },

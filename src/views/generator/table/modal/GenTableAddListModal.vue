@@ -7,7 +7,6 @@
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
-
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
