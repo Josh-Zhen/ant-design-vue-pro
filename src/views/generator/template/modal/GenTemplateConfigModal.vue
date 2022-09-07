@@ -71,7 +71,7 @@ export default {
     edit (record, collectionDropDown) {
       this.collectionDropDown = collectionDropDown
       this.mdl = Object.assign(record)
-      record.id === 0 ? this.title = '添加模板' : this.title = '修改模板'
+      this.title = (record.id === 0 ? '添加模板' : '修改模板')
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'collectionId', 'name', 'suffixName', 'state'))

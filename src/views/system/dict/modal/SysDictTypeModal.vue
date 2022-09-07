@@ -75,7 +75,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
-      record.id === 0 ? this.title = '添加字典类型' : this.title = '修改字典类型'
+      this.title = (record.id === 0 ? '添加字典类型' : '修改字典类型')
       this.visible = true
       this.$nextTick(() => {
         this.statusDef = record.status !== 0

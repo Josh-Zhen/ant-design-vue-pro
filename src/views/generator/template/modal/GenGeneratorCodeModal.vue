@@ -2,12 +2,22 @@
   <a-modal
     title="构建生成代码"
     style="top: 20px;"
-    width="40%"
+    width="50%"
     v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
     <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="6" :sm="5">
+            <a-form-item label="表名"/>
+          </a-col>
+          <a-col :md="18" :sm="15">
+            <a-alert :message="this.mdl.tableName" type="success"/>
+          </a-col>
+        </a-row>
+      </a-form>
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="5">
@@ -20,25 +30,34 @@
             </a-form-item>
           </a-col>
           <a-col :md="18" :sm="15">
-            <a-alert :message="remark" type="success" />
+            <a-alert :message="remark" type="success"/>
+          </a-col>
+        </a-row>
+      </a-form>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="6" :sm="5">
+            <a-form-item label="模板组">
+              <a-select allow-clear placeholder="请选择模板组" v-model="mdl.collectionId" @change="handleCollectionChange">
+                <a-select-option v-for="(item,index) in collectionDropDown" :key="index" :value="item.id">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="18" :sm="15">
+            <a-alert :message="collection" type="success"/>
           </a-col>
         </a-row>
       </a-form>
     </div>
-    <a-form :form="form">
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模板组">
-        <a-select allow-clear placeholder="请选择模板组" v-decorator="['type', {rules: [{required: true, message: '请选择模板组'}]}]">
-          <a-select-option v-for="(item,index) in collectionDropDown" :key="index" :value="item.value" >
-            {{ item.name }}
-          </a-select-option>
-        </a-select>
-      </a-form-item>
-    </a-form>
   </a-modal>
 </template>
 
 <script>
 import { getTableConfig } from '@/api/generator/genTableConfig'
+import { getCollection } from '@/api/generator/genTemplateCollection'
+import { generator } from '@/api/generator/genTemplateConfig'
 
 export default {
   name: 'GenGeneratorCodeModal',
@@ -57,13 +76,17 @@ export default {
       mdl: {},
       tablesConfig: [],
       remark: '',
-      collectionDropDown: []
+      collectionDropDown: [],
+      collection: ''
     }
   },
   methods: {
     // 生成代碼
     generator (tableId, tableName) {
       this.handleTablesConfig()
+      this.handleCollection()
+      this.mdl.tableId = tableId
+      this.mdl.tableName = tableName
       this.visible = true
     },
     // 加載作者配置
@@ -78,6 +101,18 @@ export default {
         }
       })
     },
+    // 加載模板組
+    handleCollection () {
+      getCollection().then(res => {
+        if (res.code === 200) {
+          this.collectionDropDown = res.data
+          this.mdl.collectionId = res.data[0].id
+          this.collection = res.data[0].templateName
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
     // 匹配备注值
     handleChange (value) {
       const values = this.tablesConfig.filter(item => item.id === value)
@@ -85,8 +120,19 @@ export default {
         this.remark = values[0].remark
       }
     },
+    // 匹配模板名稱
+    handleCollectionChange (value) {
+      const values = this.collectionDropDown.filter(item => item.id === value)
+      if (values.length > 0) {
+        this.collection = values[0].templateName
+      }
+    },
+    // 提交
     handleSubmit (e) {
       e.preventDefault()
+      this.confirmLoading = true
+      generator(this.mdl)
+      this.confirmLoading = false
       this.visible = false
     }
   }

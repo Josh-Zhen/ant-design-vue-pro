@@ -49,3 +49,13 @@ export function getCollectionName () {
     method: 'get'
   })
 }
+
+/**
+ * 獲取模板组
+ */
+export function getCollection () {
+  return request({
+    url: api.genTemplateCollection + '/getTemplateCollection',
+    method: 'get'
+  })
+}

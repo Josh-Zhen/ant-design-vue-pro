@@ -37,8 +37,8 @@ export const asyncRouterMap = [
         meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
         children: [
           {
-            path: '/generator/GenDatabaseList',
-            name: 'GenDatabaseList',
+            path: '/system/dict/SysDictTypeList',
+            name: 'SysDictTypeList',
             component: () => import('@/views/system/dict/SysDictTypeList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
           }

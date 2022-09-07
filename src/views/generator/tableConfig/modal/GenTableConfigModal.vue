@@ -98,7 +98,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
-      record.id === 0 ? this.title = '添加表配置' : this.title = '修改表配置'
+      this.title = (record.id === 0 ? '添加表配置' : '修改表配置')
       this.visible = true
       this.inputVisible = false
       this.$nextTick(() => {

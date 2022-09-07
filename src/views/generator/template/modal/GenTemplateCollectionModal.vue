@@ -53,7 +53,7 @@ export default {
     },
     edit (record) {
       this.mdl = Object.assign(record)
-      record.id === 0 ? this.title = '添加模板组' : this.title = '修改模板组'
+      this.title = (record.id === 0 ? '添加模板组' : '修改模板组')
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'state'))

@@ -41,11 +41,46 @@ export function delGenTemplateConfig (parameter) {
 }
 
 /**
- * 獲取所有模板
+ * 预览模板
  */
 export function preview (tableId) {
   return request({
     url: api.genTemplateConfig + '/preview/' + `${tableId}`,
     method: 'get'
   })
+}
+
+/**
+ * 生成代碼
+ */
+export function generator (parameter) {
+  return request({
+    url: api.genTemplateConfig + '/export',
+    method: 'get',
+    params: parameter,
+    responseType: 'blob'
+  }).then(res => {
+    resolveBlob(res)
+  })
+}
+
+/**
+ * 解析blob响应内容并下载
+ * @param {*} res blob响应内容
+ */
+export function resolveBlob (res) {
+  const blob = new Blob([res.data], { type: 'application/zip' })
+  // 从response的headers中获取filename, 后端response.setHeader("Content-disposition", "attachment; filename=xxxx.docx") 设置的文件名;
+  const path = new RegExp('filename=([^;]+\\.[^.;]+);*')
+  const contentDisposition = decodeURI(res.headers['content-disposition'])
+  const result = path.exec(contentDisposition)
+
+  // 創建標簽
+  const aLink = window.document.createElement('a')
+  aLink.href = URL.createObjectURL(blob)
+  // 设置下载文件名称
+  aLink.download = result[1]
+  aLink.click()
+  // 釋放對象
+  window.URL.revokeObjectURL(aLink.href)
 }

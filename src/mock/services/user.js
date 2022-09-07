@@ -237,7 +237,7 @@ const userNav = options => {
       parentId: 10,
       id: 11,
       meta: {
-        title: '数据库配置'
+        title: '数据库'
       },
       component: 'GenDatabaseList'
     },
@@ -246,7 +246,7 @@ const userNav = options => {
       parentId: 10,
       id: 12,
       meta: {
-        title: '数据表配置'
+        title: '数据表'
       },
       component: 'GenTablesList'
     },
@@ -264,7 +264,7 @@ const userNav = options => {
       parentId: 10,
       id: 15,
       meta: {
-        title: '模板组配置'
+        title: '模板组'
       },
       component: 'GenTemplateCollectionList'
     },
@@ -273,7 +273,7 @@ const userNav = options => {
       parentId: 10,
       id: 16,
       meta: {
-        title: '模板配置'
+        title: '模板'
       },
       component: 'GenTemplateConfigList'
     },
@@ -298,6 +298,28 @@ const userNav = options => {
         title: '字典管理'
       },
       component: 'SysDictTypeList'
+    },
+
+    // 測試
+    {
+      name: 'test',
+      parentId: 0,
+      id: 30,
+      meta: {
+        icon: 'setting',
+        title: '測試'
+      },
+      component: 'RouteView',
+      redirect: '/TestList'
+    },
+    {
+      name: 'TestList',
+      parentId: 30,
+      id: 31,
+      meta: {
+        title: '測試頁面'
+      },
+      component: 'TestList'
     }
   ]
   return builder(nav)
