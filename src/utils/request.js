@@ -54,7 +54,12 @@ request.interceptors.request.use(config => {
 
 // response interceptor
 request.interceptors.response.use((response) => {
-  return response.data
+  // 如果是文件下載，則直接返回整個請求頭
+  if (response.request.responseType === 'blob') {
+    return response
+  } else {
+    return response.data
+  }
 }, errorHandler)
 
 const installer = {

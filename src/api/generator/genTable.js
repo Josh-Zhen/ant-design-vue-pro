@@ -64,14 +64,3 @@ export function getTableList (parameter) {
     params: parameter
   })
 }
-
-/**
- * 生成表
- */
-export function generateTable (parameter) {
-  return request({
-    url: api.genTables + '/generate',
-    method: 'post',
-    params: parameter
-  })
-}

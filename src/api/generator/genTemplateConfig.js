@@ -54,7 +54,7 @@ export function preview (tableId) {
  * 生成代碼
  */
 export function generator (parameter) {
-  return request({
+  request({
     url: api.genTemplateConfig + '/export',
     method: 'get',
     params: parameter,
@@ -76,11 +76,10 @@ export function resolveBlob (res) {
   const result = path.exec(contentDisposition)
 
   // 創建標簽
-  const aLink = window.document.createElement('a')
-  aLink.href = URL.createObjectURL(blob)
-  // 设置下载文件名称
-  aLink.download = result[1]
-  aLink.click()
+  const a = window.document.createElement('a')
+  a.href = window.URL.createObjectURL(blob)
+  a.download = result[1]
+  a.click()
   // 釋放對象
-  window.URL.revokeObjectURL(aLink.href)
+  window.URL.revokeObjectURL(a.href)
 }
