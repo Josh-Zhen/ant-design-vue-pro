@@ -1,3 +1,4 @@
+<!--suppress ALL -->
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
@@ -5,12 +6,12 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="5">
             <a-form-item label="表名称">
-              <a-input allow-clear placeholder="请输入表名称" v-model="queryParam.tableName" />
+              <a-input allow-clear placeholder="请输入表名称" v-model="queryParam.tableName"/>
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="5">
             <a-form-item label="表描述">
-              <a-input allow-clear placeholder="请输入表描述" v-model="queryParam.tableComment" />
+              <a-input allow-clear placeholder="请输入表描述" v-model="queryParam.tableComment"/>
             </a-form-item>
           </a-col>
 
@@ -31,6 +32,9 @@
           <a-button type="primary" icon="close">删除</a-button>
         </a-popconfirm>
       </a-dropdown>
+      <a-dropdown v-if="selectedRowKeys.length > 0">
+        <a-button type="primary" icon="vertical-align-bottom" @click="handleBatchExport(selectedRowKeys)">导出</a-button>
+      </a-dropdown>
     </a-space>
 
     <s-table
@@ -47,20 +51,20 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="handleExport(record)">导出</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="handlePreview(record.id)">预览</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="jumpTablesColumnLists(record)">字段详情</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="delByIds([record.id])">删除</a>
       </span>
     </s-table>
-    <gen-table-model ref="model" @ok="handleOk" />
-    <gen-table-add-list-model ref="addModel" @ok="handleOk" />
-    <gen-table-column-list ref="columnModal" />
-    <gen-template-preview-modal ref="preview" @ok="handleOk" />
+    <gen-table-model ref="model" @ok="handleOk"/>
+    <gen-table-add-list-model ref="addModel" @ok="handleOk"/>
+    <gen-table-column-list ref="columnModal"/>
+    <gen-template-preview-modal ref="preview" @ok="handleOk"/>
     <gen-generator-code-modal ref="export" @ok="handleOk"/>
   </a-card>
 </template>
@@ -205,7 +209,11 @@ export default {
     },
     // 導出代碼
     handleExport (record) {
-      this.$refs.export.generator(record.id, record.tableName)
+      this.$refs.export.generator([record.id], record.tableName)
+    },
+    // 批量導出代碼
+    handleBatchExport (tableIds) {
+      this.$refs.export.generator(tableIds, 'codeList')
     },
     // 預覽
     handlePreview (id) {

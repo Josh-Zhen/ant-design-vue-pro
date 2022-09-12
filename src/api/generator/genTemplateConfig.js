@@ -53,11 +53,14 @@ export function preview (tableId) {
 /**
  * 生成代碼
  */
-export function generator (parameter) {
+export function batchGenerator (parameter) {
   request({
-    url: api.genTemplateConfig + '/export',
-    method: 'get',
-    params: parameter,
+    url: api.genTemplateConfig + '/batchExport',
+    method: 'post',
+    data: parameter,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
     responseType: 'blob'
   }).then(res => {
     resolveBlob(res)

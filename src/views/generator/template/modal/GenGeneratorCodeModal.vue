@@ -14,7 +14,7 @@
             <a-form-item label="表名"/>
           </a-col>
           <a-col :md="18" :sm="15">
-            <a-alert :message="this.mdl.tableName" type="success"/>
+            <a-alert :message="this.mdl.fileName" type="success"/>
           </a-col>
         </a-row>
       </a-form>
@@ -57,7 +57,7 @@
 <script>
 import { getTableConfig } from '@/api/generator/genTableConfig'
 import { getCollection } from '@/api/generator/genTemplateCollection'
-import { generator } from '@/api/generator/genTemplateConfig'
+import { batchGenerator } from '@/api/generator/genTemplateConfig'
 
 export default {
   name: 'GenGeneratorCodeModal',
@@ -81,12 +81,16 @@ export default {
     }
   },
   methods: {
-    // 生成代碼
-    generator (tableId, tableName) {
+    /**
+     * 生成代碼
+     * @param tableIds 表id集合
+     * @param fileName 導出的名稱
+     */
+    generator (tableIds, fileName) {
       this.handleTablesConfig()
       this.handleCollection()
-      this.mdl.tableId = tableId
-      this.mdl.tableName = tableName
+      this.mdl.tableIds = tableIds
+      this.mdl.fileName = fileName
       this.visible = true
     },
     // 加載作者配置
@@ -131,7 +135,7 @@ export default {
     handleSubmit (e) {
       e.preventDefault()
       this.confirmLoading = true
-      generator(this.mdl)
+      batchGenerator(this.mdl)
       this.confirmLoading = false
       this.visible = false
     }
