@@ -77,11 +77,11 @@ export default {
           this.confirmLoading = true
           saveGenFieldMapping(values).then(res => {
             if (res.code === 200) {
-              this.message.success('保存成功')
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
-              this.message.error(res.message)
+              this.$message.error(res.message)
             }
           }).catch(() => {
             this.$message.error('系统错误，请稍后再试')
