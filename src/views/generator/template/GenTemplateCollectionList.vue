@@ -47,7 +47,9 @@
         <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical"/>
-        <a @click="delByIds([record.id])">删除</a>
+        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
+          <a>删除</a>
+        </a-popconfirm>
       </span>
     </s-table>
     <gen-template-collection-modal ref="modal" @ok="handleOk"/>

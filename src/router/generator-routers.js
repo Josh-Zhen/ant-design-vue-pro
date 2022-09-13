@@ -21,11 +21,7 @@ const constantRouterComponents = {
   GenTablesList: () => import('@/views/generator/table/GenTableList'),
   GenTemplateCollectionList: () => import('@/views/generator/template/GenTemplateCollectionList'),
   GenTemplateConfigList: () => import('@/views/generator/template/GenTemplateConfigList'),
-
-  // exception
-  Exception403: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403'),
-  Exception404: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404'),
-  Exception500: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500'),
+  GenFieldMappingList: () => import('@/views/generator/fieldMapping/GenFieldMappingList'),
 
   // account
   SecuritySettings: () => import('@/views/account/settings/Security'),

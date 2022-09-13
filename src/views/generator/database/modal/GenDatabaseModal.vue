@@ -90,7 +90,7 @@ export default {
       this.form.resetFields()
       this.dbTypeDictDropDown = dbTypeDictDropDown
       this.title = '添加数据库配置'
-      this.mdl = Object.assign({ id: 0, address: '127.0.0.1', port: 3306, userName: 'root' })
+      this.mdl = Object.assign({ id: 0, type: '0', address: '127.0.0.1', port: 3306, userName: 'root' })
       this.visible = true
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'type', 'driverClassName', 'address', 'port', 'userName', 'password'))

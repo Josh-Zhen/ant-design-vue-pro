@@ -100,7 +100,9 @@
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical" />
-          <a @click="delByIds([record.id])">删除</a>
+          <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
+            <a>删除</a>
+          </a-popconfirm>
         </span>
       </s-table>
       <gen-table-column-modal ref="modal" @ok="handleOk" />

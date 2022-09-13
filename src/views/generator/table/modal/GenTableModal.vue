@@ -9,32 +9,33 @@
   >
     <a-form :form="form">
       <a-form-item style="display:none">
-        <a-input v-decorator="['id']" />
+        <a-input v-decorator="['id']"/>
+        <a-input v-decorator="['configId']"/>
       </a-form-item>
       <a-descriptions bordered :column="2">
         <a-descriptions-item label="所属数据库">{{ databaseIdFilter(mdl.databaseId) }}</a-descriptions-item>
         <a-descriptions-item label="表名">{{ mdl.tableName }}</a-descriptions-item>
       </a-descriptions>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述">
-        <a-input v-decorator="['tableComment']" />
+        <a-input v-decorator="['tableComment']"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="类名">
         <a-input
           allow-clear
           placeholder="请输入对象名"
-          v-decorator="['objectName',{rules: [{ required: true, pattern: /^[a-z][0-9a-zA-Z_]+$/, message: '请输入正确格式的类名！'}]}]" />
+          v-decorator="['objectName',{rules: [{ required: true, pattern: /^[a-z][0-9a-zA-Z_]+$/, message: '请输入正确格式的对象名！'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="业务名">
         <a-input
           allow-clear
           placeholder="请输入业务名"
-          v-decorator="['businessName',{rules: [{ required: true, pattern: /^[a-z]+$/, message: '请输入业务名！'}]}]" />
+          v-decorator="['businessName',{rules: [{ required: true, pattern: /^[a-z]+$/, message: '请输入业务名！'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="功能名">
         <a-input
           allow-clear
           placeholder="请输入功能名"
-          v-decorator="['functionName',{rules: [{ required: true, message: '请输入功能名！'}]}]" />
+          v-decorator="['functionName',{rules: [{ required: true, message: '请输入功能名！'}]}]"/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -71,7 +72,7 @@ export default {
       this.visible = true
       this.idDropDown = idDropDown
       this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'databaseId', 'tableName', 'tableComment', 'objectName', 'businessName', 'functionName'))
+        this.form.setFieldsValue(pick(this.mdl, 'id', 'databaseId', 'tableName', 'tableComment', 'objectName', 'businessName', 'functionName', 'configId'))
       })
     },
     // 數據庫名稱匹配

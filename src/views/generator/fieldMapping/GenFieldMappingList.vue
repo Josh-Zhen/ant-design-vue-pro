@@ -3,16 +3,29 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="5" :sm="5">
-            <a-form-item label="名称">
-              <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name"/>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="键">
+              <a-input placeholder="请输入键" v-model="queryParam.comment"/>
             </a-form-item>
           </a-col>
-
-          <a-col :md="4" :sm="10">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="值">
+              <a-input placeholder="请输入值" v-model="queryParam.mapping"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="类型">
+              <a-select v-model="queryParam.type" placeholder="请选择类型">
+                <a-select-option v-for="(item,index) in typeDictTypeDropDown" :key="index" :value="item.key">
+                  {{ item.name }}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
-              <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
             </span>
           </a-col>
         </a-row>
@@ -37,24 +50,17 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="state" slot-scope="text">
-        <a-tag :color="text === true ? 'purple' :'blue'">
-          {{ commonStatusFilter(text) }}
-        </a-tag>
+      <span slot="type" slot-scope="text">
+        {{ typeFilter(text) }}
       </span>
-      <span slot="display" slot-scope="text,record">
-        <a-popconfirm placement="top" :title="text===true? '不使用？':'使用？'" @confirm="() => editDisplay(record)">
+      <span slot="state" slot-scope="text">
+        <a-popconfirm placement="top" :title="text===true? '禁用？':'启用？'" @confirm="() => editDisplay(record)">
           <a-tag :color="text === true ? 'purple' :'blue'">
             {{ statusFilter(text) }}
           </a-tag>
         </a-popconfirm>
       </span>
-      <span slot="collectionId" slot-scope="text">
-        {{ collectionFilter(text) }}
-      </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="jumpEditTemplate(record)">编辑模板</a>
-        <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical"/>
         <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
@@ -62,29 +68,21 @@
         </a-popconfirm>
       </span>
     </s-table>
-    <gen-template-config-modal ref="modal" @ok="handleOk"/>
-    <gen-template-modal ref="template" @ok="handleOk"/>
+    <genFieldMapping-modal ref="mapping" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
-import {
-  delGenTemplateConfig,
-  getGenTemplateConfigPageList,
-  saveGenTemplateConfig
-} from '@/api/generator/genTemplateConfig'
+import { delGenFieldMapping, getGenFieldMappingPageList, saveGenFieldMapping } from '@/api/generator/genFieldMapping'
+import GenFieldMappingModal from './modal/GenFieldMappingModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
-import { getCollectionName } from '@/api/generator/genTemplateCollection'
-import GenTemplateModal from './modal/GenTemplateModal'
-import GenTemplateConfigModal from './modal/GenTemplateConfigModal'
 
 export default {
-  name: 'GenTemplateConfigList',
+  name: 'GenFieldMappingList',
   components: {
-    GenTemplateModal,
-    GenTemplateConfigModal,
-    STable
+    STable,
+    GenFieldMappingModal
   },
   data () {
     return {
@@ -98,45 +96,34 @@ export default {
       },
       form: this.$form.createForm(this),
       mdl: {},
+      // 高级搜索 展开/关闭
+      advanced: false,
       // 查询参数
       queryParam: {},
       // 表头
       columns: [
         {
-          title: '模板組',
-          dataIndex: 'collectionId',
-          scopedSlots: { customRender: 'collectionId' },
+          title: '键',
+          dataIndex: 'comment',
+          scopedSlots: { customRender: 'comment' },
           align: 'center'
         },
         {
-          title: '名称',
-          dataIndex: 'name',
-          scopedSlots: { customRender: 'name' },
+          title: '值',
+          dataIndex: 'mapping',
+          scopedSlots: { customRender: 'mapping' },
           align: 'center'
         },
         {
-          title: '后缀名',
-          dataIndex: 'suffixName',
-          scopedSlots: { customRender: 'suffixName' },
-          align: 'center'
-        },
-        {
-          title: '展示',
-          dataIndex: 'display',
-          scopedSlots: { customRender: 'display' },
+          title: '类型',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type' },
           align: 'center'
         },
         {
           title: '状态',
           dataIndex: 'state',
           scopedSlots: { customRender: 'state' },
-          align: 'center'
-        },
-        {
-          title: '创建时间',
-          dataIndex: 'createDate',
-          scopedSlots: { customRender: 'createDate' },
-          sorter: true,
           align: 'center'
         },
         {
@@ -150,42 +137,43 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        this.queryParam.collectionId = this.$route.query.collectionId
-        return getGenTemplateConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
+        return getGenFieldMappingPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })
       },
-      selectedRowKeys: [],
-      selectedRows: [],
-      commonStatusDictTypeDropDown: [],
+      typeDictTypeDropDown: [],
       statusDictTypeDropDown: [],
-      collectionDropDown: []
+      selectedRowKeys: [],
+      selectedRows: []
     }
   },
   filters: {},
   created () {
-    this.dictTypeDropDown()
+    this.sysDictTypeDropDown()
   },
   methods: {
+    // 处理多选
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
-    // 加載字典
-    dictTypeDropDown () {
-      sysDictTypeDropDown({ code: 'common_status' }).then(res => {
-        this.commonStatusDictTypeDropDown = res.data
+    // 提交完成后刷新
+    handleOk () {
+      this.$refs.table.refresh(true)
+    },
+    // 加载字典
+    sysDictTypeDropDown () {
+      sysDictTypeDropDown({ code: 'field_mapping' }).then((res) => {
+        this.typeDictTypeDropDown = res.data
       })
-      sysDictTypeDropDown({ code: 'status' }).then(res => {
+      sysDictTypeDropDown({ code: 'common_status' }).then(res => {
         this.statusDictTypeDropDown = res.data
       })
-      getCollectionName().then(res => {
-        this.collectionDropDown = res.data
-      })
     },
-    commonStatusFilter (status) {
+    // 匹配字典
+    typeFilter (type) {
       // eslint-disable-next-line eqeqeq
-      const values = this.commonStatusDictTypeDropDown.filter(item => item.key == status)
+      const values = this.typeDictTypeDropDown.filter(item => item.key == type)
       if (values.length > 0) {
         return values[0].name
       }
@@ -197,25 +185,17 @@ export default {
         return values[0].name
       }
     },
-    collectionFilter (collection) {
-      // eslint-disable-next-line eqeqeq
-      const values = this.collectionDropDown.filter(item => item.id == collection)
-      if (values.length > 0) {
-        return values[0].name
-      }
-    },
+    // 添加
     handleAdd () {
-      if (this.queryParam.collectionId == null) {
-        this.queryParam.collectionId = 1
-      }
-      this.$refs.modal.add(this.queryParam.collectionId, this.collectionDropDown)
+      this.$refs.mapping.add(this.typeDictTypeDropDown)
     },
+    // 修改
     handleEdit (record) {
-      this.$refs.modal.edit(record, this.collectionDropDown)
+      this.$refs.mapping.edit(record, this.typeDictTypeDropDown)
     },
-    // 修改展示状态
+    // 修改状态
     editDisplay (record) {
-      saveGenTemplateConfig({ id: record.id, display: !record.display }).then(res => {
+      saveGenFieldMapping({ id: record.id, display: !record.display }).then(res => {
         if (res.success) {
           this.$message.success('操作成功')
           this.$refs.table.refresh()
@@ -224,18 +204,11 @@ export default {
         }
       })
     },
-    handleOk () {
-      this.$refs.table.refresh(true)
-    },
-    // 跳转到模板内容编辑页面
-    jumpEditTemplate (record) {
-      this.$refs.template.editTemplate(record)
-    },
-    // 删除
+    // 批量删除
     delByIds (ids) {
-      delGenTemplateConfig({ ids: ids.join(',') }).then(res => {
+      delGenFieldMapping({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
-          this.$message.success(`删除成功`)
+          this.$message.success('删除成功')
           this.handleOk()
         } else {
           this.$message.error(res.message)

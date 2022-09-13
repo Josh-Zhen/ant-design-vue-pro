@@ -14,7 +14,7 @@
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="模板名">
         <a-input
           :value="mdl.name"
-          disabled="true"
+          :disabled="true"
         />
       </a-form-item>
       <quill-editor ref="myTextEditor" v-model="template" :options="editorOption">

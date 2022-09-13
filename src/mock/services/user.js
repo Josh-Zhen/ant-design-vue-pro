@@ -277,6 +277,15 @@ const userNav = options => {
       },
       component: 'GenTemplateConfigList'
     },
+    {
+      name: 'GenFieldMappingList',
+      parentId: 10,
+      id: 17,
+      meta: {
+        title: '模板键值'
+      },
+      component: 'GenFieldMappingList'
+    },
 
     // 系統配置
     {

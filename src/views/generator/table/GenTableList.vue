@@ -1,4 +1,3 @@
-<!--suppress ALL -->
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
@@ -58,7 +57,9 @@
         <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical"/>
-        <a @click="delByIds([record.id])">删除</a>
+        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
+          <a>删除</a>
+        </a-popconfirm>
       </span>
     </s-table>
     <gen-table-model ref="model" @ok="handleOk"/>
@@ -126,7 +127,7 @@ export default {
           align: 'center'
         },
         {
-          title: '类名',
+          title: '对象名',
           dataIndex: 'objectName',
           scopedSlots: { customRender: 'objectName' },
           align: 'center'
