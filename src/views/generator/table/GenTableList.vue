@@ -79,6 +79,7 @@ import GenTableAddListModel from '@/views/generator/table/modal/GenTableAddListM
 import GenTableColumnList from '@/views/generator/tableColumn/GenTableColumnList'
 import GenTemplatePreviewModal from '@/views/generator/template/modal/GenTemplatePreviewModal'
 import GenGeneratorCodeModal from '@/views/generator/template/modal/GenGeneratorCodeModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenTableList',
@@ -165,6 +166,7 @@ export default {
         }
       ],
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         this.queryParam.databaseId = this.databaseId
         return getTablePageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data

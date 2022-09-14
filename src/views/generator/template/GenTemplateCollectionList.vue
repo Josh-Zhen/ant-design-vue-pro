@@ -46,8 +46,8 @@
         <a @click="jumpTemplateConfigLists(record.id)">模板配置</a>
         <a-divider type="vertical"/>
         <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical"/>
-        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
+        <a-divider v-if="record.id !==1" type="vertical"/>
+        <a-popconfirm placement="topRight" title="确认删除？" v-if="record.id !==1" @confirm="() => delByIds([record.id])">
           <a>删除</a>
         </a-popconfirm>
       </span>
@@ -61,6 +61,7 @@ import { STable } from '@/components'
 import { delGenTemplateCollection, getGenTemplateCollectionPageList } from '@/api/generator/genTemplateCollection'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenTemplateCollectionModal from './modal/GenTemplateCollectionModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenTemplateCollectionList',
@@ -114,6 +115,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         return getGenTemplateCollectionPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })

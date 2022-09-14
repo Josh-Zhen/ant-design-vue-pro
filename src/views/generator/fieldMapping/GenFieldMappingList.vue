@@ -5,17 +5,17 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="15">
             <a-form-item label="键">
-              <a-input placeholder="请输入键" v-model="queryParam.comment"/>
+              <a-input allow-clear placeholder="请输入键" v-model="queryParam.comment"/>
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="15">
             <a-form-item label="值">
-              <a-input placeholder="请输入值" v-model="queryParam.mapping"/>
+              <a-input allow-clear placeholder="请输入值" v-model="queryParam.mapping"/>
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="15">
             <a-form-item label="类型">
-              <a-select v-model="queryParam.type" placeholder="请选择类型">
+              <a-select allow-clear v-model="queryParam.type" placeholder="请选择类型">
                 <a-select-option v-for="(item,index) in typeDictTypeDropDown" :key="index" :value="item.key">
                   {{ item.name }}
                 </a-select-option>
@@ -77,6 +77,7 @@ import { STable } from '@/components'
 import { delGenFieldMapping, getGenFieldMappingPageList, saveGenFieldMapping } from '@/api/generator/genFieldMapping'
 import GenFieldMappingModal from './modal/GenFieldMappingModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenFieldMappingList',
@@ -137,6 +138,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         return getGenFieldMappingPageList(Object.assign(parameter, this.queryParam)).then((res) => {
           return res.data
         })

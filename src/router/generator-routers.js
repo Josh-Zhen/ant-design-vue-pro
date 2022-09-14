@@ -44,7 +44,7 @@ const rootRouter = {
   name: 'index',
   path: '',
   component: 'BasicLayout',
-  redirect: '/generator/GenDatabaseList',
+  redirect: '/generator/database/GenDatabaseList',
   meta: {
     title: '首页'
   },

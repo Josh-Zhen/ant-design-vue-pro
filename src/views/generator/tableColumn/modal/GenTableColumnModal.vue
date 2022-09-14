@@ -9,7 +9,7 @@
   >
     <a-form :form="form">
       <a-form-item style="display:none">
-        <a-input v-decorator="['id']" />
+        <a-input v-decorator="['id']"/>
       </a-form-item>
 
       <a-descriptions bordered :column="2">
@@ -26,36 +26,41 @@
           {{ mdl.columnType }}
         </a-descriptions-item>
       </a-descriptions>
-      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:95px">
-        <div style="width:50%">
+      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:10%">
+        <div style="width:33%">
           <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="主鍵">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isPrimaryKey', { valuePropName: 'checked' }]" />
+              v-decorator="['isPrimaryKey', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
-        <div style="width:50%">
+        <div style="width:33%">
           <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="自增">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isIncrement', { valuePropName: 'checked' }]" />
+              v-decorator="['isIncrement', { valuePropName: 'checked' }]"/>
+          </a-form-item>
+        </div>
+        <div style="width:33%">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="為空">
+            <a-switch
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-decorator="['isRequired', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
       </div>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否為空">
-        <a-switch
-          checkedChildren="是"
-          unCheckedChildren="否"
-          v-decorator="['isRequired', { valuePropName: 'checked' }]" />
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="描述">
+        <a-input allow-clear placeholder="请输入描述" v-decorator="['columnComment']"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="JAVA字段名">
         <a-input
           allow-clear
           placeholder="请输入JAVA字段名"
-          v-decorator="['javaField', {rules: [{required: true, message: '请输入JAVA字段名'}]}]" />
+          v-decorator="['javaField', {rules: [{required: true, message: '请输入JAVA字段名'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="JAVA类型">
         <a-select
@@ -68,37 +73,37 @@
         </a-select>
       </a-form-item>
 
-      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:95px">
+      <div style="width:100%; display:flex; flex-wrap:wrap; padding-left:10%">
         <div style="width:50%">
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否插入">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="插入">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isInsert', { valuePropName: 'checked' }]" />
+              v-decorator="['isInsert', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
         <div style="width:50%">
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否编辑">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="编辑">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isEdit', { valuePropName: 'checked' }]" />
+              v-decorator="['isEdit', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
         <div style="width:50%">
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否列表">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="列表">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isList', { valuePropName: 'checked' }]" />
+              v-decorator="['isList', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
         <div style="width:50%">
-          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可否查询">
+          <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="查询">
             <a-switch
               checkedChildren="是"
               unCheckedChildren="否"
-              v-decorator="['isQuery', { valuePropName: 'checked' }]" />
+              v-decorator="['isQuery', { valuePropName: 'checked' }]"/>
           </a-form-item>
         </div>
       </div>
@@ -126,15 +131,15 @@
       </a-form-item>
 
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="字典类型">
-        <a-input allow-clear placeholder="请输入字典类型" v-decorator="['dictType']" />
+        <a-input allow-clear placeholder="请输入字典类型" v-decorator="['dictType']"/>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
 <script>
+import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import { updateGenTableColumn } from '@/api/generator/genTableColumn'
 import pick from 'lodash.pick'
-import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 
 export default {
   name: 'GenTableColumnModal',

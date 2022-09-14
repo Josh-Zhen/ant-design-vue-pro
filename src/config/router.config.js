@@ -12,17 +12,17 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/generator/GenDatabaseList',
+    redirect: '/generator/database/GenDatabaseList',
     children: [
       // generator
       {
         path: '/generator',
-        redirect: '/generator/GenDatabaseList',
+        redirect: '/generator/database/GenDatabaseList',
         component: RouteView,
         meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
         children: [
           {
-            path: '/generator/GenDatabaseList',
+            path: '/generator/database/GenDatabaseList',
             name: 'GenDatabaseList',
             component: () => import('@/views/generator/database/GenDatabaseList'),
             meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }

@@ -8,7 +8,11 @@
               <a-input allow-clear placeholder="请输入名称" v-model="queryParam.name"/>
             </a-form-item>
           </a-col>
-
+          <a-col :md="5" :sm="5">
+            <a-form-item label="后缀名">
+              <a-input allow-clear placeholder="请输入后缀名" v-model="queryParam.suffixName"/>
+            </a-form-item>
+          </a-col>
           <a-col :md="4" :sm="10">
             <span class="table-page-search-submitButtons">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
@@ -20,9 +24,12 @@
     </div>
 
     <a-space align="center" style="margin-bottom: 16px">
-      <a-button type="primary" icon="plus" @click="handleAdd">新增</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds(selectedRowKeys)">
+      <a-button type="primary" icon="plus" @click="handleAdd" v-if="queryParam.collectionId !==1">新增</a-button>
+      <a-dropdown v-if="selectedRowKeys.length > 0 && queryParam.collectionId !==1">
+        <a-popconfirm
+          placement="topRight"
+          title="确认删除？"
+          @confirm="() => delByIds(this.queryParam.collectionId,selectedRowKeys)">
           <a-button type="primary" icon="close">删除</a-button>
         </a-popconfirm>
       </a-dropdown>
@@ -37,13 +44,15 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="state" slot-scope="text">
-        <a-tag :color="text === true ? 'purple' :'blue'">
-          {{ commonStatusFilter(text) }}
-        </a-tag>
-      </span>
       <span slot="display" slot-scope="text,record">
         <a-popconfirm placement="top" :title="text===true? '不使用？':'使用？'" @confirm="() => editDisplay(record)">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </a-popconfirm>
+      </span>
+      <span slot="state" slot-scope="text,record">
+        <a-popconfirm placement="top" :title="text===true? '禁用？':'启用？'" @confirm="() => editState(record)">
           <a-tag :color="text === true ? 'purple' :'blue'">
             {{ statusFilter(text) }}
           </a-tag>
@@ -54,10 +63,10 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="jumpEditTemplate(record)">编辑模板</a>
-        <a-divider type="vertical"/>
-        <a @click="handleEdit(record)">编辑</a>
-        <a-divider type="vertical"/>
-        <a-popconfirm placement="topRight" title="确认删除？" @confirm="() => delByIds([record.id])">
+        <a-divider v-if="record.collectionId !==1" type="vertical"/>
+        <a v-if="record.collectionId !==1" @click="handleEdit(record)">编辑</a>
+        <a-divider v-if="record.collectionId !==1" type="vertical"/>
+        <a-popconfirm placement="topRight" title="确认删除？" v-if="record.collectionId !==1" @confirm="() => delByIds(record.collectionId,[record.id])">
           <a>删除</a>
         </a-popconfirm>
       </span>
@@ -69,15 +78,12 @@
 
 <script>
 import { STable } from '@/components'
-import {
-  delGenTemplateConfig,
-  getGenTemplateConfigPageList,
-  saveGenTemplateConfig
-} from '@/api/generator/genTemplateConfig'
+import { delGenTemplateConfig, getGenTemplateConfigPageList, saveGenTemplateConfig } from '@/api/generator/genTemplateConfig'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import { getCollectionName } from '@/api/generator/genTemplateCollection'
 import GenTemplateModal from './modal/GenTemplateModal'
 import GenTemplateConfigModal from './modal/GenTemplateConfigModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenTemplateConfigList',
@@ -151,6 +157,7 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         this.queryParam.collectionId = this.$route.query.collectionId
+        cleanObjectsEmpty(this.queryParam)
         return getGenTemplateConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
@@ -224,6 +231,17 @@ export default {
         }
       })
     },
+    // 修改展示状态
+    editState (record) {
+      saveGenTemplateConfig({ id: record.id, state: !record.state }).then(res => {
+        if (res.success) {
+          this.$message.success('操作成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('操作失败：' + res.message)
+        }
+      })
+    },
     handleOk () {
       this.$refs.table.refresh(true)
     },
@@ -232,8 +250,11 @@ export default {
       this.$refs.template.editTemplate(record)
     },
     // 删除
-    delByIds (ids) {
-      delGenTemplateConfig({ ids: ids.join(',') }).then(res => {
+    delByIds (collectionId, ids) {
+      if (collectionId === 1) {
+        this.$message.error('操作失败：无法删除默认组的模板')
+      }
+      delGenTemplateConfig({ collectionId: collectionId, ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)
           this.handleOk()

@@ -67,6 +67,7 @@ import { delGenTableConfig, getGenTableConfigPageList } from '@/api/generator/ge
 import GenTablesConfigModal from '@/views/generator/tableConfig/modal/GenTableConfigModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenTableConfigList',
@@ -151,6 +152,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         return getGenTableConfigPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })

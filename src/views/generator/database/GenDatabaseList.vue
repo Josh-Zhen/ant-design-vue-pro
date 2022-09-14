@@ -63,6 +63,7 @@ import { STable } from '@/components'
 import { delGenDatabase, getGenDatabasePageList } from '@/api/generator/genDatabase'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenDatabaseModal from '@/views/generator/database/modal/GenDatabaseModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenDatabaseList',
@@ -139,6 +140,7 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         return getGenDatabasePageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })

@@ -12,6 +12,21 @@ export function filterEmpty (children = []) {
 }
 
 /**
+ * 清理對象内的空值
+ * @param children
+ */
+export function cleanObjectsEmpty (children) {
+  if (JSON.stringify(children) !== '{}') {
+    for (const key in children) {
+      if (children[key] === '') {
+        delete children[key]
+      }
+    }
+  }
+    return children
+}
+
+/**
  * 获取字符串长度，英文字符 长度1，中文字符长度2
  * @param {*} str
  */

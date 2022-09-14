@@ -117,6 +117,7 @@ import { delGenTableColumns, getTableColumnPageList, refreshGenTableColumn } fro
 import GenTableColumnModal from '@/views/generator/tableColumn/modal/GenTableColumnModal'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import SystemConfigModal from '@/views/generator/systemConfig/modal/SystemConfigModal'
+import { cleanObjectsEmpty } from '@/components/_util/util'
 
 export default {
   name: 'GenTableColumnList',
@@ -272,6 +273,7 @@ export default {
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
+        cleanObjectsEmpty(this.queryParam)
         return getTableColumnPageList(Object.assign(parameter, this.queryParam)).then(res => {
           return res.data
         })
