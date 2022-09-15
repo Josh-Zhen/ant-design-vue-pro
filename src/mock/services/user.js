@@ -307,28 +307,6 @@ const userNav = options => {
         title: '字典管理'
       },
       component: 'SysDictTypeList'
-    },
-
-    // 測試
-    {
-      name: 'test',
-      parentId: 0,
-      id: 30,
-      meta: {
-        icon: 'setting',
-        title: '測試'
-      },
-      component: 'RouteView',
-      redirect: '/TestList'
-    },
-    {
-      name: 'TestList',
-      parentId: 30,
-      id: 31,
-      meta: {
-        title: '測試頁面'
-      },
-      component: 'TestList'
     }
   ]
   return builder(nav)
