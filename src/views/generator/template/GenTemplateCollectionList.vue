@@ -37,15 +37,17 @@
       :data="loadData"
       :rangPicker="range"
     >
-      <span slot="state" slot-scope="text">
-        <a-tag :color="text === true ? 'purple' :'blue'">
-          {{ statusFilter(text) }}
-        </a-tag>
+      <span slot="state" slot-scope="text, record">
+        <a-popconfirm placement="top" :title="text===true? '禁用？':'启用？'" @confirm="() => editState(record)">
+          <a-tag :color="text === true ? 'purple' :'blue'">
+            {{ statusFilter(text) }}
+          </a-tag>
+        </a-popconfirm>
       </span>
       <span slot="action" slot-scope="text, record">
         <a @click="jumpTemplateConfigLists(record.id)">模板配置</a>
-        <a-divider type="vertical"/>
-        <a @click="handleEdit(record)">编辑</a>
+        <a-divider v-if="record.id !==1" type="vertical"/>
+        <a v-if="record.id !==1" @click="handleEdit(record)">编辑</a>
         <a-divider v-if="record.id !==1" type="vertical"/>
         <a-popconfirm placement="topRight" title="确认删除？" v-if="record.id !==1" @confirm="() => delByIds([record.id])">
           <a>删除</a>
@@ -58,7 +60,11 @@
 
 <script>
 import { STable } from '@/components'
-import { delGenTemplateCollection, getGenTemplateCollectionPageList } from '@/api/generator/genTemplateCollection'
+import {
+  delGenTemplateCollection,
+  getGenTemplateCollectionPageList,
+  saveGenTemplateCollection
+} from '@/api/generator/genTemplateCollection'
 import { sysDictTypeDropDown } from '@/api/system/dict/sysDictType'
 import GenTemplateCollectionModal from './modal/GenTemplateCollectionModal'
 import { cleanObjectsEmpty } from '@/components/_util/util'
@@ -155,12 +161,26 @@ export default {
     handleOk () {
       this.$refs.table.refresh(true)
     },
+    // 修改狀態
+    editState (record) {
+      saveGenTemplateCollection({ id: record.id, state: !record.state }).then(res => {
+        if (res.success) {
+          this.$message.success('操作成功')
+          this.$refs.table.refresh()
+        } else {
+          this.$message.error('操作失败：' + res.message)
+        }
+      })
+    },
     // 跳转到模板配置页面
     jumpTemplateConfigLists (templateCollectionId) {
       this.$router.push({ name: 'GenTemplateConfigList', query: { collectionId: templateCollectionId } })
     },
     // 删除
     delByIds (ids) {
+      if (ids.includes(1)) {
+        ids.splice(ids.indexOf(1), 1)
+      }
       delGenTemplateCollection({ ids: ids.join(',') }).then(res => {
         if (res.code === 200) {
           this.$message.success(`删除成功`)

@@ -16,7 +16,7 @@
           allow-clear
           placeholder="请选择模板組"
           v-decorator="['collectionId',{rules: [{ required: true, message: '请选择模板組！'}]}]">
-          <a-select-option v-for="(item,index) in collectionDropDown" :key="index" :value="item.id">
+          <a-select-option v-for="(item,index) in collectionDrop" :key="index" :value="item.id">
             {{ item.name }}
           </a-select-option>
         </a-select>
@@ -41,6 +41,7 @@
 </template>
 <script>
 import { saveGenTemplateConfig } from '@/api/generator/genTemplateConfig'
+import { getCollectionName } from '@/api/generator/genTemplateCollection'
 import pick from 'lodash.pick'
 
 export default {
@@ -59,17 +60,29 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      collectionDropDown: [],
+      collectionDrop: [],
       title: ''
     }
   },
+  created () {
+    this.dictTypeDropDown()
+  },
   methods: {
-    add (collectionId, collectionDropDown) {
-      this.form.resetFields()
-      this.edit({ id: 0, collectionId: collectionId, state: true }, collectionDropDown)
+    // 加載字典
+    dictTypeDropDown () {
+      getCollectionName().then(res => {
+        this.collectionDrop = res.data
+      })
     },
-    edit (record, collectionDropDown) {
-      this.collectionDropDown = collectionDropDown
+    add (collectionId) {
+      this.form.resetFields()
+      this.edit({ id: 0, collectionId: collectionId, state: true })
+    },
+    edit (record) {
+      // 移除默認模板組
+      if (this.collectionDrop[0].id === 1) {
+        this.collectionDrop.splice(0, 1)
+      }
       this.mdl = Object.assign(record)
       this.title = (record.id === 0 ? '添加模板' : '修改模板')
       this.visible = true

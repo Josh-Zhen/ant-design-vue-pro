@@ -17,7 +17,7 @@
           :disabled="true"
         />
       </a-form-item>
-      <quill-editor ref="myTextEditor" v-model="template" :options="editorOption">
+      <quill-editor ref="myTextEditor" v-model="template" :options="editorOption" @focus="editingProhibited($event)">
       </quill-editor>
     </a-form>
   </a-modal>
@@ -79,6 +79,12 @@ export default {
         this.template = this.defaultTemplate
       } else {
         this.template = template
+      }
+    },
+    // 禁止編輯
+    editingProhibited (event) {
+      if (this.mdl.collectionId === 1) {
+        event.enable(false)
       }
     },
     handleSubmit (e) {

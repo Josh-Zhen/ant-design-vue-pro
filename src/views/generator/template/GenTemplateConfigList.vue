@@ -24,7 +24,7 @@
     </div>
 
     <a-space align="center" style="margin-bottom: 16px">
-      <a-button type="primary" icon="plus" @click="handleAdd" v-if="queryParam.collectionId !==1">新增</a-button>
+      <a-button v-if="queryParam.collectionId !==1" type="primary" icon="plus" @click="handleAdd">新增</a-button>
       <a-dropdown v-if="selectedRowKeys.length > 0 && queryParam.collectionId !==1">
         <a-popconfirm
           placement="topRight"
@@ -212,13 +212,14 @@ export default {
       }
     },
     handleAdd () {
-      if (this.queryParam.collectionId == null) {
-        this.queryParam.collectionId = 1
+      if (this.queryParam.collectionId === 1) {
+        this.$message.error('默认模板组无法添加模板')
+      } else {
+        this.$refs.modal.add(this.queryParam.collectionId)
       }
-      this.$refs.modal.add(this.queryParam.collectionId, this.collectionDropDown)
     },
     handleEdit (record) {
-      this.$refs.modal.edit(record, this.collectionDropDown)
+      this.$refs.modal.edit(record)
     },
     // 修改展示状态
     editDisplay (record) {
