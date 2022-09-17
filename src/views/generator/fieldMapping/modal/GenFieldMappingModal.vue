@@ -12,7 +12,7 @@
         <a-input v-decorator="['id']"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="键">
-        <a-input allow-clear placeholder="请输入键" v-decorator="['comment',{rules: [{ required: true, message: '请输入键！'}]}]"/>
+        <a-input allow-clear placeholder="请输入键" v-decorator="['comment',{rules: [{ required: true, pattern: /^[a-zA-Z]+$/, message: '请输入键！'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="值">
         <a-input allow-clear placeholder="请输入值" v-decorator="['mapping',{rules: [{ required: true, message: '请输入值！'}]}]"/>
