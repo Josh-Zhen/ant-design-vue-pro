@@ -114,6 +114,9 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.confirmLoading = true
+          if (!values.removePrefix) {
+            values.tablePrefix = ''
+          }
           saveGenTableConfig(values).then(res => {
             if (res.code === 200) {
               this.$message.success('保存成功')

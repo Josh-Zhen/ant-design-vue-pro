@@ -15,7 +15,7 @@
         <a-input
           allow-clear
           placeholder="请输入数据库名"
-          v-decorator="['name', {rules: [{required: true, pattern: /^[a-zA-Z]+$/, message: '请输入数据库名'}]}]"/>
+          v-decorator="['name', {rules: [{required: true, message: '请输入数据库名'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="数据库类型">
         <a-select
