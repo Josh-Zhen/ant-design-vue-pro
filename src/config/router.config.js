@@ -19,13 +19,43 @@ export const asyncRouterMap = [
         path: '/generator',
         redirect: '/generator/database/GenDatabaseList',
         component: RouteView,
-        meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
+        meta: { title: '代码生成', icon: 'form', permission: ['generator'] },
         children: [
           {
             path: '/generator/database/GenDatabaseList',
             name: 'GenDatabaseList',
             component: () => import('@/views/generator/database/GenDatabaseList'),
-            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
+            meta: { title: '数据库', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/generator/table/GenTablesList',
+            name: 'GenTablesList',
+            component: () => import('@/views/generator/table/GenTableList'),
+            meta: { title: '数据表', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/generator/tableConfig/GenTablesConfigList',
+            name: 'GenTablesConfigList',
+            component: () => import('@/views/generator/tableConfig/GenTableConfigList'),
+            meta: { title: '表配置', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/generator/template/GenTemplateCollectionList',
+            name: 'GenTemplateCollectionList',
+            component: () => import('@/views/generator/template/GenTemplateCollectionList'),
+            meta: { title: '模板组', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/generator/template/GenTemplateConfigList',
+            name: 'GenTemplateConfigList',
+            component: () => import('@/views/generator/template/GenTemplateConfigList'),
+            meta: { title: '模板', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/generator/fieldMapping/GenFieldMappingList',
+            name: 'GenFieldMappingList',
+            component: () => import('@/views/generator/fieldMapping/GenFieldMappingList'),
+            meta: { title: '模板键值', keepAlive: true, permission: ['form'] }
           }
         ]
       },
@@ -34,13 +64,13 @@ export const asyncRouterMap = [
         path: '/dict',
         redirect: '/system/dict/SysDictTypeList',
         component: RouteView,
-        meta: { title: 'menu.generator', icon: 'form', permission: ['generator'] },
+        meta: { title: '系统配置', icon: 'form', permission: ['generator'] },
         children: [
           {
             path: '/system/dict/SysDictTypeList',
             name: 'SysDictTypeList',
             component: () => import('@/views/system/dict/SysDictTypeList'),
-            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
+            meta: { title: '字典管理', keepAlive: true, permission: ['form'] }
           }
         ]
       }
