@@ -37,7 +37,7 @@ export const asyncRouterMap = [
             path: '/generator/tableConfig/GenTablesConfigList',
             name: 'GenTablesConfigList',
             component: () => import('@/views/generator/tableConfig/GenTableConfigList'),
-            meta: { title: '表配置', keepAlive: true, permission: ['form'] }
+            meta: { title: '作者配置', keepAlive: true, permission: ['form'] }
           },
           {
             path: '/generator/template/GenTemplateCollectionList',
