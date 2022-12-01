@@ -15,7 +15,11 @@
         <a-input allow-clear placeholder="请输入键" v-decorator="['comment',{rules: [{ required: true, pattern: /^[a-zA-Z]+$/, message: '请输入键！'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="值">
-        <a-input allow-clear placeholder="请输入值" v-decorator="['mapping',{rules: [{ required: true, message: '请输入值！'}]}]"/>
+        <a-textarea
+          allow-clear
+          :auto-size="{ minRows: 3, maxRows: 20 }"
+          placeholder="请输入值"
+          v-decorator="['mapping',{rules: [{ required: true, message: '请输入值！'}]}]"/>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="类型">
         <a-select allow-clear placeholder="请选择类型" v-decorator="['type',{rules: [{ required: true, message: '请选择类型！'}]}]">
