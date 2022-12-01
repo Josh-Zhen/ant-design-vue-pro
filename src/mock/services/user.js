@@ -255,7 +255,7 @@ const userNav = options => {
       parentId: 10,
       id: 14,
       meta: {
-        title: '作者配置'
+        title: '基础配置'
       },
       component: 'GenTablesConfigList'
     },

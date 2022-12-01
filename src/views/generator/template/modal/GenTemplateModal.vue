@@ -83,6 +83,7 @@ export default {
     },
     // 禁止編輯
     editingProhibited (event) {
+      event.enable(true)
       if (this.mdl.collectionId === 1) {
         event.enable(false)
       }
