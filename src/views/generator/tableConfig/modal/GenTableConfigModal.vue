@@ -86,7 +86,7 @@ export default {
       confirmLoading: false,
       mdl: {},
       form: this.$form.createForm(this),
-      inputVisible: false,
+      inputVisible: true,
       dateFormats: ['yyyy/MM/dd HH:mm', 'yyyy/MM/dd', 'dd/MM/yyyy HH:mm', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd', 'dd-MM-yyyy HH:mm'],
       title: ''
     }
@@ -94,13 +94,13 @@ export default {
   methods: {
     add () {
       this.form.resetFields()
-      this.edit({ id: 0 })
+      this.edit({ id: 0, removePrefix: false })
     },
     edit (record) {
       this.mdl = Object.assign(record)
       this.title = (record.id === 0 ? '添加表配置' : '修改表配置')
       this.visible = true
-      this.inputVisible = false
+      this.inputVisible = record.removePrefix
       this.$nextTick(() => {
         this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'author', 'packageName', 'moduleName', 'dateFormat', 'tablePrefix', 'removePrefix'))
       })
