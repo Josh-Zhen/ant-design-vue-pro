@@ -153,7 +153,7 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getSysDictTypePageList(Object.assign(parameter, this.queryParam)).then(res => {
-          this.endId = res.data.totalRows !== 0 ? res.data.rows[0].id + 1 : 1
+          this.endId = res.data.totalRows !== 0 ? res.data.totalRows + 1 : 1
           return res.data
         })
       },
@@ -210,9 +210,6 @@ export default {
         }
         this.selectedRowKeys = []
       })
-    },
-    toggleAdvanced () {
-      this.advanced = !this.advanced
     }
   }
 }
