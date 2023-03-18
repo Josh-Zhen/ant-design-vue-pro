@@ -21,8 +21,8 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="5">
-            <a-form-item label="表配置">
-              <a-select allow-clear placeholder="请选择表配置" v-model="mdl.tableConfigId" @change="handleChange">
+            <a-form-item label="基础配置">
+              <a-select allow-clear placeholder="请选择基础配置" v-model="mdl.tableConfigId" @change="handleChange">
                 <a-select-option v-for="(item,index) in tablesConfig" :key="index" :value="item.id">
                   {{ item.name }}
                 </a-select-option>

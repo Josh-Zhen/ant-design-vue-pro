@@ -184,7 +184,8 @@ export default {
           align: 'center'
         },
         {
-          title: '可否為空',
+          title: '可否为空',
+          width: 90,
           dataIndex: 'isRequired',
           scopedSlots: { customRender: 'isRequired' },
           align: 'center'
@@ -205,30 +206,35 @@ export default {
         },
         {
           title: '可否插入',
+          width: 90,
           dataIndex: 'isInsert',
           scopedSlots: { customRender: 'isInsert' },
           align: 'center'
         },
         {
           title: '可否编辑',
+          width: 90,
           dataIndex: 'isEdit',
           scopedSlots: { customRender: 'isEdit' },
           align: 'center'
         },
         {
-          title: '可否列表',
+          title: '列表展示',
+          width: 90,
           dataIndex: 'isList',
           scopedSlots: { customRender: 'isList' },
           align: 'center'
         },
         {
           title: '可否查询',
+          width: 90,
           dataIndex: 'isQuery',
           scopedSlots: { customRender: 'isQuery' },
           align: 'center'
         },
         {
           title: '查询方式',
+          width: 90,
           dataIndex: 'queryType',
           scopedSlots: { customRender: 'queryType' },
           align: 'center'
@@ -242,6 +248,7 @@ export default {
         },
         {
           title: '字典类型',
+          width: 90,
           dataIndex: 'dictType',
           scopedSlots: { customRender: 'dictType' },
           align: 'center'
